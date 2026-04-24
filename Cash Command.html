@@ -1114,6 +1114,14 @@
         justify-self: center;
       }
 
+      .current-step4-card .output-hero {
+        width: 100%;
+      }
+
+      .current-step4-card .output-hero strong {
+        font-size: clamp(1.9rem, 3.6vw, 2.45rem);
+      }
+
       .current-step4-card .budget-pill {
         justify-content: center;
         text-align: center;
@@ -1123,6 +1131,49 @@
         margin: 0;
         max-width: 24ch;
         text-align: center;
+      }
+
+      #currentBudgetStateNote {
+        width: 100%;
+        max-width: 100%;
+        padding: 12px 14px;
+        border-radius: 16px;
+        border: 1px solid rgba(34, 197, 94, 0.14);
+        background: linear-gradient(
+          180deg,
+          rgba(240, 253, 244, 0.98),
+          rgba(236, 252, 203, 0.92)
+        );
+        color: #166534;
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.82),
+          0 10px 22px rgba(34, 197, 94, 0.08);
+      }
+
+      #currentBudgetStateNote.is-warning {
+        border-color: rgba(245, 158, 11, 0.16);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 247, 237, 0.98),
+          rgba(255, 251, 235, 0.94)
+        );
+        color: #9a3412;
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.76),
+          0 10px 22px rgba(245, 158, 11, 0.08);
+      }
+
+      #currentBudgetStateNote.is-danger {
+        border-color: rgba(220, 38, 38, 0.14);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 241, 242, 0.98),
+          rgba(255, 247, 237, 0.96)
+        );
+        color: #991b1b;
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.82),
+          0 12px 26px rgba(220, 38, 38, 0.1);
       }
 
       .current-guidance-note {
@@ -1174,13 +1225,6 @@
         margin: 0;
         max-width: 30ch;
         text-align: center;
-      }
-
-      .current-result-card .current-result-pill {
-        justify-content: center;
-        text-align: center;
-        width: fit-content;
-        margin: 0 auto;
       }
 
       .current-deploy-alert {
@@ -1447,6 +1491,10 @@
         --flow-color: #64748b;
       }
 
+      .current-flow-claim-card[data-tone="shortfall"] {
+        --flow-color: #dc2626;
+      }
+
       .current-flow-merge-spine {
         grid-column: 4;
         grid-row: 1 / span 4;
@@ -1511,6 +1559,30 @@
         text-transform: uppercase;
         letter-spacing: 0.14em;
         font-weight: 800;
+      }
+
+      .current-flow-mobile-step {
+        display: grid;
+        gap: 12px;
+        width: 100%;
+      }
+
+      .current-flow-mobile-arrow {
+        display: grid;
+        place-items: center;
+        width: 28px;
+        height: 28px;
+        margin: 0 auto;
+        border-radius: 999px;
+        background: rgba(239, 246, 255, 0.96);
+        border: 1px solid rgba(96, 165, 250, 0.2);
+        color: var(--flow-color, #2563eb);
+        font-size: 0.96rem;
+        font-weight: 800;
+        line-height: 1;
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.94),
+          0 8px 18px rgba(37, 99, 235, 0.1);
       }
 
       .current-flow-claim-card strong,
@@ -2469,6 +2541,8 @@
           width: 100%;
           min-width: 0;
           padding-top: 0;
+          align-items: stretch;
+          justify-items: stretch;
         }
 
         .current-balance-row > .plan-panel {
@@ -2478,6 +2552,8 @@
         .current-flow-source {
           width: 100%;
           min-width: 0;
+          grid-column: 1 !important;
+          grid-row: auto !important;
           justify-self: stretch;
         }
 
@@ -2489,6 +2565,8 @@
         }
 
         .current-flow-panel {
+          width: 100%;
+          max-width: 100%;
           min-width: 0;
         }
 
@@ -2498,6 +2576,13 @@
           min-width: 0;
           grid-template-columns: 1fr;
           gap: 0;
+          grid-column: 1 !important;
+          grid-row: auto !important;
+        }
+
+        .current-flow-map > * {
+          min-width: 0;
+          max-width: 100%;
         }
 
         .current-flow-connector,
@@ -2529,13 +2614,18 @@
         .current-flow-result-card {
           width: 100%;
           min-width: 0;
-          grid-column: auto;
-          grid-row: auto;
+          grid-column: 1 !important;
+          grid-row: auto !important;
           justify-self: stretch;
         }
 
         .current-flow-card-head {
           flex-wrap: wrap;
+        }
+
+        .current-flow-claim-card {
+          width: 100%;
+          min-width: 0;
         }
 
         .current-flow-source p,
@@ -2744,7 +2834,7 @@
               <strong id="dashboardPlanLeftMetric">$0</strong>
             </article>
             <article class="panel metric-tile">
-              <span>Protected Reserve</span>
+              <span>Protected Reserve Left</span>
               <strong id="dashboardReserveMetric">$0</strong>
             </article>
             <article class="panel metric-tile">
@@ -2954,7 +3044,7 @@
                 <strong id="weeklyCheckBufferMetric">$0</strong>
               </article>
               <article class="panel metric-tile">
-                <span>Reserve Floor</span>
+                <span>Protected Floor Reserve Left</span>
                 <strong id="weeklyCheckReserveMetric">$0</strong>
               </article>
             </div>
@@ -3099,32 +3189,22 @@
                     <span
                       class="info-tip"
                       tabindex="0"
-                      data-tip="Set the buffer amount you want current cash to hold. It defaults to the paycheck plan buffer, compresses before capital to deploy turns negative, and only after that would the reserve be tapped."
+                      data-tip="This mirrors the paycheck plan buffer automatically. As current cash gets tighter, this buffer compresses first, then capital to deploy falls to $0, and only after that does the protected floor reserve get pulled."
                       aria-label="Buffer fund help"
                     >
                       ?
                     </span>
                   </div>
                 </div>
-                <div class="field-grid current-input-grid current-single-input-grid">
-                  <div class="field">
-                    <label for="currentBudgetAmount">Buffer Fund Target</label>
-                    <div class="input-shell">
-                      <span>$</span>
-                      <input
-                        type="number"
-                        id="currentBudgetAmount"
-                        placeholder="0"
-                      />
-                    </div>
+                <div class="output-stack">
+                  <div class="output-hero output-hero-secondary">
+                    <span>Available To Transfer</span>
+                    <strong id="currentBufferAvailable">$0</strong>
+                    <p id="currentBudgetStateNote" class="panel-note">
+                      Full buffer fund is still available to transfer.
+                    </p>
                   </div>
-                  <div class="budget-pill">
-                    Paycheck Plan Buffer
-                    <strong id="currentBudgetPlanReference">$0</strong>
-                  </div>
-                  <p id="currentBudgetStateNote" class="panel-note">
-                    Defaults to the paycheck plan buffer, then compresses before capital to deploy turns negative.
-                  </p>
+                  <input type="hidden" id="currentBudgetAmount" value="0" />
                   <p id="currentBufferGuidance" class="current-guidance-note" hidden></p>
                 </div>
               </article>
@@ -3155,11 +3235,7 @@
                       actually available to deploy.
                     </p>
                   </div>
-                  <input type="hidden" id="minBalance" value="3000" />
-                  <div class="budget-pill current-result-pill">
-                    Protected Floor Reserve
-                    <strong id="currentReserveFloorDisplay">$0</strong>
-                  </div>
+                  <input type="hidden" id="minBalance" value="4000" />
                 </div>
               </article>
             </div>
@@ -4276,6 +4352,48 @@
         };
       }
 
+      function resolveCurrentCashState({
+        cash,
+        debt,
+        dueTotal,
+        reserveTarget,
+        bufferTarget,
+        deployTarget,
+      }) {
+        const reserveFloor = Math.max(toNumber(reserveTarget), 0);
+        const bufferGoal = Math.max(toNumber(bufferTarget), 0);
+        const deployGoal = Math.max(toNumber(deployTarget), 0);
+        const availableAfterProtected =
+          toNumber(cash) - toNumber(debt) - toNumber(dueTotal) - reserveFloor;
+        const positiveAvailable = Math.max(availableAfterProtected, 0);
+
+        let bufferHeld = 0;
+        let displayCapital = 0;
+
+        if (positiveAvailable >= deployGoal) {
+          bufferHeld = Math.min(bufferGoal, positiveAvailable - deployGoal);
+          displayCapital = positiveAvailable - bufferHeld;
+        } else {
+          displayCapital = positiveAvailable;
+        }
+
+        const bufferAbsorbed = Math.max(bufferGoal - bufferHeld, 0);
+        const reserveDip = Math.max(availableAfterProtected * -1, 0);
+        const reserveRemaining = Math.max(reserveFloor - reserveDip, 0);
+        const deployGap = Math.max(deployGoal - displayCapital, 0);
+
+        return {
+          availableAfterProtected,
+          bufferHeld,
+          bufferAbsorbed,
+          displayCapital,
+          reserveDip,
+          reserveRemaining,
+          deployGap,
+          commitments: toNumber(dueTotal) + bufferHeld + reserveFloor,
+        };
+      }
+
       function chartOptions({
         legendPosition = "top",
         currencyAxis = false,
@@ -4350,95 +4468,103 @@
 
       function calculateBudget() {
         const plannedBudget = getPlanSummary().miscBudget;
-        const budgetInput = $("currentBudgetAmount");
-        if (budgetInput && budgetInput.value === "") {
-          budgetInput.value = compactNumber(plannedBudget);
-        }
-
-        const totalBudget = toNumber(budgetInput?.value);
-        setText("currentBudgetPlanReference", formatCurrency(plannedBudget, 0));
-        return totalBudget;
+        setInputValue("currentBudgetAmount", compactNumber(plannedBudget));
+        return plannedBudget;
       }
 
       function updateCurrentBufferGuidance({
-        liquid,
         bufferTarget,
         bufferHeld,
-        plannedBudget,
+        displayCapital,
+        deployTarget,
+        deployGap,
         reserveDip,
+        reserveRemaining,
+        reserveTarget,
       }) {
-        const variance = bufferTarget - plannedBudget;
         const absorbed = Math.max(bufferTarget - bufferHeld, 0);
         const guidance = $("currentBufferGuidance");
+        const note = $("currentBudgetStateNote");
         const alert = $("currentDeployAlert");
-
-        let note =
-          plannedBudget <= 0 && bufferTarget <= 0
-            ? "No buffer fund is currently being held in cash."
-            : plannedBudget <= 0
-              ? `${formatCurrency(
-                  bufferTarget,
-                  0,
-                )} is being held in cash as a custom buffer even though the paycheck plan target is currently ${formatCurrency(
-                  plannedBudget,
-                  0,
-                )}.`
-            : variance === 0
-                ? "The full planned buffer is still sitting in cash and ready to absorb overages if needed."
-                : variance > 0
-                  ? `${formatCurrency(
-                      variance,
-                      0,
-                    )} above the planned buffer target is still being held back as extra cushion.`
-                  : `${formatCurrency(
-                      Math.abs(variance),
-                      0,
-                    )} of the planned buffer has already been spent or moved out.`;
         let guidanceText = "";
+        let noteText = "No buffer fund is currently being held in cash.";
+        let noteState = "is-good";
         let alertTitle = "Protected Floor Reserve Is Being Tapped";
         let alertText =
           "The buffer fund compresses first. If there is still a gap after that, the protected floor reserve is being tapped and needs to be refilled with the next paycheck.";
 
         if (reserveDip > 0) {
-          note =
+          noteText =
             bufferTarget > 0
-              ? `The buffer fund has compressed to $0, and ${formatCurrency(
-                  reserveDip,
-                  0,
-                )} is now coming out of the protected floor reserve.`
-              : `${formatCurrency(
-                  reserveDip,
-                  0,
-                )} is now coming out of the protected floor reserve.`;
-          guidanceText = `${formatCurrency(
+              ? "Buffer fund is empty and the protected floor reserve is now being used."
+              : "Protected floor reserve is now being used.";
+          noteState = "is-danger";
+          guidanceText = `No buffer remains to transfer out, capital to deploy is $0, and ${formatCurrency(
             reserveDip,
             0,
-          )} needs to be refilled with the next paycheck to restore the protected floor reserve.`;
-          alertText = `Capital to deploy is ${formatCurrency(
-            liquid,
-            2,
-          )}. The buffer fund has compressed to $0, and ${formatCurrency(
+          )} is being pulled from the protected floor reserve, leaving ${formatCurrency(
+            reserveRemaining,
+            0,
+          )} against the ${formatCurrency(
+            reserveTarget,
+            0,
+          )} target.`;
+          alertText = `Capital to deploy is $0. The buffer fund has already compressed to $0, and ${formatCurrency(
             reserveDip,
             0,
-          )} is now coming out of the protected floor reserve. That reserve gap needs to be refilled with the next paycheck before capital is available to deploy again.`;
+          )} is now being pulled from the protected floor reserve. That leaves ${formatCurrency(
+            reserveRemaining,
+            0,
+          )} in the reserve, which needs to be refilled with the next paycheck before capital is available to deploy again.`;
         } else if (absorbed > 0) {
-          note = `${formatCurrency(
+          noteText = `${formatCurrency(
             absorbed,
             0,
-          )} of the buffer fund target is already covering overages, leaving ${formatCurrency(
+          )} of the buffer fund is already covering the gap so deployable cash can stay aligned with the paycheck plan.`;
+          noteState = "is-warning";
+          guidanceText = `${formatCurrency(
             bufferHeld,
             0,
-          )} still in cash.`;
+          )} can still transfer out as buffer, and ${formatCurrency(
+            displayCapital,
+            0,
+          )} can still be deployed.`;
+        } else if (bufferHeld > 0 || displayCapital > 0) {
+          noteText =
+            bufferTarget > 0
+              ? "Full buffer fund is still available to transfer."
+              : noteText;
+          noteState = "is-good";
           guidanceText =
-            bufferHeld > 0
-              ? `The buffer fund is auto-compressing before capital to deploy turns negative. Right now ${formatCurrency(
+            bufferTarget > 0
+              ? `${formatCurrency(
                   bufferHeld,
                   0,
-                )} still fits inside current cash, so capital to deploy stays at $0.`
-              : "The buffer fund is currently at $0, so capital to deploy also stays at $0 until it rebuilds.";
+                )} can still transfer out as buffer, and ${formatCurrency(
+                  displayCapital,
+                  0,
+                )} can still be deployed.`
+              : `${formatCurrency(
+                  displayCapital,
+                  0,
+                )} can still be deployed.`;
+        } else if (deployGap > 0 && deployTarget > 0) {
+          noteText = "Buffer fund is empty, and capital to deploy has started falling below the paycheck plan target.";
+          noteState = "is-danger";
+          guidanceText = `Buffer fund is at $0, capital to deploy is ${formatCurrency(
+            displayCapital,
+            0,
+          )}, and ${formatCurrency(
+            deployGap,
+            0,
+          )} of the paycheck plan deploy target is no longer available.`;
         }
 
-        setText("currentBudgetStateNote", note);
+        setText("currentBudgetStateNote", noteText);
+        if (note) {
+          note.classList.remove("is-good", "is-warning", "is-danger");
+          note.classList.add(noteState);
+        }
 
         if (guidance) {
           guidance.hidden = !guidanceText;
@@ -4775,34 +4901,54 @@
         const card1 = toNumber($("card1")?.value);
         const card2 = toNumber($("card2")?.value);
         const reserveFloor = toNumber($("minBalance")?.value);
+        const plan = getPlanSummary();
         const bufferTarget = calculateBudget();
+        const deployTarget = Math.max(plan.liquid, 0);
         const dueRows = getCurrentDueRows();
         const futureTotal = dueRows.reduce((sum, row) => sum + row.amount, 0);
         const cash = checking + savings;
         const shortTermPulls = card1 + card2;
-        const bufferState = resolveBufferState(
-          cash - shortTermPulls - futureTotal - reserveFloor,
+        const currentState = resolveCurrentCashState({
+          cash,
+          debt: shortTermPulls,
+          dueTotal: futureTotal,
+          reserveTarget: reserveFloor,
           bufferTarget,
-        );
-        const totalBudget = bufferState.held;
-        const commitments = futureTotal + totalBudget + reserveFloor;
-        const currentSafe = bufferState.deployable;
+          deployTarget,
+        });
+        const totalBudget = currentState.bufferHeld;
+        const commitments = currentState.commitments;
+        const currentReserveDip = currentState.reserveDip;
+        const currentSafe = currentState.displayCapital;
+        const reserveRemaining = currentState.reserveRemaining;
 
-        const plan = getPlanSummary();
+        const plannedDeploy = deployTarget;
         const flowInputValue = $("investLiquidAmount")?.value ?? "";
         const flowCarry =
-          flowInputValue === "" ? Math.max(currentSafe, 0) : toNumber(flowInputValue);
+          currentReserveDip > 0
+            ? 0
+            : flowInputValue === ""
+              ? Math.max(currentSafe, 0)
+              : toNumber(flowInputValue);
         const flowSections = getFlowSections(flowCarry, plan.pay);
         const topChannel = flowSections
           .filter((section) => section.amount > 0)
           .sort((a, b) => b.amount - a.amount)[0];
-        const variance = currentSafe - plan.liquid;
+        const variance = currentSafe - plannedDeploy;
         const budgetVariance = totalBudget - plan.miscBudget;
 
         setText("dashboardCurrentSafeMetric", formatCurrency(currentSafe, 0));
-        setText("dashboardPlanLeftMetric", formatCurrency(plan.liquid, 0));
-        setText("dashboardReserveMetric", formatCurrency(reserveFloor, 0));
+        setText("dashboardPlanLeftMetric", formatCurrency(plannedDeploy, 0));
+        setText("dashboardReserveMetric", formatCurrency(reserveRemaining, 0));
         setText("dashboardFlowReadyMetric", formatCurrency(flowCarry, 0));
+        $("dashboardReserveMetric")?.classList.toggle(
+          "negative",
+          reserveRemaining < reserveFloor,
+        );
+        $("dashboardReserveMetric")?.classList.toggle(
+          "neutral",
+          reserveRemaining >= reserveFloor,
+        );
 
         setText("dashboardCashMetric", formatCurrency(cash, 0));
         setText("dashboardCommitmentsMetric", formatCurrency(commitments, 0));
@@ -4823,19 +4969,22 @@
             ? `${formatCurrency(
                 currentSafe,
                 0,
-              )} is currently available as capital to deploy after debt, scheduled reserves, the buffer fund, and the protected floor reserve are covered.`
-            : currentSafe < 0
+              )} is currently available as capital to deploy after buffer transfer room and the protected floor reserve are accounted for.`
+            : currentReserveDip > 0
               ? `${formatCurrency(
-                  Math.abs(currentSafe),
+                  currentReserveDip,
                   0,
-                )} is currently coming out of the protected floor reserve and needs to be refilled before any capital is available to deploy.`
+                )} is currently coming out of the protected floor reserve, leaving ${formatCurrency(
+                  reserveRemaining,
+                  0,
+                )}.`
             : "Capital to deploy is currently $0 because current cash is fully spoken for.",
         );
         setText(
           "dashboardPlanNarrative",
           plan.pay > 0
             ? `The current paycheck plan leaves ${formatCurrency(
-                plan.liquid,
+                plannedDeploy,
                 0,
               )} after planned expenses and the misc. budget are covered.`
             : "Set the paycheck amount to see the intended structure here.",
@@ -4852,32 +5001,35 @@
         setText(
           "dashboardTimingCopy",
           bufferTarget <= 0 && totalBudget <= 0
-            ? `No buffer fund is being held in cash right now, and the reserve floor remains ${formatCurrency(
-                reserveFloor,
+            ? `No buffer fund is being held in cash right now, and the protected floor reserve remains ${formatCurrency(
+                reserveRemaining,
                 0,
               )}.`
-            : currentSafe < 0
+            : currentReserveDip > 0
               ? `${formatCurrency(
-                  Math.abs(currentSafe),
+                  currentReserveDip,
                   0,
-                )} is now coming out of the protected floor reserve after the buffer fund has compressed to $0.`
+                )} is now coming out of the protected floor reserve after the buffer fund has compressed to $0, leaving ${formatCurrency(
+                  reserveRemaining,
+                  0,
+                )}.`
             : budgetVariance === 0
               ? `${formatCurrency(
                   totalBudget,
                   0,
-                )} is still sitting in current cash as the full funded buffer, with a reserve floor of ${formatCurrency(
-                  reserveFloor,
+                )} is still sitting in current cash as the full funded buffer, with the protected floor reserve still at ${formatCurrency(
+                  reserveRemaining,
                   0,
                 )}.`
               : totalBudget < bufferTarget
                 ? `${formatCurrency(
                     bufferTarget - totalBudget,
                     0,
-                  )} of the buffer fund has already been absorbed, leaving ${formatCurrency(
+                  )} of the buffer fund is already covering the gap, leaving ${formatCurrency(
                     totalBudget,
                     0,
-                  )} still in cash while the reserve floor remains ${formatCurrency(
-                    reserveFloor,
+                  )} still in cash while the protected floor reserve remains ${formatCurrency(
+                    reserveRemaining,
                     0,
                   )}.`
                 : `${formatCurrency(
@@ -4886,8 +5038,8 @@
                   )} is being held back, which is ${formatCurrency(
                     Math.abs(budgetVariance),
                     0,
-                  )} above the paycheck plan buffer, while the reserve floor remains ${formatCurrency(
-                    reserveFloor,
+                  )} above the paycheck plan buffer, while the protected floor reserve remains ${formatCurrency(
+                    reserveRemaining,
                     0,
                   )}.`,
         );
@@ -4958,8 +5110,8 @@
         if (!container) return;
 
         const cash = Math.max(data.cash, 0);
-        const deployableCapital = Math.max(data.rawLiquid, 0);
-        const reserveDip = Math.max(data.rawLiquid * -1, 0);
+        const deployableCapital = Math.max(data.displayCapital, 0);
+        const reserveDip = Math.max(data.reserveDip, 0);
         const shareOfCash = (amount) => (cash > 0 ? (amount / cash) * 100 : 0);
         const claims = [
           {
@@ -4978,50 +5130,104 @@
           },
           {
             label: "Buffer Fund",
-            amount: data.totalBudget,
+            amount: data.bufferHeld,
             tone: "budget",
             color: "#8b5cf6",
             description:
-              data.bufferAbsorbed > 0 && data.totalBudget > 0
+              data.bufferAbsorbed > 0 && data.bufferHeld > 0
                 ? `Compressed from ${formatCurrency(
                     data.bufferTarget,
                     0,
                   )}, with ${formatCurrency(
-                    data.totalBudget,
+                    data.bufferHeld,
                     0,
                   )} still sitting inside current cash.`
-                : data.bufferTarget > 0 && data.totalBudget === 0
+                : data.bufferTarget > 0 && data.bufferHeld === 0
                   ? "The buffer fund has already compressed to $0 before anything is left to deploy."
-                  : data.totalBudget > 0
+                  : data.bufferHeld > 0
                     ? "Buffer still sitting inside current cash to absorb overages or release later."
                     : "No buffer is still being held back inside current cash.",
           },
           {
-            label: "Reserve Floor",
-            amount: data.reserveFloor,
-            tone: "reserve",
-            color: "#64748b",
-            description: "Protected floor reserve that should stay untouched.",
+            label: "Protected Floor Reserve",
+            amount: data.reserveRemaining,
+            tone: reserveDip > 0 ? "shortfall" : "reserve",
+            color: reserveDip > 0 ? "#dc2626" : "#64748b",
+            description:
+              reserveDip > 0
+                ? `${formatCurrency(
+                    reserveDip,
+                    0,
+                  )} has already been pulled from the reserve, leaving ${formatCurrency(
+                    data.reserveRemaining,
+                    0,
+                  )}.`
+                : "Protected floor reserve still sitting untouched.",
           },
         ];
-        const outcome =
-          reserveDip > 0
-            ? {
-                label: "Reserve Dip",
-                amount: reserveDip,
-                tone: "shortfall",
-                color: "#dc2626",
-                description:
-                  "The buffer fund is fully compressed, so this amount is now being covered by the protected floor reserve until the next paycheck refills it.",
-              }
-            : {
-                label: "Capital To Deploy",
-                amount: deployableCapital,
-                tone: "deploy",
-                color: "#2563eb",
-                description:
-                  "Cash that is currently available as capital to deploy after every claim is protected.",
-              };
+        const outcome = {
+          label: "Capital To Deploy",
+          amount: deployableCapital,
+          tone: reserveDip > 0 ? "shortfall" : "deploy",
+          color: reserveDip > 0 ? "#dc2626" : "#2563eb",
+          description:
+            reserveDip > 0
+              ? `No capital is left to deploy. ${formatCurrency(
+                  reserveDip,
+                  0,
+                )} is currently being pulled from the protected floor reserve.`
+              : "Cash that is currently available as capital to deploy after every claim is protected.",
+        };
+
+        if (window.innerWidth <= 760) {
+          container.innerHTML = `
+            <article class="current-flow-source current-flow-mobile-source">
+              <span class="plan-flow-kicker">Source</span>
+              <strong>${formatCurrency(cash, 0)}</strong>
+              <div class="current-flow-source-breakdown">
+                <div>
+                  <span>Checking</span>
+                  <strong>${formatCurrency(data.checking, 0)}</strong>
+                </div>
+                <div>
+                  <span>Savings</span>
+                  <strong>${formatCurrency(data.savings, 0)}</strong>
+                </div>
+              </div>
+              <p>Cash on hand before debt, scheduled reserves, the buffer fund, and the protected floor reserve are pulled away.</p>
+            </article>
+            ${claims
+              .map(
+                (item) => `
+                  <div class="current-flow-mobile-step" style="--flow-color: ${item.color};">
+                    <div class="current-flow-mobile-arrow" aria-hidden="true">↓</div>
+                    <article class="current-flow-claim-card" data-tone="${item.tone}">
+                      <div class="current-flow-card-head">
+                        <span>${escapeHtml(item.label)}</span>
+                        <span>${formatPercent(shareOfCash(item.amount), 0)}</span>
+                      </div>
+                      <strong>${formatCurrency(item.amount, 0)}</strong>
+                      <p>${escapeHtml(item.description)}</p>
+                    </article>
+                  </div>
+                `,
+              )
+              .join("")}
+            <div class="current-flow-mobile-step" style="--flow-color: ${outcome.color};">
+              <div class="current-flow-mobile-arrow" aria-hidden="true">↓</div>
+              <article class="current-flow-result-card" data-tone="${outcome.tone}">
+                <div class="current-flow-card-head">
+                  <span>${escapeHtml(outcome.label)}</span>
+                  <span>${formatPercent(shareOfCash(outcome.amount), 0)}</span>
+                </div>
+                <strong>${formatCurrency(outcome.amount, 0)}</strong>
+                <p>${escapeHtml(outcome.description)}</p>
+              </article>
+            </div>
+          `;
+          return;
+        }
+
         container.innerHTML = `
           <article class="current-flow-source">
             <span class="plan-flow-kicker">Source</span>
@@ -5094,12 +5300,9 @@
         const cash = Math.max(data.cash, 0);
         const afterDebt = Math.max(cash - data.debt, 0);
         const afterDue = Math.max(afterDebt - data.dueTotal, 0);
-        const afterBuffer = Math.max(afterDue - data.totalBudget, 0);
-        const reserveDip = Math.max(data.rawLiquid * -1, 0);
-        const finalAmount =
-          data.rawLiquid >= 0
-            ? Math.max(data.rawLiquid, 0)
-            : reserveDip;
+        const afterBuffer = Math.max(afterDue - data.bufferHeld, 0);
+        const reserveDip = Math.max(data.reserveDip, 0);
+        const finalAmount = Math.max(data.displayCapital, 0);
         const widthFor = (amount) =>
           cash > 0 && amount > 0
             ? `${Math.min(100, Math.max(12, (amount / cash) * 100))}%`
@@ -5150,37 +5353,37 @@
             fill: "linear-gradient(135deg, #7c3aed, #a855f7)",
             chipLabel: "Minus Buffer Fund",
             chipValue:
-              data.totalBudget > 0
-                ? formatCurrency(data.totalBudget, 0)
+              data.bufferHeld > 0
+                ? formatCurrency(data.bufferHeld, 0)
                 : data.bufferTarget > 0
                   ? "Compressed to $0"
                   : "Nothing held back",
             noteText: `${formatPercent(cash > 0 ? (afterBuffer / cash) * 100 : 0, 0)} of starting cash remains at this stage.`,
           },
           {
-            kicker: data.rawLiquid >= 0 ? "Final" : "Reserve",
-            label:
-              data.rawLiquid >= 0
-                ? "Capital To Deploy"
-                : "Reserve Dip",
+            kicker: reserveDip > 0 ? "Reserve" : "Final",
+            label: "Capital To Deploy",
             amount: finalAmount,
             width: widthFor(finalAmount),
             fill:
-              data.rawLiquid >= 0
+              reserveDip <= 0
                 ? "linear-gradient(135deg, #0f172a, #2563eb)"
                 : "linear-gradient(135deg, #dc2626, #f97316)",
             chipLabel:
-              data.rawLiquid >= 0
-                ? "Protected Floor Reserve"
-                : "Refill Next Paycheck",
+              reserveDip <= 0
+                ? "Protected Floor Reserve Left"
+                : "Reserve Pull",
             chipValue:
-              data.rawLiquid >= 0
-                ? formatCurrency(data.reserveFloor, 0)
+              reserveDip <= 0
+                ? formatCurrency(data.reserveRemaining, 0)
                 : formatCurrency(reserveDip, 0),
             noteText:
-              data.rawLiquid >= 0
+              reserveDip <= 0
                 ? `${formatPercent(cash > 0 ? (finalAmount / cash) * 100 : 0, 0)} of starting cash remains available to deploy.`
-                : `${formatPercent(cash > 0 ? (reserveDip / cash) * 100 : 0, 0)} of starting cash is now being covered by the protected floor reserve.`,
+                : `${formatCurrency(
+                    data.reserveRemaining,
+                    0,
+                  )} is left in the protected floor reserve after this pull.`,
           },
         ];
 
@@ -5195,15 +5398,15 @@
                   </div>
                   <strong class="current-ladder-value">${formatCurrency(row.amount, 0)}</strong>
                 </div>
+                <div class="current-ladder-note">
+                  <span class="current-ladder-chip">${escapeHtml(row.chipLabel)} ${escapeHtml(row.chipValue)}</span>
+                  <span>${escapeHtml(row.noteText)}</span>
+                </div>
                 <div class="current-ladder-track">
                   <div
                     class="current-ladder-fill"
                     style="--ladder-width: ${row.width}; --ladder-fill: ${row.fill};"
                   ></div>
-                </div>
-                <div class="current-ladder-note">
-                  <span class="current-ladder-chip">${escapeHtml(row.chipLabel)} ${escapeHtml(row.chipValue)}</span>
-                  <span>${escapeHtml(row.noteText)}</span>
                 </div>
               </div>
             `,
@@ -5223,85 +5426,122 @@
         const savings = toNumber($("savings").value);
         const card1 = toNumber($("card1").value);
         const card2 = toNumber($("card2").value);
-        const minBalance = toNumber($("minBalance").value);
+        const reserveTarget = toNumber($("minBalance").value);
         const dueRows = getCurrentDueRows();
         const futureTotal = dueRows.reduce((sum, row) => sum + row.amount, 0);
+        const plan = getPlanSummary();
         const bufferTarget = calculateBudget();
-        const plannedBudget = getPlanSummary().miscBudget;
+        const deployTarget = Math.max(plan.liquid, 0);
         const cash = checking + savings;
         const debt = card1 + card2;
-        const bufferState = resolveBufferState(
-          cash - debt - futureTotal - minBalance,
+        const currentState = resolveCurrentCashState({
+          cash,
+          debt,
+          dueTotal: futureTotal,
+          reserveTarget,
           bufferTarget,
-        );
-        const totalBudget = bufferState.held;
-        const commitments = futureTotal + totalBudget + minBalance;
-        const liquid = bufferState.deployable;
-        const reserveDip = bufferState.reserveDip;
+          deployTarget,
+        });
+        const {
+          bufferHeld,
+          bufferAbsorbed,
+          displayCapital,
+          reserveDip,
+          reserveRemaining,
+          deployGap,
+          commitments,
+        } = currentState;
 
         const liquidOutput = $("liquidOutput");
-        liquidOutput.textContent = formatCurrency(liquid, 2);
-        applyTone(liquidOutput, liquid);
+        liquidOutput.textContent = formatCurrency(displayCapital, 2);
+        applyTone(liquidOutput, displayCapital);
 
         setText("currentDueTotal", formatCurrency(futureTotal, 0));
-        setText("currentReserveFloorDisplay", formatCurrency(minBalance, 0));
+        setText("currentBufferAvailable", formatCurrency(bufferHeld, 0));
         setText("weeklyCheckCashMetric", formatCurrency(cash, 0));
         setText("weeklyCheckExpensesMetric", formatCurrency(commitments, 0));
-        setText("weeklyCheckBufferMetric", formatCurrency(liquid, 0));
-        setText("weeklyCheckReserveMetric", formatCurrency(minBalance, 0));
+        setText("weeklyCheckBufferMetric", formatCurrency(displayCapital, 0));
+        setText("weeklyCheckReserveMetric", formatCurrency(reserveRemaining, 0));
+        $("weeklyCheckReserveMetric")?.classList.toggle(
+          "negative",
+          reserveRemaining < reserveTarget,
+        );
+        $("weeklyCheckReserveMetric")?.classList.toggle(
+          "neutral",
+          reserveRemaining >= reserveTarget,
+        );
 
         const narrative =
-          liquid > 0
+          displayCapital > 0
             ? `${formatCurrency(
-                liquid,
+                displayCapital,
                 2,
-              )} is available as capital to deploy after debt, scheduled reserves, the buffer fund, and the protected floor reserve are covered.`
+              )} is available as capital to deploy after buffer fund transfer room and the protected floor reserve are accounted for.`
             : reserveDip > 0
               ? `${formatCurrency(
                   reserveDip,
                   2,
-                )} is now coming out of the protected floor reserve after the buffer fund has compressed to $0, and that amount needs to be refilled with the next paycheck.`
-              : bufferState.absorbed > 0
+                )} is now being pulled from the protected floor reserve, leaving ${formatCurrency(
+                  reserveRemaining,
+                  0,
+                )} against the ${formatCurrency(
+                  reserveTarget,
+                  0,
+                )} target.`
+              : bufferAbsorbed > 0
                 ? `The buffer fund has compressed to ${formatCurrency(
-                    totalBudget,
+                    bufferHeld,
                     0,
-                  )}, so capital to deploy stays at $0 for now.`
-              : "Capital to deploy is currently $0 because current cash is fully spoken for.";
+                  )} so capital to deploy can stay aligned with the paycheck plan.`
+              : deployGap > 0
+                ? `Buffer fund is fully used, and capital to deploy is now ${formatCurrency(
+                    displayCapital,
+                    0,
+                  )} versus the ${formatCurrency(
+                    deployTarget,
+                    0,
+                  )} paycheck plan target.`
+                : "Capital to deploy is currently $0 because current cash is fully spoken for.";
         setText("weeklyCheckNarrative", narrative);
 
         if (!$("investLiquidAmount").value) {
-          $("investLiquidAmount").value = compactNumber(Math.max(liquid, 0));
+          $("investLiquidAmount").value = compactNumber(displayCapital);
         }
 
         updateWeeklyCheckCharts({
           cash,
           debt,
           expenses: commitments,
-          liquid: Math.max(liquid, 0),
-          rawLiquid: liquid,
+          liquid: displayCapital,
+          displayCapital,
           checking,
           savings,
           card1,
           card2,
           dueRows,
           dueTotal: futureTotal,
-          totalBudget,
+          totalBudget: bufferHeld,
+          bufferHeld,
           bufferTarget,
-          bufferAbsorbed: bufferState.absorbed,
-          reserveFloor: minBalance,
+          bufferAbsorbed,
+          reserveFloor: reserveTarget,
+          reserveRemaining,
           reserveDip,
         });
 
         updateDashboard();
         updateCurrentBufferGuidance({
-          liquid,
           bufferTarget,
-          bufferHeld: totalBudget,
-          plannedBudget,
+          bufferHeld,
+          displayCapital,
+          deployTarget,
+          deployGap,
           reserveDip,
+          reserveRemaining,
+          reserveTarget,
         });
 
-        return liquid;
+        return displayCapital;
       }
 
       function drawFuelGauge(current, max) {
@@ -6248,7 +6488,6 @@
           "savings",
           "card1",
           "card2",
-          "currentBudgetAmount",
         ].forEach((id) => $(id).addEventListener("input", calculateLiquid));
 
         [
@@ -6297,6 +6536,7 @@
         });
 
         window.addEventListener("resize", autoCalculateRemaining);
+        window.addEventListener("resize", calculateLiquid);
       }
 
       function init() {
