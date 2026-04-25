@@ -12,6 +12,7 @@
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
       :root {
         --bg: #eef3fa;
@@ -5078,8 +5079,14 @@
     </div>
 
     <script>
-      const apiUrl =
-        "https://script.google.com/macros/s/AKfycbyyE6qNHhNF9zwdm_lAsxf47JYWE9etsYuEUbV_KxIXo4VjKLshBBEYHMegt9u2uJHJ/exec?sheetid=0";
+      const SUPABASE_REST_URL =
+        "https://ssoogxnzsjddlkukocly.supabase.co/rest/v1/";
+      const SUPABASE_PROJECT_URL = SUPABASE_REST_URL.replace(
+        /\/rest\/v1\/?$/,
+        "",
+      );
+      const SUPABASE_ANON_KEY =
+        "sb_publishable_fuGq-IZiDMEyhWBM9q4P4g_e5j_yAEl";
       const apiUrl2 =
         "https://script.google.com/macros/s/AKfycbyyE6qNHhNF9zwdm_lAsxf47JYWE9etsYuEUbV_KxIXo4VjKLshBBEYHMegt9u2uJHJ/exec?sheetid=615354426";
       const apiUrl3 =
@@ -5088,6 +5095,20 @@
         "https://script.google.com/macros/s/AKfycbyyE6qNHhNF9zwdm_lAsxf47JYWE9etsYuEUbV_KxIXo4VjKLshBBEYHMegt9u2uJHJ/exec?sheetid=417331213";
       const LIVE_VIEW_PASSWORD = "ubuntu";
       const LIVE_VIEW_ACCESS_KEY = "cashCommandLiveViewUnlocked";
+      const supabaseClient = window.supabase?.createClient
+        ? window.supabase.createClient(
+            SUPABASE_PROJECT_URL,
+            SUPABASE_ANON_KEY,
+            {
+              auth: {
+                persistSession: false,
+                autoRefreshToken: false,
+                detectSessionInUrl: false,
+              },
+              db: { schema: "public" },
+            },
+          )
+        : null;
 
       const state = {
         charts: {},
@@ -5102,10 +5123,12 @@
         investChannelsLocked: true,
         autosaveTimer: null,
         autosaveReady: false,
+        pendingFieldKeys: new Set(),
         inputsLoaded: false,
         isHydrating: false,
         demoMode: false,
         demoSnapshot: null,
+        initialLiveSnapshot: null,
       };
 
       const navToSection = {
@@ -5117,6 +5140,40 @@
 
       function $(id) {
         return document.getElementById(id);
+      }
+
+      function isPersistableInput(input) {
+        return (
+          input instanceof HTMLInputElement &&
+          Boolean(input.id) &&
+          input.id !== "liveUnlockPassword" &&
+          !input.readOnly &&
+          !input.closest("#liveUnlockGate")
+        );
+      }
+
+      function getPersistableInputs() {
+        return Array.from(document.querySelectorAll("input")).filter(
+          isPersistableInput,
+        );
+      }
+
+      function normalizePersistedValue(value) {
+        if (value === null || value === undefined) return "";
+        if (typeof value === "object") {
+          return JSON.stringify(value);
+        }
+        return value;
+      }
+
+      function getPersistableFieldValue(input) {
+        return input.type === "checkbox" ? input.checked : input.value;
+      }
+
+      function markFieldsPending(keys = []) {
+        keys
+          .filter(Boolean)
+          .forEach((key) => state.pendingFieldKeys.add(key));
       }
 
       function toNumber(value) {
@@ -5583,6 +5640,9 @@
         state.demoMode = false;
         setDemoToggleState();
         if (!snapshot) {
+          if (state.initialLiveSnapshot) {
+            hydratePresentationState(state.initialLiveSnapshot);
+          }
           setSaveStatus("Loading live data...");
           loadSavedInputs();
         } else if (snapshot?.inputsLoaded === false) {
@@ -5618,6 +5678,11 @@
         state.autosaveTimer = window.setTimeout(() => {
           saveHTML(true);
         }, 700);
+      }
+
+      function scheduleFieldSave(keys = []) {
+        markFieldsPending(keys);
+        scheduleAutosave();
       }
 
       function canWriteToBackend() {
@@ -6072,7 +6137,7 @@
         });
 
         setText("currentDueTotal", formatCurrency(getCurrentDueTotal(), 0));
-        scheduleAutosave();
+        scheduleFieldSave(["currentDueRowsData"]);
       }
 
       function getLegacyPlanExpenseRows() {
@@ -6189,7 +6254,7 @@
           serialized.value = JSON.stringify(state.planExpenseRows);
         }
         setText("planExpenseTotal", formatCurrency(getPlanExpenseTotal(), 0));
-        scheduleAutosave();
+        scheduleFieldSave(["planExpenseRowsData"]);
       }
 
       function getLegacyInvestChannels() {
@@ -6381,7 +6446,7 @@
         if (lockedField) {
           lockedField.value = state.investChannelsLocked ? "true" : "false";
         }
-        scheduleAutosave();
+        scheduleFieldSave(["investChannelsData", "investChannelsLocked"]);
       }
 
       function getPlanSummary() {
@@ -7441,10 +7506,17 @@
 
       async function loadSavedInputs() {
         try {
-          const data = await safeFetchJson(apiUrl);
+          if (!supabaseClient) {
+            throw new Error("Supabase client unavailable.");
+          }
+          const { data, error } = await supabaseClient
+            .from("app_fields")
+            .select("key,value");
+          if (error) throw error;
           if (state.demoMode) return;
-          Object.entries(data || {}).forEach(([key, value]) => {
-            setInputValue(key, value);
+          (data || []).forEach((row) => {
+            if (!row?.key) return;
+            setInputValue(row.key, normalizePersistedValue(row.value));
           });
         } catch (error) {
           console.error("Error loading saved inputs:", error);
@@ -7466,8 +7538,11 @@
           }
           state.isHydrating = false;
           state.inputsLoaded = true;
-          state.autosaveReady = true;
-          setSaveStatus("Live sync is on.");
+          state.pendingFieldKeys.clear();
+          state.autosaveReady = Boolean(supabaseClient);
+          setSaveStatus(
+            supabaseClient ? "Live sync is on." : "Live sync unavailable.",
+          );
         }
       }
 
@@ -7809,33 +7884,57 @@
           setSaveStatus("Demo mode is on. Live sync is paused.");
           return Promise.resolve();
         }
+        if (!supabaseClient) {
+          setSaveStatus("Live sync unavailable.");
+          return Promise.resolve();
+        }
 
-        const formData = {};
-        document.querySelectorAll("input").forEach((input) => {
-          if (!input.id) return;
-          formData[input.id] =
-            input.type === "checkbox" ? input.checked : input.value;
-        });
+        const fieldIds = [
+          ...new Set(
+            state.pendingFieldKeys.size
+              ? Array.from(state.pendingFieldKeys)
+              : getPersistableInputs().map((input) => input.id),
+          ),
+        ];
+        const timestamp = new Date().toISOString();
+        const payload = fieldIds
+          .map((key) => {
+            const input = $(key);
+            if (!isPersistableInput(input)) return null;
+            return {
+              key,
+              value: getPersistableFieldValue(input),
+              updated_at: timestamp,
+            };
+          })
+          .filter(Boolean);
 
-        setSaveStatus(isAuto ? "Live syncing..." : "Syncing to your sheet...");
+        if (!payload.length) {
+          setSaveStatus(state.autosaveReady ? "Live sync is on." : "Loading live sync...");
+          return Promise.resolve();
+        }
 
-        return fetch(apiUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-          mode: "no-cors",
-        })
-          .then(() => {
+        setSaveStatus(isAuto ? "Live syncing..." : "Syncing live data...");
+
+        return supabaseClient
+          .from("app_fields")
+          .upsert(payload, { onConflict: "key" })
+          .then(({ error }) => {
+            if (error) throw error;
             if (state.demoMode) {
               setSaveStatus("Demo mode is on. Live sync is paused.");
               return;
             }
+            fieldIds.forEach((key) => state.pendingFieldKeys.delete(key));
             setSaveStatus(
               `Synced at ${new Date().toLocaleTimeString([], {
                 hour: "numeric",
                 minute: "2-digit",
               })}.`,
             );
+            if (state.pendingFieldKeys.size) {
+              scheduleAutosave();
+            }
           })
           .catch((error) => {
             console.error("Error saving inputs:", error);
@@ -8177,17 +8276,15 @@
         document.addEventListener("input", (event) => {
           const target = event.target;
           if (!(target instanceof HTMLInputElement)) return;
-          if (target.type === "hidden" || target.readOnly) return;
-          if (!target.id && !target.dataset.field) return;
-          scheduleAutosave();
+          if (!isPersistableInput(target)) return;
+          scheduleFieldSave([target.id]);
         });
 
         document.addEventListener("change", (event) => {
           const target = event.target;
           if (!(target instanceof HTMLInputElement)) return;
-          if (target.type === "hidden" || target.readOnly) return;
-          if (!target.id && !target.dataset.field) return;
-          scheduleAutosave();
+          if (!isPersistableInput(target)) return;
+          scheduleFieldSave([target.id]);
         });
 
         window.addEventListener("resize", autoCalculateRemaining);
@@ -8204,6 +8301,7 @@
         initializeCurrentDueRows();
         initializePlanExpenses();
         initializeInvestChannels();
+        state.initialLiveSnapshot = captureDemoSnapshot();
         state.demoMode = true;
         setDemoToggleState();
         bindNavigation();
