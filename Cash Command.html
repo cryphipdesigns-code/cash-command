@@ -725,6 +725,19 @@
         max-width: min(100%, 500px);
       }
 
+      .plan-bottom-row {
+        align-items: stretch;
+      }
+
+      .plan-bottom-row > .plan-panel-compact,
+      .plan-bottom-row > .plan-panel-output {
+        flex: 1 1 420px;
+        min-width: min(100%, 400px);
+        max-width: min(100%, 500px);
+        display: grid;
+        align-content: start;
+      }
+
       .plan-bottom-row > .plan-panel-wide {
         min-width: min(100%, 720px);
         max-width: min(100%, 980px);
@@ -863,11 +876,9 @@
       }
 
       .accent-button,
-      #calculateInvestBtn,
       #addLiquidationLogBtn,
       #addBudgetCheckEntryBtn,
-      #wb-add-btn,
-      #saveHTMLBtn {
+      #wb-add-btn {
         color: #ffffff;
         font-weight: 800;
         background: linear-gradient(135deg, #1d4ed8, #60a5fa);
@@ -905,6 +916,92 @@
         line-height: 1.7;
       }
 
+      .sidebar-utility-row {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .demo-toggle-button {
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(248, 250, 253, 0.88);
+        color: rgba(100, 116, 139, 0.92);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        box-shadow: none;
+      }
+
+      .demo-toggle-button.is-active {
+        border-color: rgba(37, 99, 235, 0.14);
+        background: rgba(239, 246, 255, 0.98);
+        color: #2563eb;
+      }
+
+      body.unlock-gate-open #dashboardWrapper,
+      body.unlock-gate-open #menuToggle {
+        filter: blur(12px);
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .live-unlock-gate {
+        position: fixed;
+        inset: 0;
+        z-index: 1400;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background: rgba(236, 243, 250, 0.48);
+        backdrop-filter: blur(10px);
+      }
+
+      .live-unlock-gate[hidden] {
+        display: none !important;
+      }
+
+      .live-unlock-panel {
+        width: min(100%, 420px);
+        display: grid;
+        gap: 16px;
+        padding: 24px;
+        border-radius: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.66);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.98),
+          rgba(244, 248, 253, 0.96)
+        );
+        box-shadow: var(--shadow-lg);
+      }
+
+      .live-unlock-panel p {
+        margin: 0;
+      }
+
+      .live-unlock-panel .field {
+        gap: 8px;
+      }
+
+      .live-unlock-panel input {
+        text-align: center;
+        font-weight: 700;
+      }
+
+      .live-unlock-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .live-unlock-error {
+        color: var(--danger);
+        font-size: 0.88rem;
+        line-height: 1.55;
+      }
+
       .budget-pill {
         display: inline-flex;
         align-items: center;
@@ -921,6 +1018,28 @@
 
       .budget-pill strong {
         font-family: "Space Grotesk", sans-serif;
+      }
+
+      .budget-pill-stack {
+        display: grid;
+        gap: 8px;
+        min-width: min(100%, 260px);
+        padding: 14px 16px;
+      }
+
+      .budget-pill-stack div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .budget-pill-stack span {
+        color: var(--text-soft);
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
       }
 
       .liquid-output {
@@ -983,6 +1102,99 @@
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 12px;
+      }
+
+      .dashboard-focus-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        width: min(100%, 1080px);
+        margin: 0 auto;
+      }
+
+      .dashboard-focus-card {
+        min-height: 100%;
+        display: grid;
+        align-content: start;
+        gap: 16px;
+      }
+
+      .dashboard-focus-card .panel-heading {
+        margin-bottom: 0;
+      }
+
+      .dashboard-focus-card .panel-heading p {
+        max-width: none;
+      }
+
+      .dashboard-compact-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .dashboard-compact-grid .summary-card:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+      }
+
+      .dashboard-state-band {
+        display: grid;
+        gap: 6px;
+        padding: 14px 16px;
+        border-radius: 18px;
+        border: 1px solid rgba(37, 99, 235, 0.08);
+        background: linear-gradient(
+          180deg,
+          rgba(248, 250, 255, 0.99),
+          rgba(240, 246, 255, 0.96)
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.9),
+          0 10px 20px rgba(15, 23, 42, 0.04);
+      }
+
+      .dashboard-state-band strong {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.02rem;
+        line-height: 1.08;
+      }
+
+      .dashboard-state-band p {
+        margin: 0;
+        color: var(--text-soft);
+        font-size: 0.85rem;
+        line-height: 1.55;
+      }
+
+      .dashboard-focus-card .dashboard-state-band:last-child {
+        margin-top: auto;
+      }
+
+      .dashboard-note-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+        gap: 18px;
+        width: min(100%, 1080px);
+        margin: 0 auto;
+      }
+
+      .dashboard-note-card {
+        display: grid;
+        gap: 10px;
+        align-content: start;
+      }
+
+      .dashboard-note-card strong {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.08rem;
+        line-height: 1.08;
+      }
+
+      .dashboard-note-card p {
+        margin: 0;
+        color: var(--text-soft);
+        font-size: 0.88rem;
+        line-height: 1.6;
       }
 
       .current-panel-centered .panel-heading,
@@ -1133,138 +1345,824 @@
         text-align: center;
       }
 
-      #currentBudgetStateNote {
+      .current-readout-panel {
+        min-width: min(100%, 860px);
+        max-width: min(100%, 1100px);
+      }
+
+      .current-readout-panel .panel-heading {
+        justify-content: center;
+        text-align: center;
+        margin-bottom: 16px;
+      }
+
+      .current-readout-panel .info-cluster {
         width: 100%;
+        justify-content: center;
+      }
+
+      .current-readout-shell {
+        display: grid;
+        gap: 20px;
+        width: min(100%, 940px);
         max-width: 100%;
-        padding: 12px 14px;
-        border-radius: 16px;
-        border: 1px solid rgba(34, 197, 94, 0.14);
+        margin: 0 auto;
+      }
+
+      .current-readout-metrics {
+        display: grid;
+        grid-template-columns: minmax(200px, 0.95fr) minmax(300px, 1.2fr) minmax(200px, 0.95fr);
+        gap: 18px;
+        align-items: stretch;
+      }
+
+      .current-readout-card {
+        display: grid;
+        align-content: start;
+        justify-items: center;
+        text-align: center;
+        gap: 10px;
+        min-height: 214px;
+        padding: 24px 20px 22px;
+        border-radius: 24px;
+        border: 1px solid rgba(37, 99, 235, 0.08);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.99),
+          rgba(245, 249, 255, 0.96)
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.9),
+          0 16px 30px rgba(15, 23, 42, 0.05);
+      }
+
+      .current-readout-card[data-tone="buffer"] {
+        border-color: rgba(139, 92, 246, 0.12);
+      }
+
+      .current-readout-card[data-tone="deploy"] {
+        border-color: rgba(37, 99, 235, 0.12);
+        background: linear-gradient(
+          180deg,
+          rgba(248, 250, 255, 0.99),
+          rgba(238, 246, 255, 0.96)
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.92),
+          0 18px 34px rgba(37, 99, 235, 0.08);
+      }
+
+      .current-readout-card-primary {
+        gap: 12px;
+        min-height: 228px;
+      }
+
+      .current-readout-card[data-tone="reserve"] {
+        border-color: rgba(100, 116, 139, 0.16);
+      }
+
+      .current-readout-card.is-warning {
+        border-color: rgba(245, 158, 11, 0.18);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.92),
+          0 18px 34px rgba(245, 158, 11, 0.1);
+      }
+
+      .current-readout-card.is-danger {
+        border-color: rgba(220, 38, 38, 0.16);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 241, 242, 0.99),
+          rgba(255, 247, 237, 0.96)
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.92),
+          0 18px 34px rgba(220, 38, 38, 0.1);
+      }
+
+      .current-readout-card.is-critical {
+        border-color: rgba(220, 38, 38, 0.28);
+        background: linear-gradient(
+          180deg,
+          rgba(254, 226, 226, 0.99),
+          rgba(255, 237, 213, 0.97)
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.92),
+          0 22px 40px rgba(220, 38, 38, 0.2);
+      }
+
+      .current-readout-card.is-danger h3,
+      .current-readout-card.is-danger strong,
+      .current-readout-card.is-critical h3,
+      .current-readout-card.is-critical strong {
+        color: #991b1b;
+      }
+
+      .current-readout-card h3 {
+        margin: 0;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.34rem;
+        line-height: 1.04;
+        letter-spacing: -0.03em;
+      }
+
+      .current-readout-card-head {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+      }
+
+      .current-readout-card-head .info-tip {
+        width: 28px;
+        height: 28px;
+        font-size: 0.84rem;
+      }
+
+      .current-readout-card p {
+        margin: 0;
+      }
+
+      .current-readout-card-label {
+        color: var(--text-dim);
+        font-size: 0.74rem;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        font-weight: 800;
+      }
+
+      .current-readout-card strong {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(2rem, 4vw, 2.8rem);
+        line-height: 0.98;
+        letter-spacing: -0.05em;
+      }
+
+      .current-readout-card-side strong {
+        font-size: clamp(1.8rem, 3.4vw, 2.35rem);
+      }
+
+      .current-readout-card-primary .liquid-output {
+        margin-top: 0;
+        font-size: clamp(2.8rem, 5.4vw, 4.1rem);
+      }
+
+      .current-readout-state {
+        display: grid;
+        gap: 8px;
+        width: 100%;
+        margin-top: auto;
+        padding: 14px 16px 16px;
+        border-radius: 20px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.99),
+          rgba(246, 250, 255, 0.95)
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.92),
+          0 12px 24px rgba(15, 23, 42, 0.04);
+      }
+
+      .current-readout-state.is-good {
+        border-color: rgba(34, 197, 94, 0.16);
         background: linear-gradient(
           180deg,
           rgba(240, 253, 244, 0.98),
-          rgba(236, 252, 203, 0.92)
+          rgba(247, 254, 231, 0.94)
         );
-        color: #166534;
-        box-shadow:
-          inset 0 1px 0 rgba(255, 255, 255, 0.82),
-          0 10px 22px rgba(34, 197, 94, 0.08);
       }
 
-      #currentBudgetStateNote.is-warning {
-        border-color: rgba(245, 158, 11, 0.16);
+      .current-readout-state.is-warning {
+        border-color: rgba(245, 158, 11, 0.18);
         background: linear-gradient(
           180deg,
           rgba(255, 247, 237, 0.98),
           rgba(255, 251, 235, 0.94)
         );
-        color: #9a3412;
-        box-shadow:
-          inset 0 1px 0 rgba(255, 255, 255, 0.76),
-          0 10px 22px rgba(245, 158, 11, 0.08);
       }
 
-      #currentBudgetStateNote.is-danger {
-        border-color: rgba(220, 38, 38, 0.14);
+      .current-readout-state.is-danger {
+        border-color: rgba(220, 38, 38, 0.16);
         background: linear-gradient(
           180deg,
           rgba(255, 241, 242, 0.98),
-          rgba(255, 247, 237, 0.96)
+          rgba(255, 247, 237, 0.95)
         );
-        color: #991b1b;
-        box-shadow:
-          inset 0 1px 0 rgba(255, 255, 255, 0.82),
-          0 12px 26px rgba(220, 38, 38, 0.1);
       }
 
-      .current-guidance-note {
-        margin: 0;
-        padding: 12px 14px;
-        border-radius: 16px;
-        border: 1px solid rgba(245, 158, 11, 0.16);
+      .current-readout-state.is-critical {
+        border-color: rgba(220, 38, 38, 0.28);
         background: linear-gradient(
           180deg,
-          rgba(255, 247, 237, 0.98),
-          rgba(255, 251, 235, 0.94)
+          rgba(254, 226, 226, 0.99),
+          rgba(255, 237, 213, 0.97)
         );
-        color: #9a3412;
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.92),
+          0 16px 30px rgba(220, 38, 38, 0.16);
+      }
+
+      .current-readout-state strong {
+        margin: 0;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1rem;
+        line-height: 1.12;
+        letter-spacing: -0.02em;
+      }
+
+      .current-readout-state p {
+        margin: 0;
+        color: var(--text-soft);
         font-size: 0.84rem;
         line-height: 1.55;
-        text-align: center;
-        box-shadow:
-          inset 0 1px 0 rgba(255, 255, 255, 0.76),
-          0 10px 22px rgba(245, 158, 11, 0.08);
       }
 
-      .current-guidance-note[hidden] {
-        display: none;
-      }
-
-      .current-single-input-grid {
-        width: min(100%, 260px);
-      }
-
-      .current-result-card {
+      .money-map-source-panel {
         min-width: min(100%, 320px);
         max-width: min(100%, 380px);
       }
 
-      .current-result-card .output-stack {
-        width: min(100%, 300px);
-        justify-self: center;
-      }
-
-      .current-result-card .output-hero {
-        width: 100%;
-      }
-
-      .current-result-card .liquid-output {
-        margin-top: 0;
-      }
-
-      .current-result-card .panel-note {
-        margin: 0;
-        max-width: 30ch;
+      .money-map-source-panel .panel-heading {
+        justify-content: center;
         text-align: center;
       }
 
-      .current-deploy-alert {
-        justify-self: center;
-        width: min(100%, 800px);
-        display: grid;
-        gap: 10px;
-        padding: 18px 20px 20px;
-        border-radius: 22px;
-        border: 1px solid rgba(220, 38, 38, 0.14);
-        background: linear-gradient(
-          180deg,
-          rgba(255, 241, 242, 0.98),
-          rgba(255, 247, 237, 0.96)
-        );
-        box-shadow:
-          inset 0 1px 0 rgba(255, 255, 255, 0.82),
-          0 16px 34px rgba(220, 38, 38, 0.12);
+      .money-map-source-panel .info-cluster {
+        width: 100%;
+        justify-content: center;
       }
 
-      .current-deploy-alert[hidden] {
+      .money-map-source-panel .plan-input-row {
+        grid-template-columns: minmax(240px, 300px);
+        justify-self: center;
+      }
+
+      .money-map-source-panel .field {
+        justify-items: center;
+      }
+
+      .money-map-source-panel .field label {
+        text-align: center;
+      }
+
+      .money-map-source-panel input[readonly] {
+        text-align: center;
+        font-weight: 800;
+      }
+
+      .money-map-table-panel {
+        min-width: min(100%, 900px);
+        max-width: min(100%, 1180px);
+      }
+
+      .money-map-toolbar-header {
+        position: relative;
+        justify-content: center;
+        align-items: flex-start;
+        text-align: center;
+        min-height: 56px;
+        margin-bottom: 6px;
+      }
+
+      .money-map-toolbar-title {
+        display: block;
+        width: 100%;
+        margin: 0 auto;
+        min-width: 0;
+      }
+
+      .money-map-toolbar-title .info-cluster {
+        width: 100%;
+        justify-content: center;
+        gap: 12px;
+      }
+
+      .money-map-toolbar-title .info-cluster > div {
+        text-align: center;
+      }
+
+      .money-map-toolbar-actions {
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: flex-end;
+        gap: 6px;
+        width: auto;
+      }
+
+      .lock-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: rgba(248, 250, 253, 0.92);
+        color: var(--text-soft);
+        font-weight: 800;
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        box-shadow: none;
+      }
+
+      .lock-toggle::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: currentColor;
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.68);
+      }
+
+      .lock-toggle.is-locked {
+        border-color: rgba(100, 116, 139, 0.08);
+        color: #475569;
+        background: rgba(248, 250, 253, 0.92);
+      }
+
+      .lock-toggle.is-unlocked {
+        border-color: rgba(37, 99, 235, 0.16);
+        color: #2563eb;
+        background: rgba(239, 246, 255, 0.98);
+        box-shadow: 0 10px 18px rgba(37, 99, 235, 0.08);
+      }
+
+      .money-map-toolbar-actions .subtle-button {
+        min-width: 0;
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        line-height: 1;
+      }
+
+      .money-map-table-panel[data-locked="true"] input:disabled {
+        color: var(--text-main);
+        background: linear-gradient(
+          180deg,
+          rgba(248, 250, 255, 0.99),
+          rgba(240, 246, 255, 0.96)
+        );
+        border-color: rgba(37, 99, 235, 0.06);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.9),
+          0 8px 18px rgba(15, 23, 42, 0.03);
+        opacity: 1;
+        -webkit-text-fill-color: var(--text-main);
+      }
+
+      .money-map-table-panel[data-locked="true"] .invest-percent-shell span {
+        color: rgba(37, 99, 235, 0.7);
+      }
+
+      .money-map-table-panel[data-locked="true"] .invest-channel-table td[data-field-display] {
+        color: var(--text-main);
+        font-weight: 700;
+      }
+
+      .field-readout {
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 11px 14px;
+        border-radius: 14px;
+        border: 1px solid rgba(37, 99, 235, 0.06);
+        background: linear-gradient(
+          180deg,
+          rgba(248, 250, 255, 0.99),
+          rgba(240, 246, 255, 0.96)
+        );
+        color: var(--text-main);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.9),
+          0 8px 18px rgba(15, 23, 42, 0.03);
+      }
+
+      .field-readout-compact {
+        justify-content: flex-end;
+        font-weight: 800;
+        color: var(--accent);
+      }
+
+      .subtle-button:disabled,
+      .lock-toggle:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .invest-channel-table td {
+        vertical-align: middle;
+      }
+
+      .invest-channel-table .field {
+        min-width: 0;
+      }
+
+      .invest-channel-table input[type="text"] {
+        min-width: 0;
+        padding: 11px 12px;
+      }
+
+      .invest-channel-table .input-shell {
+        min-width: 0;
+      }
+
+      .invest-percent-shell {
+        width: 84px;
+        min-width: 84px;
+      }
+
+      .invest-percent-shell input {
+        text-align: right;
+      }
+
+      .invest-channel-table .icon-button {
+        position: static;
+        width: auto;
+        height: auto;
+        padding: 2px 4px;
+        margin: 0 auto;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        color: rgba(139, 152, 173, 0.72);
+        box-shadow: none;
+      }
+
+      .invest-channel-table .icon-button:hover {
+        background: transparent;
+        color: var(--danger);
+      }
+
+      .money-map-visual-panel {
+        min-width: min(100%, 860px);
+        max-width: min(100%, 1160px);
+      }
+
+      .money-map-visual-heading {
+        justify-content: center;
+        text-align: center;
+      }
+
+      .money-map-visual-heading .info-cluster {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .money-map-cascade {
+        display: grid;
+        gap: 26px;
+        width: min(100%, 1040px);
+        margin: 0 auto;
+      }
+
+      .money-map-source-card {
+        position: relative;
+        overflow: visible;
+        justify-self: center;
+        width: min(100%, 420px);
+        display: grid;
+        gap: 12px;
+        padding: 24px 24px 22px;
+        border-radius: 30px;
+        background: linear-gradient(145deg, #1d4ed8, #60a5fa);
+        color: #eff6ff;
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.2),
+          0 24px 44px rgba(37, 99, 235, 0.2);
+      }
+
+      .money-map-source-card::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: -34px;
+        width: 12px;
+        height: 34px;
+        border-radius: 999px;
+        transform: translateX(-50%);
+        background: linear-gradient(
+          180deg,
+          rgba(191, 219, 254, 0.96),
+          rgba(96, 165, 250, 0.22)
+        );
+        box-shadow: 0 10px 22px rgba(37, 99, 235, 0.14);
+      }
+
+      .money-map-source-card::after {
+        content: "";
+        position: absolute;
+        left: 22px;
+        right: 22px;
+        bottom: 18px;
+        height: 22px;
+        border-radius: 999px;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.1),
+          rgba(191, 219, 254, 0.34),
+          rgba(255, 255, 255, 0.1)
+        );
+      }
+
+      .money-map-source-card span {
+        color: rgba(219, 234, 254, 0.86);
+        font-size: 0.74rem;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        font-weight: 800;
+      }
+
+      .money-map-source-card strong {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(2.3rem, 4.4vw, 3rem);
+        line-height: 0.98;
+        letter-spacing: -0.05em;
+      }
+
+      .money-map-source-card p {
+        margin: 0;
+        color: rgba(239, 246, 255, 0.9);
+        font-size: 0.92rem;
+        line-height: 1.62;
+      }
+
+      .money-map-runoff {
+        position: relative;
+        width: min(100%, 920px);
+        height: 56px;
+        justify-self: center;
+      }
+
+      .money-map-runoff::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 8px;
+        width: min(100%, 760px);
+        height: 18px;
+        border-radius: 999px;
+        transform: translateX(-50%);
+        background: linear-gradient(
+          90deg,
+          rgba(219, 234, 254, 0.18),
+          rgba(147, 197, 253, 0.78),
+          rgba(96, 165, 250, 0.98),
+          rgba(147, 197, 253, 0.78),
+          rgba(219, 234, 254, 0.18)
+        );
+        box-shadow:
+          inset 0 3px 8px rgba(255, 255, 255, 0.26),
+          0 14px 28px rgba(37, 99, 235, 0.16);
+      }
+
+      .money-map-runoff::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 20px;
+        width: 10px;
+        height: 36px;
+        border-radius: 999px;
+        transform: translateX(-50%);
+        background: linear-gradient(
+          180deg,
+          rgba(125, 211, 252, 0.94),
+          rgba(96, 165, 250, 0.18)
+        );
+      }
+
+      .money-map-bucket-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 18px;
+        width: 100%;
+      }
+
+      .money-map-bucket {
+        --bucket-color: #2563eb;
+        --bucket-tint: rgba(147, 197, 253, 0.78);
+        --bucket-border: rgba(37, 99, 235, 0.18);
+        --bucket-fill: 42%;
+        position: relative;
+        display: grid;
+        gap: 12px;
+        padding-top: 42px;
+      }
+
+      .money-map-bucket::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: 6px;
+        height: 42px;
+        border-radius: 999px;
+        transform: translateX(-50%);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.12),
+          var(--bucket-tint),
+          var(--bucket-color)
+        );
+        box-shadow: 0 8px 18px var(--bucket-border);
+      }
+
+      .money-map-bucket::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 33px;
+        width: 14px;
+        height: 14px;
+        border-radius: 999px;
+        transform: translateX(-50%);
+        background: #eff6ff;
+        border: 2px solid var(--bucket-border);
+      }
+
+      .money-map-bucket-vessel {
+        position: relative;
+        min-height: var(--bucket-height, 240px);
+        overflow: hidden;
+        border-radius: 24px 24px 30px 30px;
+        border: 1px solid var(--bucket-border);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.99),
+          rgba(248, 250, 255, 0.98)
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.94),
+          0 18px 34px rgba(15, 23, 42, 0.06),
+          0 0 0 1px rgba(255, 255, 255, 0.5);
+      }
+
+      .money-map-bucket-vessel::before {
+        content: "";
+        position: absolute;
+        left: 14px;
+        right: 14px;
+        top: 0;
+        height: 10px;
+        border-radius: 0 0 14px 14px;
+        background: rgba(15, 23, 42, 0.04);
+      }
+
+      .money-map-bucket-fill {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: var(--bucket-fill);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.82),
+          var(--bucket-tint),
+          var(--bucket-color)
+        );
+        opacity: 0.96;
+      }
+
+      .money-map-bucket-fill::before {
+        content: "";
+        position: absolute;
+        left: 12px;
+        right: 12px;
+        top: 10px;
+        height: 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.38);
+      }
+
+      .money-map-bucket-content {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        gap: 8px;
+        min-height: var(--bucket-height, 240px);
+        padding: 20px 18px 18px;
+      }
+
+      .money-map-bucket-head {
+        display: grid;
+        gap: 8px;
+        justify-items: center;
+      }
+
+      .money-map-bucket-head strong {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.8rem;
+        line-height: 0.98;
+        letter-spacing: -0.04em;
+      }
+
+      .money-map-bucket-name {
+        margin: 0;
+        font-size: 1.14rem;
+        line-height: 1.22;
+        font-weight: 700;
+      }
+
+      .money-map-bucket[data-tone="buffer"] {
+        --bucket-color: #8b5cf6;
+        --bucket-tint: rgba(196, 181, 253, 0.82);
+        --bucket-border: rgba(139, 92, 246, 0.24);
+      }
+
+      .money-map-bucket[data-tone="reserve"] {
+        --bucket-color: #64748b;
+        --bucket-tint: rgba(203, 213, 225, 0.78);
+        --bucket-border: rgba(100, 116, 139, 0.22);
+      }
+
+      .money-map-bucket[data-tone="growth"] {
+        --bucket-color: #0f766e;
+        --bucket-tint: rgba(153, 246, 228, 0.78);
+        --bucket-border: rgba(15, 118, 110, 0.22);
+      }
+
+      .money-map-bucket[data-tone="optional"] {
+        --bucket-color: #d97706;
+        --bucket-tint: rgba(253, 186, 116, 0.8);
+        --bucket-border: rgba(217, 119, 6, 0.22);
+      }
+
+      .money-map-bucket[data-tone="hold"] {
+        --bucket-color: #0ea5e9;
+        --bucket-tint: rgba(125, 211, 252, 0.82);
+        --bucket-border: rgba(14, 165, 233, 0.22);
+      }
+
+      .money-map-bucket[data-tone="overflow"] {
+        --bucket-color: #dc2626;
+        --bucket-tint: rgba(252, 165, 165, 0.82);
+        --bucket-border: rgba(220, 38, 38, 0.24);
+      }
+
+      .money-map-log-panel {
+        min-width: min(100%, 860px);
+        max-width: min(100%, 1240px);
+      }
+
+      .money-map-log-summary {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        cursor: pointer;
+      }
+
+      .money-map-log-summary::-webkit-details-marker {
         display: none;
       }
 
-      .current-deploy-alert .eyebrow {
-        color: #b91c1c;
+      .money-map-log-summary::marker {
+        display: none;
       }
 
-      .current-deploy-alert h2 {
+      .money-map-log-summary h2,
+      .money-map-log-summary p {
         margin: 0;
-        font-size: 1.25rem;
-        line-height: 1.05;
-        letter-spacing: -0.03em;
       }
 
-      .current-deploy-alert p:last-child {
-        margin: 0;
-        color: #7f1d1d;
-        font-size: 0.94rem;
-        line-height: 1.65;
+      .money-map-log-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 30px;
+        padding: 0 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(37, 99, 235, 0.08);
+        background: rgba(248, 250, 255, 0.94);
+        color: var(--text-soft);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .money-map-log-content {
+        display: grid;
+        gap: 16px;
+        padding-top: 18px;
+      }
+
+      .current-single-input-grid {
+        width: min(100%, 260px);
       }
 
       .current-insight-grid {
@@ -2285,6 +3183,10 @@
         height: 280px !important;
       }
 
+      #pieChartOverview {
+        height: var(--overview-chart-height, 280px) !important;
+      }
+
       #wbFuelGauge {
         display: block;
         width: 100%;
@@ -2502,6 +3404,22 @@
         .plan-panel-expenses .plan-expense-row {
           grid-template-columns: 1fr;
         }
+
+        .current-readout-metrics {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .current-readout-card[data-tone="deploy"] {
+          grid-column: 1 / -1;
+        }
+
+        .dashboard-focus-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .dashboard-note-row {
+          grid-template-columns: 1fr;
+        }
       }
 
       @media (max-width: 760px) {
@@ -2518,6 +3436,9 @@
         .field-grid.three-up,
         .field-grid.four-up,
         .summary-card-grid,
+        .dashboard-compact-grid,
+        .dashboard-focus-grid,
+        .dashboard-note-row,
         .current-obligation-grid,
         .current-insight-grid,
         .priority-output-row,
@@ -2532,6 +3453,180 @@
 
         .chart-shell canvas {
           height: 240px !important;
+        }
+
+        .current-readout-shell {
+          gap: 16px;
+        }
+
+        .current-readout-metrics {
+          grid-template-columns: 1fr;
+        }
+
+        .current-readout-card[data-tone="deploy"] {
+          grid-column: auto;
+        }
+
+        .current-readout-card {
+          padding: 20px 18px 18px;
+        }
+
+        .money-map-bucket-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .money-map-source-card,
+        .money-map-runoff {
+          width: 100%;
+        }
+
+        .money-map-toolbar-header {
+          min-height: 0;
+        }
+
+        .money-map-toolbar-title {
+          width: 100%;
+        }
+
+        .money-map-toolbar-title .info-cluster {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .money-map-toolbar-actions {
+          position: static;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-end;
+          width: auto;
+          margin-left: auto;
+        }
+
+        .money-map-toolbar-actions .subtle-button,
+        .money-map-toolbar-actions .lock-toggle {
+          width: auto;
+        }
+
+        .money-map-table-panel .table-wrap {
+          overflow: visible;
+        }
+
+        .invest-channel-table,
+        .invest-channel-table tbody,
+        .invest-channel-table tfoot,
+        .invest-channel-table tr,
+        .invest-channel-table td,
+        .invest-channel-table th {
+          display: block;
+          width: 100%;
+        }
+
+        .invest-channel-table thead {
+          display: none;
+        }
+
+        .invest-channel-table tbody {
+          display: grid;
+          gap: 14px;
+        }
+
+        .invest-channel-row {
+          display: grid;
+          gap: 12px;
+          padding: 16px;
+          border-radius: 22px;
+          border: 1px solid rgba(15, 23, 42, 0.06);
+          background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.98),
+            rgba(245, 249, 255, 0.96)
+          );
+          box-shadow: 0 16px 28px rgba(15, 23, 42, 0.04);
+        }
+
+        .invest-channel-table td {
+          padding: 0;
+          border: 0;
+        }
+
+        .invest-channel-table td[data-label]::before {
+          content: attr(data-label);
+          display: block;
+          margin-bottom: 6px;
+          color: var(--text-soft);
+          font-size: 0.74rem;
+          font-weight: 800;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+        }
+
+        .invest-channel-table td[data-field-display] {
+          font-weight: 800;
+          font-size: 1.02rem;
+        }
+
+        .invest-channel-table .field,
+        .invest-channel-table .input-shell,
+        .invest-percent-shell {
+          width: 100%;
+          min-width: 0;
+        }
+
+        .invest-channel-table td:last-child {
+          display: flex;
+          justify-content: flex-end;
+        }
+
+        .invest-channel-table td:last-child:empty {
+          display: none;
+        }
+
+        .invest-channel-table tfoot {
+          margin-top: 12px;
+          padding: 16px;
+          border-radius: 22px;
+          border: 1px solid rgba(15, 23, 42, 0.06);
+          background: rgba(255, 255, 255, 0.82);
+        }
+
+        .invest-channel-table tfoot tr {
+          display: grid;
+          gap: 10px;
+        }
+
+        .invest-channel-table tfoot th {
+          padding: 0;
+          text-align: left;
+          border: 0;
+        }
+
+        .invest-channel-table tfoot th:nth-child(2)::before,
+        .invest-channel-table tfoot th:nth-child(3)::before,
+        .invest-channel-table tfoot th:nth-child(4)::before {
+          display: block;
+          margin-bottom: 6px;
+          color: var(--text-soft);
+          font-size: 0.74rem;
+          font-weight: 800;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+        }
+
+        .invest-channel-table tfoot th:nth-child(2)::before {
+          content: "Deploy %";
+        }
+
+        .invest-channel-table tfoot th:nth-child(3)::before {
+          content: "Amount";
+        }
+
+        .invest-channel-table tfoot th:nth-child(4)::before {
+          content: "Paycheck %";
+        }
+
+        .invest-channel-table tfoot th:nth-child(5),
+        .invest-channel-table tfoot th:nth-child(6) {
+          display: none;
         }
 
         .current-flow-map {
@@ -2805,10 +3900,18 @@
               new log entries.
             </p>
           </div>
-          <button id="saveHTMLBtn" type="button">Sync Inputs</button>
-          <p id="saveStatus" class="status-text">
-            Local edits are ready to sync.
-          </p>
+          <div class="sidebar-utility-row">
+            <button
+              id="demoModeToggleBtn"
+              class="demo-toggle-button"
+              type="button"
+              aria-pressed="false"
+              title="Toggle presentation-safe demo balances"
+            >
+              Demo View
+            </button>
+          </div>
+          <p id="saveStatus" class="status-text">Live sync is on.</p>
         </div>
       </nav>
 
@@ -2817,52 +3920,57 @@
           <article class="panel page-intro plan-panel plan-panel-title">
             <p class="eyebrow">Command Center</p>
             <h1>Dashboard</h1>
-            <p>
-              A cross-time summary of your financial position: what is true
-              now, what the next paycheck is supposed to do, what must be
-              covered before the next cycle, and what is ready to deploy.
-            </p>
+            <p>Simple read on cash, the plan target, and what can deploy now.</p>
           </article>
 
-          <div class="metric-strip plan-metric-strip">
-            <article class="panel metric-tile">
-              <span>Current Capital To Deploy</span>
-              <strong id="dashboardCurrentSafeMetric">$0</strong>
-            </article>
-            <article class="panel metric-tile">
-              <span>Planned Leftover</span>
-              <strong id="dashboardPlanLeftMetric">$0</strong>
-            </article>
-            <article class="panel metric-tile">
-              <span>Protected Reserve Left</span>
-              <strong id="dashboardReserveMetric">$0</strong>
-            </article>
-            <article class="panel metric-tile">
-              <span>Ready To Deploy</span>
-              <strong id="dashboardFlowReadyMetric">$0</strong>
-            </article>
+          <div class="plan-summary-shell plan-panel plan-panel-wide">
+            <div class="plan-summary-heading">
+              <p class="eyebrow">At A Glance</p>
+            </div>
+            <div class="metric-strip plan-metric-strip">
+              <article class="panel metric-tile">
+                <span>Current Capital To Deploy</span>
+                <strong id="dashboardCurrentSafeMetric">$0</strong>
+              </article>
+              <article class="panel metric-tile">
+                <span>Paycheck Plan Target</span>
+                <strong id="dashboardPlanLeftMetric">$0</strong>
+              </article>
+              <article class="panel metric-tile">
+                <span>Protected Reserve Left</span>
+                <strong id="dashboardReserveMetric">$0</strong>
+              </article>
+              <article class="panel metric-tile">
+                <span>Money Map Source</span>
+                <strong id="dashboardFlowReadyMetric">$0</strong>
+              </article>
+            </div>
+          </div>
+
+          <div class="plan-step-divider">
+            <div class="plan-step-divider-lines">
+              <span aria-hidden="true"></span>
+              <p class="eyebrow">What Matters</p>
+              <span aria-hidden="true"></span>
+            </div>
           </div>
 
           <div class="flow-stack plan-flow-stack">
-            <div class="plan-row">
-              <article class="panel plan-panel plan-panel-compact">
+            <div class="dashboard-focus-grid">
+              <article class="panel plan-panel dashboard-focus-card">
                 <div class="panel-heading">
                   <div>
-                    <p class="eyebrow">Snapshot</p>
-                    <h2>Current Reality</h2>
+                    <p class="eyebrow">Today</p>
+                    <h2>Current Cash</h2>
                   </div>
-                  <p>
-                    The real balances, near-term pulls, and through-next-paycheck
-                    result from the Current view.
-                  </p>
                 </div>
-                <div class="summary-card-grid">
+                <div class="dashboard-compact-grid">
                   <div class="summary-card">
                     <span>Cash On Hand</span>
                     <strong id="dashboardCashMetric">$0</strong>
                   </div>
                   <div class="summary-card">
-                    <span>Near-Term Commitments</span>
+                    <span>Commitments</span>
                     <strong id="dashboardCommitmentsMetric">$0</strong>
                   </div>
                   <div class="summary-card">
@@ -2870,26 +3978,24 @@
                     <strong id="dashboardAnchorMetric">-</strong>
                   </div>
                 </div>
-                <p id="dashboardCurrentNarrative" class="panel-note">
-                  The current liquidity check will summarize here once balances
-                  and current obligations are set.
-                </p>
-              </article>
-
-              <article class="panel plan-panel plan-panel-compact">
-                <div class="panel-heading">
-                  <div>
-                    <p class="eyebrow">Snapshot</p>
-                    <h2>Plan Summary</h2>
-                  </div>
-                  <p>
-                    The intended paycheck structure: incoming cash, planned
-                    expenses, misc. budget, and the leftover target.
+                <div class="dashboard-state-band">
+                  <strong id="dashboardTimingHeadline">Current Position</strong>
+                  <p id="dashboardTimingCopy">
+                    Current cash protection notes will surface here.
                   </p>
                 </div>
-                <div class="summary-card-grid">
+              </article>
+
+              <article class="panel plan-panel dashboard-focus-card">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Next Paycheck</p>
+                    <h2>Plan Target</h2>
+                  </div>
+                </div>
+                <div class="dashboard-compact-grid">
                   <div class="summary-card">
-                    <span>Expected Paycheck</span>
+                    <span>Paycheck</span>
                     <strong id="dashboardPayMetric">$0</strong>
                   </div>
                   <div class="summary-card">
@@ -2901,57 +4007,16 @@
                     <strong id="dashboardFlexibleMetric">$0</strong>
                   </div>
                 </div>
-                <p id="dashboardPlanNarrative" class="panel-note">
-                  The paycheck plan will summarize here once the planning
-                  inputs are updated.
-                </p>
-              </article>
-            </div>
-
-            <div class="plan-row">
-              <article class="panel plan-panel plan-panel-compact">
-                <div class="panel-heading">
-                  <div>
-                    <p class="eyebrow">Protection</p>
-                    <h2>Current Guardrails</h2>
-                  </div>
-                  <p>
-                    Track what is still being protected inside current cash,
-                    what has already been moved out, and how today compares to
-                    the paycheck plan.
-                  </p>
-                </div>
-                <div class="insight-list">
-                  <div class="insight-card">
-                    <strong id="dashboardTimingHeadline">Timing context</strong>
-                    <p id="dashboardTimingCopy">
-                      Current cash protection notes will surface here.
-                    </p>
-                  </div>
-                  <div class="insight-card">
-                    <strong id="dashboardVarianceHeadline">
-                      Plan vs. current
-                    </strong>
-                    <p id="dashboardVarianceCopy">
-                      This space will call out how today’s reality compares to
-                      the paycheck plan.
-                    </p>
-                  </div>
-                </div>
               </article>
 
-              <article class="panel plan-panel plan-panel-compact">
+              <article class="panel plan-panel dashboard-focus-card">
                 <div class="panel-heading">
                   <div>
-                    <p class="eyebrow">Deployment</p>
-                    <h2>Deploy Preview</h2>
+                    <p class="eyebrow">Deploy Next</p>
+                    <h2>Money Map</h2>
                   </div>
-                  <p>
-                    Once surplus is confirmed, this module previews how that
-                    cash is being deployed across destination channels.
-                  </p>
                 </div>
-                <div class="summary-card-grid">
+                <div class="dashboard-compact-grid">
                   <div class="summary-card">
                     <span>Capital To Deploy</span>
                     <strong id="dashboardCarryForwardMetric">$0</strong>
@@ -2965,51 +4030,22 @@
                     <strong id="dashboardRecentFlowMetric">None yet</strong>
                   </div>
                 </div>
-                <p id="dashboardFlowNarrative" class="panel-note">
-                  Deployment percentages and recent deploy activity will
-                  summarize here.
-                </p>
-              </article>
-            </div>
-
-            <div class="plan-row">
-              <article class="panel plan-panel plan-panel-medium">
-                <div class="panel-heading">
-                  <div>
-                    <p class="eyebrow">History</p>
-                    <h2>Latest Checkpoint</h2>
-                  </div>
+                <div class="dashboard-state-band">
+                  <strong id="dashboardVarianceHeadline">
+                    Plan vs. current
+                  </strong>
+                  <p id="dashboardVarianceCopy">
+                    This space will call out how today’s reality compares to
+                    the paycheck plan.
+                  </p>
                 </div>
-                <p id="dashboardHistoryNote" class="panel-note">
-                  Recent checkpoint notes will appear here after they are
-                  logged.
-                </p>
-              </article>
-
-              <article class="panel plan-panel plan-panel-medium">
-                <div class="panel-heading">
-                  <div>
-                    <p class="eyebrow">Signals</p>
-                    <h2>Status Board</h2>
-                  </div>
+                <div class="dashboard-state-band">
+                  <strong id="dashboardStatusNote">Capital is available to deploy.</strong>
+                  <p id="dashboardHistoryNote">
+                    Recent checkpoint notes will appear here after they are
+                    logged.
+                  </p>
                 </div>
-                <p id="dashboardStatusNote" class="panel-note">
-                  This module is reserved for later status signals, trend
-                  markers, and alerts.
-                </p>
-              </article>
-
-              <article class="panel plan-panel plan-panel-medium">
-                <div class="panel-heading">
-                  <div>
-                    <p class="eyebrow">Next Up</p>
-                    <h2>Refinement Space</h2>
-                  </div>
-                </div>
-                <p class="panel-note">
-                  Keep this shell flexible for historical charts, health
-                  indicators, or quick actions in the next phase.
-                </p>
               </article>
             </div>
           </div>
@@ -3178,75 +4214,97 @@
               </div>
             </article>
 
-            <div class="plan-row plan-bottom-row current-balance-row">
-              <article class="panel tooltip-panel plan-panel plan-panel-paycheck current-step4-card">
+            <div class="plan-row">
+              <article class="panel tooltip-panel plan-panel plan-panel-wide current-readout-panel">
                 <div class="panel-heading">
                   <div class="info-cluster">
                     <div>
                       <p class="eyebrow">Step 4</p>
-                      <h2>Buffer Fund</h2>
+                      <h2>Buffer, Deploy, and Reserve</h2>
                     </div>
                     <span
                       class="info-tip"
                       tabindex="0"
-                      data-tip="This mirrors the paycheck plan buffer automatically. As current cash gets tighter, this buffer compresses first, then capital to deploy falls to $0, and only after that does the protected floor reserve get pulled."
-                      aria-label="Buffer fund help"
+                      data-tip="Read the three live outcomes together: how much buffer can still transfer out, how much capital remains deployable, and whether the protected reserve is still intact."
+                      aria-label="Current cash readout help"
                     >
                       ?
                     </span>
                   </div>
                 </div>
-                <div class="output-stack">
-                  <div class="output-hero output-hero-secondary">
-                    <span>Available To Transfer</span>
-                    <strong id="currentBufferAvailable">$0</strong>
-                    <p id="currentBudgetStateNote" class="panel-note">
-                      Full buffer fund is still available to transfer.
-                    </p>
-                  </div>
-                  <input type="hidden" id="currentBudgetAmount" value="0" />
-                  <p id="currentBufferGuidance" class="current-guidance-note" hidden></p>
-                </div>
-              </article>
+                <input type="hidden" id="currentBudgetAmount" value="0" />
+                <input type="hidden" id="minBalance" value="4000" />
+                <div class="current-readout-shell">
+                  <div class="current-readout-metrics">
+                    <article id="currentBufferCard" class="current-readout-card current-readout-card-side" data-tone="buffer">
+                      <div class="current-readout-card-head">
+                        <h3>Buffer Fund</h3>
+                        <span
+                          class="info-tip"
+                          tabindex="0"
+                          data-tip="This mirrors the paycheck plan buffer and compresses first before capital to deploy starts falling."
+                          aria-label="Buffer fund rules"
+                        >
+                          ?
+                        </span>
+                      </div>
+                      <p class="current-readout-card-label">Available To Transfer</p>
+                      <strong id="currentBufferAvailable">$0</strong>
+                      <div id="currentBufferStage" class="current-readout-state is-good">
+                        <strong id="currentBufferStageTitle">Fully Available</strong>
+                        <p id="currentBufferStageText">
+                          Buffer is still intact and ready to transfer if needed.
+                        </p>
+                      </div>
+                    </article>
 
-              <article class="panel tooltip-panel plan-panel plan-panel-output current-result-card">
-                <div class="panel-heading">
-                  <div class="info-cluster">
-                    <div>
-                      <p class="eyebrow">Step 5</p>
-                      <h2>Capital To Deploy</h2>
-                    </div>
-                    <span
-                      class="info-tip"
-                      tabindex="0"
-                      data-tip="The amount that is actually available to deploy after debt, scheduled reserves, the buffer fund, and the protected floor reserve are covered."
-                      aria-label="Capital to deploy help"
-                    >
-                      ?
-                    </span>
+                    <article id="currentDeployCard" class="current-readout-card current-readout-card-primary" data-tone="deploy">
+                      <div class="current-readout-card-head">
+                        <h3>Capital To Deploy</h3>
+                        <span
+                          class="info-tip"
+                          tabindex="0"
+                          data-tip="This is the amount actually free to deploy after debt, scheduled reserves, buffer protection, and reserve protection are all honored."
+                          aria-label="Capital to deploy rules"
+                        >
+                          ?
+                        </span>
+                      </div>
+                      <p class="current-readout-card-label">Available Right Now</p>
+                      <div id="liquidOutput" class="liquid-output neutral">$0.00</div>
+                      <div id="currentDeployStage" class="current-readout-state is-good">
+                        <strong id="currentDeployStageTitle">On Plan</strong>
+                        <p id="currentDeployStageText">
+                          Capital to deploy is still tracking the paycheck plan.
+                        </p>
+                      </div>
+                    </article>
+
+                    <article id="currentReserveCard" class="current-readout-card current-readout-card-side" data-tone="reserve">
+                      <div class="current-readout-card-head">
+                        <h3>Protected Floor</h3>
+                        <span
+                          class="info-tip"
+                          tabindex="0"
+                          data-tip="This is the protected floor reserve you do not want to invade unless both the buffer fund and capital to deploy are exhausted."
+                          aria-label="Protected floor rules"
+                        >
+                          ?
+                        </span>
+                      </div>
+                      <p class="current-readout-card-label">Left In Reserve</p>
+                      <strong id="currentReserveReadout">$4,000</strong>
+                      <div id="currentReserveStage" class="current-readout-state is-good">
+                        <strong id="currentReserveStageTitle">Protected</strong>
+                        <p id="currentReserveStageText">
+                          The protected floor reserve has not been touched.
+                        </p>
+                      </div>
+                    </article>
                   </div>
-                </div>
-                <div class="output-stack">
-                  <div class="output-hero">
-                    <span>Capital To Deploy</span>
-                    <div id="liquidOutput" class="liquid-output neutral">$0.00</div>
-                    <p id="weeklyCheckNarrative" class="panel-note">
-                      Fill in the current snapshot to see how much capital is
-                      actually available to deploy.
-                    </p>
-                  </div>
-                  <input type="hidden" id="minBalance" value="4000" />
                 </div>
               </article>
             </div>
-
-            <article id="currentDeployAlert" class="panel current-deploy-alert" hidden>
-              <p class="eyebrow">Attention</p>
-              <h2 id="currentDeployAlertTitle">Protected Floor Reserve Is Being Tapped</h2>
-              <p id="currentDeployAlertText">
-                The buffer fund has compressed to $0, and the remaining gap is now coming out of the protected floor reserve. That amount needs to be refilled with the next paycheck.
-              </p>
-            </article>
 
             <div class="plan-row plan-chart-row current-chart-row">
               <article class="panel chart-shell tooltip-panel plan-panel plan-flow-panel current-chart-panel current-flow-panel">
@@ -3649,7 +4707,7 @@
                 </div>
                 <div class="field-grid">
                   <div class="field">
-                    <label for="overviewBudgetPerDay">Misc. Budget</label>
+                    <label for="overviewBudgetPerDay">Misc. Budget Per Day</label>
                     <div class="input-shell">
                       <span>$</span>
                       <input
@@ -3659,12 +4717,18 @@
                       />
                     </div>
                   </div>
-                  <div class="budget-pill">
-                    Misc. Budget
-                    <strong id="overviewBudgetTotal">$0</strong>
+                  <div class="budget-pill budget-pill-stack">
+                    <div>
+                      <span>Per Day</span>
+                      <strong id="overviewBudgetPerDayValue">$0</strong>
+                    </div>
+                    <div>
+                      <span>Per Paycheck</span>
+                      <strong id="overviewBudgetTotal">$0</strong>
+                    </div>
                   </div>
                   <p id="overviewBudgetStateNote" class="panel-note">
-                    Set the misc. budget target for this paycheck.
+                    Set the daily misc. budget and the paycheck total will roll up automatically.
                   </p>
                 </div>
               </article>
@@ -3759,79 +4823,93 @@
           <article class="panel page-intro plan-panel plan-panel-title">
             <p class="eyebrow">Capital Deployment</p>
             <h1>Money Map</h1>
-            <p>
-              Start with confirmed surplus, deploy it across destination
-              channels, review the split visually, and log each completed
-              deployment round.
-            </p>
+            <p>Route current deployable cash into the channels you actually use.</p>
           </article>
 
-          <div class="metric-strip plan-metric-strip">
-            <article class="panel metric-tile">
-              <span>Capital To Deploy</span>
-              <strong id="liquidationLiquidMetric">$0</strong>
-            </article>
-            <article class="panel metric-tile">
-              <span>Planned Buffer</span>
-              <strong id="liquidationPlannedMetric">$0</strong>
-            </article>
-            <article class="panel metric-tile">
-              <span>Cash Reserve</span>
-              <strong id="liquidationCashMetric">$0</strong>
-            </article>
-            <article class="panel metric-tile">
-              <span>Long-Term Deployment</span>
-              <strong id="liquidationInvestMetric">$0</strong>
-            </article>
+          <div class="plan-step-divider">
+            <div class="plan-step-divider-lines">
+              <span aria-hidden="true"></span>
+              <p class="eyebrow">Route The Capital</p>
+              <span aria-hidden="true"></span>
+            </div>
+            <p>Pull in live capital from Current Cash, set the channel mix, and watch it pour into each bucket.</p>
           </div>
 
           <div class="flow-stack plan-flow-stack">
-            <article class="panel plan-panel plan-panel-compact">
+            <div class="plan-row">
+            <article class="panel tooltip-panel plan-panel plan-panel-paycheck money-map-source-panel">
               <div class="panel-heading">
-                <div>
-                  <p class="eyebrow">Step 1</p>
-                  <h2>Capital To Deploy</h2>
+                <div class="info-cluster">
+                  <div>
+                    <p class="eyebrow">Step 1</p>
+                    <h2>Capital To Deploy</h2>
+                  </div>
+                  <span
+                    class="info-tip"
+                    tabindex="0"
+                    data-tip="This value is pulled directly from Current Cash and updates live as that view changes."
+                    aria-label="Capital to deploy source help"
+                  >
+                    ?
+                  </span>
                 </div>
-                <p>The confirmed amount available to deploy in this round.</p>
               </div>
+              <input type="hidden" id="investChannelsData" />
+              <input type="hidden" id="investChannelsLocked" value="true" />
               <div class="flow-row two plan-input-row">
                 <div class="field">
-                  <label for="investLiquidAmount">Capital To Deploy</label>
+                  <label for="investLiquidAmount">Current Capital To Deploy</label>
                   <div class="input-shell">
                     <span>$</span>
                     <input
                       type="number"
                       id="investLiquidAmount"
                       placeholder="0"
+                      readonly
                     />
                   </div>
                 </div>
-                <div class="field">
-                  <label>&nbsp;</label>
-                  <button id="calculateInvestBtn" type="button">
-                    Update Deployment
+              </div>
+            </article>
+
+            <article class="panel tooltip-panel plan-panel money-map-table-panel">
+              <div class="panel-heading money-map-toolbar-header">
+                <div class="money-map-toolbar-title">
+                  <div class="info-cluster">
+                    <div>
+                      <p class="eyebrow">Step 2</p>
+                      <h2>Deployment Channels</h2>
+                    </div>
+                    <span
+                      class="info-tip"
+                      tabindex="0"
+                      data-tip="Unlock the channel table when you need to edit names, percentages, or roles. Lock it again once the routing mix is set."
+                      aria-label="Deployment channels help"
+                    >
+                      ?
+                    </span>
+                  </div>
+                </div>
+                <div class="money-map-toolbar-actions">
+                  <button
+                    id="toggleInvestChannelsLockBtn"
+                    class="lock-toggle is-locked"
+                    type="button"
+                    aria-pressed="true"
+                  >
+                    <span id="investChannelsLockLabel">Locked</span>
+                  </button>
+                  <button
+                    id="addInvestChannelBtn"
+                    class="subtle-button"
+                    type="button"
+                  >
+                    Add Channel
                   </button>
                 </div>
               </div>
-              <p class="panel-note">
-                If this field is empty, it can be seeded from the current safe
-                result or the paycheck plan deploy target.
-              </p>
-            </article>
-
-            <article class="panel plan-panel plan-panel-table">
-              <div class="panel-heading">
-                <div>
-                  <p class="eyebrow">Step 2</p>
-                  <h2>Deployment Map</h2>
-                </div>
-                <p>
-                  Keep percentages, deployed amounts, and paycheck context in one
-                  place so the distribution logic stays easy to audit.
-                </p>
-              </div>
               <div class="table-wrap">
-                <table>
+                <table class="invest-channel-table">
                   <thead>
                     <tr>
                       <th>Channel</th>
@@ -3839,129 +4917,10 @@
                       <th>Amount</th>
                       <th>Paycheck %</th>
                       <th>Role</th>
+                      <th></th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td>Roth</td>
-                      <td>
-                        <div class="input-shell suffix-shell">
-                          <input
-                            type="number"
-                            id="investRothPercent"
-                            step="0.1"
-                            value="0"
-                          />
-                          <span>%</span>
-                        </div>
-                      </td>
-                      <td id="investRothAmount">$0</td>
-                      <td id="investRothPaycheckPercent">0%</td>
-                      <td>Retirement</td>
-                    </tr>
-                    <tr>
-                      <td>Flex</td>
-                      <td>
-                        <div class="input-shell suffix-shell">
-                          <input
-                            type="number"
-                            id="investFunPercent"
-                            step="0.1"
-                            value="0"
-                          />
-                          <span>%</span>
-                        </div>
-                      </td>
-                      <td id="investFunAmount">$0</td>
-                      <td id="investFunPaycheckPercent">0%</td>
-                      <td>Flexible spending</td>
-                    </tr>
-                    <tr>
-                      <td>Planned Buffer</td>
-                      <td>
-                        <div class="input-shell suffix-shell">
-                          <input
-                            type="number"
-                            id="investPlannedPercent"
-                            step="0.1"
-                            value="70"
-                          />
-                          <span>%</span>
-                        </div>
-                      </td>
-                      <td id="investPlannedAmount">$0</td>
-                      <td id="investPlannedPaycheckPercent">0%</td>
-                      <td>Future obligation</td>
-                    </tr>
-                    <tr>
-                      <td>Cash Reserve</td>
-                      <td>
-                        <div class="input-shell suffix-shell">
-                          <input
-                            type="number"
-                            id="investCashPercent"
-                            step="0.1"
-                            value="0"
-                          />
-                          <span>%</span>
-                        </div>
-                      </td>
-                      <td id="investCashAmount">$0</td>
-                      <td id="investCashPaycheckPercent">0%</td>
-                      <td>Reserve floor</td>
-                    </tr>
-                    <tr>
-                      <td>Wedding</td>
-                      <td>
-                        <div class="input-shell suffix-shell">
-                          <input
-                            type="number"
-                            id="investWeddingPercent"
-                            step="0.1"
-                            value="0"
-                          />
-                          <span>%</span>
-                        </div>
-                      </td>
-                      <td id="investWeddingAmount">$0</td>
-                      <td id="investWeddingPaycheckPercent">0%</td>
-                      <td>Wedding</td>
-                    </tr>
-                    <tr>
-                      <td>Down Payment</td>
-                      <td>
-                        <div class="input-shell suffix-shell">
-                          <input
-                            type="number"
-                            id="investDownPercent"
-                            step="0.1"
-                            value="0"
-                          />
-                          <span>%</span>
-                        </div>
-                      </td>
-                      <td id="investDownAmount">$0</td>
-                      <td id="investDownPaycheckPercent">0%</td>
-                      <td>House</td>
-                    </tr>
-                    <tr>
-                      <td>Investing</td>
-                      <td>
-                        <div class="input-shell suffix-shell">
-                          <input
-                            type="number"
-                            id="investInvestPercent"
-                            step="0.1"
-                            value="30"
-                          />
-                          <span>%</span>
-                        </div>
-                      </td>
-                      <td id="investInvestAmount">$0</td>
-                      <td id="investInvestPaycheckPercent">0%</td>
-                      <td>Long-term growth</td>
-                    </tr>
-                  </tbody>
+                  <tbody id="investChannelList"></tbody>
                   <tfoot>
                     <tr>
                       <th>Totals</th>
@@ -3969,147 +4928,153 @@
                       <th id="investTotalsAmount">$0</th>
                       <th id="investTotalsPaycheckPercent">0%</th>
                       <th></th>
+                      <th></th>
                     </tr>
                   </tfoot>
                 </table>
               </div>
             </article>
+            </div>
 
-            <article class="panel chart-shell plan-panel plan-chart-panel">
-              <div class="panel-heading">
-                <div>
-                  <p class="eyebrow">Step 3</p>
-                  <h2>Distribution View</h2>
+            <article class="panel chart-shell tooltip-panel plan-panel money-map-visual-panel">
+              <div class="panel-heading money-map-visual-heading">
+                <div class="info-cluster">
+                  <div>
+                    <p class="eyebrow">Step 3</p>
+                    <h2>Bucket Cascade</h2>
+                  </div>
+                  <span
+                    class="info-tip"
+                    tabindex="0"
+                    data-tip="See capital to deploy spill from the source pool into each destination bucket, including any undeployed cash or overflow."
+                    aria-label="Bucket cascade help"
+                  >
+                    ?
+                  </span>
                 </div>
-                <p>
-                  The chart mirrors the deployment map instead of competing with
-                  it.
-                </p>
               </div>
-              <canvas id="macroAllocationsPieChart"></canvas>
+              <div id="moneyMapBuckets" class="money-map-cascade" aria-live="polite"></div>
             </article>
 
-            <article class="panel plan-panel plan-panel-table">
-              <div class="panel-heading">
+            <details class="panel plan-panel plan-panel-table money-map-log-panel">
+              <summary class="money-map-log-summary">
                 <div>
                   <p class="eyebrow">Step 4</p>
                   <h2>Deployment Log</h2>
                 </div>
-                <p>Record each completed deployment round once the split is final.</p>
-              </div>
-              <div class="table-form six-up">
-                <div class="field">
-                  <label for="logLiquidationNumber">Deploy Round #</label>
-                  <input
-                    type="text"
-                    id="logLiquidationNumber"
-                    placeholder="Number"
-                  />
-                </div>
-                <div class="field">
-                  <label for="logTotalLiquidationAmount">Total Routed</label>
-                  <input
-                    type="number"
-                    id="logTotalLiquidationAmount"
-                    placeholder="0"
-                  />
-                </div>
-                <div class="field">
-                  <label for="logDate">Date</label>
-                  <input type="date" id="logDate" />
-                </div>
-                <div class="field">
-                  <label for="logLiquidationTransfer">Transfer Note</label>
-                  <input
-                    type="text"
-                    id="logLiquidationTransfer"
-                    placeholder="Transfer"
-                  />
-                </div>
-                <div class="field">
-                  <label for="logCrypto">Crypto</label>
-                  <input type="text" id="logCrypto" placeholder="Crypto" />
-                </div>
-                <div class="field">
-                  <label for="logFidelity">Fidelity</label>
-                  <input type="text" id="logFidelity" placeholder="Fidelity" />
-                </div>
-                <div class="field">
-                  <label for="logWealthfront">Wealthfront</label>
-                  <input
-                    type="text"
-                    id="logWealthfront"
-                    placeholder="Wealthfront"
-                  />
-                </div>
-                <div class="field">
-                  <label>&nbsp;</label>
-                  <button id="addLiquidationLogBtn" type="button">
-                    Add Log
-                  </button>
-                </div>
-              </div>
-              <div class="table-wrap short">
-                <table id="liquidationLogTable">
-                  <thead>
-                    <tr>
-                      <th>Deploy Round</th>
-                      <th>Total Routed</th>
-                      <th>Date</th>
-                      <th>Transfer Note</th>
-                      <th>Crypto</th>
-                      <th>Fidelity</th>
-                      <th>Wealthfront</th>
-                    </tr>
-                  </thead>
-                  <tbody></tbody>
-                </table>
-              </div>
-            </article>
-
-            <div class="placeholder-grid plan-panel plan-panel-wide">
-              <article class="panel">
-                <div class="panel-heading">
-                  <div>
-                    <p class="eyebrow">Future Tile</p>
-                    <h2>Channel Rules</h2>
+                <span class="money-map-log-pill">Optional</span>
+              </summary>
+              <div class="money-map-log-content">
+                <div class="table-form six-up">
+                  <div class="field">
+                    <label for="logLiquidationNumber">Deploy Round #</label>
+                    <input
+                      type="text"
+                      id="logLiquidationNumber"
+                      placeholder="Number"
+                    />
+                  </div>
+                  <div class="field">
+                    <label for="logTotalLiquidationAmount">Total Routed</label>
+                    <input
+                      type="number"
+                      id="logTotalLiquidationAmount"
+                      placeholder="0"
+                    />
+                  </div>
+                  <div class="field">
+                    <label for="logDate">Date</label>
+                    <input type="date" id="logDate" />
+                  </div>
+                  <div class="field">
+                    <label for="logLiquidationTransfer">Transfer Note</label>
+                    <input
+                      type="text"
+                      id="logLiquidationTransfer"
+                      placeholder="Transfer"
+                    />
+                  </div>
+                  <div class="field">
+                    <label for="logCrypto">Crypto</label>
+                    <input type="text" id="logCrypto" placeholder="Crypto" />
+                  </div>
+                  <div class="field">
+                    <label for="logFidelity">Fidelity</label>
+                    <input type="text" id="logFidelity" placeholder="Fidelity" />
+                  </div>
+                  <div class="field">
+                    <label for="logWealthfront">Wealthfront</label>
+                    <input
+                      type="text"
+                      id="logWealthfront"
+                      placeholder="Wealthfront"
+                    />
+                  </div>
+                  <div class="field">
+                    <label>&nbsp;</label>
+                    <button id="addLiquidationLogBtn" type="button">
+                      Add Log
+                    </button>
                   </div>
                 </div>
-                <p class="panel-note">
-                  Keep room here for richer deployment rules, priority ordering,
-                  and fixed-versus-percentage logic in the next phase.
-                </p>
-              </article>
-
-              <article class="panel">
-                <div class="panel-heading">
-                  <div>
-                    <p class="eyebrow">Future Tile</p>
-                    <h2>Destination Progress</h2>
-                  </div>
+                <div class="table-wrap short">
+                  <table id="liquidationLogTable">
+                    <thead>
+                      <tr>
+                        <th>Deploy Round</th>
+                        <th>Total Routed</th>
+                        <th>Date</th>
+                        <th>Transfer Note</th>
+                        <th>Crypto</th>
+                        <th>Fidelity</th>
+                        <th>Wealthfront</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
                 </div>
-                <p class="panel-note">
-                  This panel can later track channel balances, contribution
-                  history, or progress toward named goals.
-                </p>
-              </article>
-
-              <article class="panel">
-                <div class="panel-heading">
-                  <div>
-                    <p class="eyebrow">Future Tile</p>
-                    <h2>Execution Notes</h2>
-                  </div>
-                </div>
-                <p class="panel-note">
-                  Reserve this area for confirmation state, transfer notes, and
-                  any post-deployment follow-up actions.
-                </p>
-              </article>
-            </div>
+              </div>
+            </details>
           </div>
         </section>
       </main>
+    </div>
+
+    <div id="liveUnlockGate" class="live-unlock-gate" hidden>
+      <form id="liveUnlockForm" class="live-unlock-panel">
+        <div>
+          <p class="eyebrow">Protected</p>
+          <h2>Unlock Live View</h2>
+        </div>
+        <p id="liveUnlockCopy">
+          Demo View is safe to share. Enter the password on this device to reveal
+          your live balances.
+        </p>
+        <div id="liveUnlockPasswordField" class="field">
+          <label for="liveUnlockPassword">Password</label>
+          <input
+            type="password"
+            id="liveUnlockPassword"
+            placeholder="Enter password"
+            autocomplete="current-password"
+          />
+        </div>
+        <p id="liveUnlockError" class="live-unlock-error" hidden>
+          Incorrect password.
+        </p>
+        <div class="live-unlock-actions">
+          <button id="cancelLiveUnlockBtn" class="subtle-button" type="button">
+            Stay In Demo
+          </button>
+          <button
+            id="submitLiveUnlockBtn"
+            class="accent-button"
+            type="submit"
+          >
+            <span id="submitLiveUnlockLabel">Unlock Live View</span>
+          </button>
+        </div>
+      </form>
     </div>
 
     <script>
@@ -4121,14 +5086,26 @@
         "https://script.google.com/macros/s/AKfycbyyE6qNHhNF9zwdm_lAsxf47JYWE9etsYuEUbV_KxIXo4VjKLshBBEYHMegt9u2uJHJ/exec?sheetid=912270719";
       const apiUrl4 =
         "https://script.google.com/macros/s/AKfycbyyE6qNHhNF9zwdm_lAsxf47JYWE9etsYuEUbV_KxIXo4VjKLshBBEYHMegt9u2uJHJ/exec?sheetid=417331213";
+      const LIVE_VIEW_PASSWORD = "ubuntu";
+      const LIVE_VIEW_ACCESS_KEY = "cashCommandLiveViewUnlocked";
 
       const state = {
         charts: {},
         weeklyBudgetRows: [],
         latestBudgetCheck: null,
+        budgetCheckRows: [],
         latestLiquidationLog: null,
+        liquidationLogRows: [],
         currentDueRows: [],
         planExpenseRows: [],
+        investChannels: [],
+        investChannelsLocked: true,
+        autosaveTimer: null,
+        autosaveReady: false,
+        inputsLoaded: false,
+        isHydrating: false,
+        demoMode: false,
+        demoSnapshot: null,
       };
 
       const navToSection = {
@@ -4193,6 +5170,20 @@
         }
       }
 
+      function applyStatusTone(element, tone) {
+        if (!element) return;
+        element.classList.remove(
+          "is-good",
+          "is-warning",
+          "is-danger",
+          "is-critical",
+          "is-alert",
+        );
+        if (tone) {
+          element.classList.add(tone);
+        }
+      }
+
       function escapeHtml(value) {
         return String(value ?? "").replace(/[&<>"']/g, (char) => {
           const map = {
@@ -4210,8 +5201,18 @@
         return ["true", "TRUE", "Yes", "yes", "1"].includes(String(value));
       }
 
+      function cloneValue(value) {
+        return JSON.parse(JSON.stringify(value ?? null));
+      }
+
       function todayInputValue() {
         return new Date().toLocaleDateString("en-CA");
+      }
+
+      function offsetInputValue(days) {
+        const date = new Date();
+        date.setDate(date.getDate() + days);
+        return date.toLocaleDateString("en-CA");
       }
 
       function normalizeDateValue(value) {
@@ -4294,6 +5295,335 @@
             element.value = seedValue;
           }
         });
+      }
+
+      function setSaveStatus(text) {
+        const status = $("saveStatus");
+        if (status) {
+          status.textContent = text;
+        }
+      }
+
+      function setDemoToggleState() {
+        const button = $("demoModeToggleBtn");
+        if (!button) return;
+        button.classList.toggle("is-active", state.demoMode);
+        button.setAttribute("aria-pressed", String(state.demoMode));
+        button.textContent = state.demoMode ? "Live View" : "Demo View";
+      }
+
+      function hasLiveViewAccess() {
+        return localStorage.getItem(LIVE_VIEW_ACCESS_KEY) === "true";
+      }
+
+      function grantLiveViewAccess() {
+        localStorage.setItem(LIVE_VIEW_ACCESS_KEY, "true");
+      }
+
+      function syncLiveUnlockGate() {
+        const trusted = hasLiveViewAccess();
+        const passwordField = $("liveUnlockPasswordField");
+        const copy = $("liveUnlockCopy");
+        const submitLabel = $("submitLiveUnlockLabel");
+        if (passwordField) {
+          passwordField.hidden = trusted;
+        }
+        if (copy) {
+          copy.textContent = trusted
+            ? "This device is already trusted. Continue into Live View or stay in demo."
+            : "Demo View is safe to share. Enter the password on this device to reveal your live balances.";
+        }
+        if (submitLabel) {
+          submitLabel.textContent = trusted
+            ? "Show Live View"
+            : "Unlock Live View";
+        }
+      }
+
+      function openLiveUnlockGate() {
+        syncLiveUnlockGate();
+        $("liveUnlockGate").hidden = false;
+        $("liveUnlockError").hidden = true;
+        $("liveUnlockPassword").value = "";
+        document.body.classList.add("unlock-gate-open");
+        window.setTimeout(() => {
+          if (hasLiveViewAccess()) {
+            $("submitLiveUnlockBtn")?.focus();
+          } else {
+            $("liveUnlockPassword")?.focus();
+          }
+        }, 30);
+      }
+
+      function closeLiveUnlockGate() {
+        $("liveUnlockGate").hidden = true;
+        $("liveUnlockError").hidden = true;
+        $("liveUnlockPassword").value = "";
+        document.body.classList.remove("unlock-gate-open");
+      }
+
+      function handleLiveUnlock(event) {
+        event?.preventDefault();
+        const password = $("liveUnlockPassword")?.value || "";
+        if (!hasLiveViewAccess() && password !== LIVE_VIEW_PASSWORD) {
+          $("liveUnlockError").hidden = false;
+          $("liveUnlockPassword")?.focus();
+          $("liveUnlockPassword")?.select();
+          return;
+        }
+        if (!hasLiveViewAccess()) {
+          grantLiveViewAccess();
+        }
+        closeLiveUnlockGate();
+        exitDemoMode();
+      }
+
+      function serializeInputValues() {
+        const values = {};
+        document.querySelectorAll("input").forEach((input) => {
+          if (!input.id) return;
+          values[input.id] =
+            input.type === "checkbox" ? input.checked : input.value;
+        });
+        return values;
+      }
+
+      function captureDemoSnapshot() {
+        return {
+          inputs: serializeInputValues(),
+          currentDueRows: cloneValue(state.currentDueRows),
+          planExpenseRows: cloneValue(state.planExpenseRows),
+          investChannels: cloneValue(state.investChannels),
+          investChannelsLocked: state.investChannelsLocked,
+          weeklyBudgetRows: cloneValue(state.weeklyBudgetRows),
+          budgetCheckRows: cloneValue(state.budgetCheckRows),
+          latestBudgetCheck: cloneValue(state.latestBudgetCheck),
+          liquidationLogRows: cloneValue(state.liquidationLogRows),
+          latestLiquidationLog: cloneValue(state.latestLiquidationLog),
+          inputsLoaded: state.inputsLoaded,
+        };
+      }
+
+      function getDemoDataset() {
+        const anchorDate = todayInputValue();
+        return {
+          inputs: {
+            manualDate: anchorDate,
+            overviewPaycheck: "1000",
+            overviewBudgetPerDay: "6",
+            checking: "1700",
+            savings: "1600",
+            card1: "90",
+            card2: "60",
+            minBalance: "2000",
+            weeklybudgetBudget: "120",
+            weeklybudgetSpent: "46",
+            weeklybudgetRemaining: "74",
+            budgetCheckDate: anchorDate,
+            budgetCheckBudget: "120",
+            budgetCheckSpent: "46",
+            budgetCheckNotes: "Demo checkpoint",
+            weeklybudgetNewtransactionDate: anchorDate,
+            weeklybudgetNewtransactionAmount: "",
+            weeklybudgetNewtransactionDescription: "",
+            logDate: anchorDate,
+            logLiquidationNumber: "D-12",
+            logTotalLiquidationAmount: "660",
+            logLiquidationTransfer: "Demo routing sweep",
+            logCrypto: "130",
+            logFidelity: "320",
+            logWealthfront: "210",
+          },
+          planExpenseRows: [
+            { label: "Rent", amount: 250 },
+            { label: "Groceries", amount: 90 },
+            { label: "Utilities", amount: 55 },
+            { label: "Insurance", amount: 40 },
+            { label: "Phone", amount: 25 },
+            { label: "Subscriptions", amount: 20 },
+            { label: "Other", amount: 10 },
+          ],
+          currentDueRows: [
+            { label: "Rent Hold", amount: 220 },
+            { label: "Utilities Hold", amount: 70 },
+            { label: "Insurance Hold", amount: 60 },
+          ],
+          investChannels: [
+            { label: "Planned Buffer", percent: 30, role: "Future obligation" },
+            { label: "Index Funds", percent: 40, role: "Long-term growth" },
+            { label: "House Goal", percent: 20, role: "Future goal" },
+            { label: "Giving", percent: 10, role: "Optional" },
+          ],
+          investChannelsLocked: true,
+          budgetCheckRows: [
+            {
+              Date: anchorDate,
+              Budget: 120,
+              Spent: 46,
+              Notes: "Demo checkpoint",
+            },
+            {
+              Date: offsetInputValue(-7),
+              Budget: 120,
+              Spent: 88,
+              Notes: "Held inside target range",
+            },
+          ],
+          liquidationLogRows: [
+            {
+              "Liquidation Number": "D-11",
+              "Total Liquidation Amount": 620,
+              Date: offsetInputValue(-14),
+              "Liquidation Transfer": "Treasury + brokerage sweep",
+              Crypto: "120",
+              Fidelity: "300",
+              Wealthfront: "200",
+            },
+            {
+              "Liquidation Number": "D-10",
+              "Total Liquidation Amount": 590,
+              Date: offsetInputValue(-28),
+              "Liquidation Transfer": "Quarter-end demo deploy",
+              Crypto: "115",
+              Fidelity: "285",
+              Wealthfront: "190",
+            },
+          ],
+          weeklyBudgetRows: [
+            {
+              weeklybudgetNewtransactionDate: anchorDate,
+              weeklybudgetNewtransactionAmount: 18,
+              weeklybudgetNewtransactionDescription: "Coffee + lunch",
+              weeklybudgetNewtransactionSplit: false,
+              weeklybudgetSplitOwedPaid: false,
+            },
+            {
+              weeklybudgetNewtransactionDate: offsetInputValue(-1),
+              weeklybudgetNewtransactionAmount: 16,
+              weeklybudgetNewtransactionDescription: "Dinner",
+              weeklybudgetNewtransactionSplit: true,
+              weeklybudgetSplitOwedPaid: false,
+            },
+            {
+              weeklybudgetNewtransactionDate: offsetInputValue(-2),
+              weeklybudgetNewtransactionAmount: 12,
+              weeklybudgetNewtransactionDescription: "Household",
+              weeklybudgetNewtransactionSplit: false,
+              weeklybudgetSplitOwedPaid: false,
+            },
+          ],
+        };
+      }
+
+      function hydratePresentationState(snapshot) {
+        if (!snapshot) return;
+
+        state.isHydrating = true;
+
+        Object.entries(snapshot.inputs || {}).forEach(([id, value]) => {
+          setInputValue(id, value);
+        });
+
+        state.currentDueRows = sanitizeCurrentDueRows(snapshot.currentDueRows);
+        state.planExpenseRows = sanitizePlanExpenseRows(snapshot.planExpenseRows);
+        state.investChannels = sanitizeInvestChannels(snapshot.investChannels);
+        state.investChannelsLocked =
+          snapshot.investChannelsLocked === undefined
+            ? true
+            : Boolean(snapshot.investChannelsLocked);
+        state.weeklyBudgetRows = Array.isArray(snapshot.weeklyBudgetRows)
+          ? cloneValue(snapshot.weeklyBudgetRows)
+          : [];
+        state.budgetCheckRows = Array.isArray(snapshot.budgetCheckRows)
+          ? cloneValue(snapshot.budgetCheckRows)
+          : [];
+        state.latestBudgetCheck =
+          cloneValue(snapshot.latestBudgetCheck) ||
+          cloneValue(state.budgetCheckRows[0]) ||
+          null;
+        state.liquidationLogRows = Array.isArray(snapshot.liquidationLogRows)
+          ? cloneValue(snapshot.liquidationLogRows)
+          : [];
+        state.latestLiquidationLog =
+          cloneValue(snapshot.latestLiquidationLog) ||
+          cloneValue(state.liquidationLogRows[0]) ||
+          null;
+
+        renderCurrentDueRows();
+        renderPlanExpenseRows();
+        renderInvestChannels();
+        renderWeeklyBudgetTables(state.weeklyBudgetRows);
+        renderBudgetCheckTable(state.budgetCheckRows);
+        renderLiquidationLogTable(state.liquidationLogRows);
+        seedActionDates();
+        updateFocusDateIndicators();
+        calculateLiquid();
+        calculateLiquidOverview();
+        autoCalculateRemaining();
+        updateInvestTable();
+        updateDashboard();
+
+        state.isHydrating = false;
+      }
+
+      function enterDemoMode() {
+        if (state.demoMode) return;
+        window.clearTimeout(state.autosaveTimer);
+        state.demoSnapshot = captureDemoSnapshot();
+        state.demoMode = true;
+        setDemoToggleState();
+        hydratePresentationState(getDemoDataset());
+        setSaveStatus("Demo mode is on. Live sync is paused.");
+      }
+
+      function exitDemoMode() {
+        if (!state.demoMode) return;
+        const snapshot = state.demoSnapshot;
+        window.clearTimeout(state.autosaveTimer);
+        state.demoMode = false;
+        setDemoToggleState();
+        if (!snapshot) {
+          setSaveStatus("Loading live data...");
+          loadSavedInputs();
+        } else if (snapshot?.inputsLoaded === false) {
+          hydratePresentationState(snapshot);
+          setSaveStatus("Loading live data...");
+          loadSavedInputs();
+        } else {
+          hydratePresentationState(snapshot);
+        }
+        state.demoSnapshot = null;
+        if (snapshot) {
+          setSaveStatus(
+            state.autosaveReady ? "Live sync is on." : "Loading live sync...",
+          );
+        }
+        loadBudgetCheck();
+        loadLiquidationLog();
+        loadWeeklyBudgetTransactions();
+      }
+
+      function toggleDemoMode() {
+        if (state.demoMode) {
+          openLiveUnlockGate();
+          return;
+        }
+        enterDemoMode();
+      }
+
+      function scheduleAutosave() {
+        if (!state.autosaveReady || state.isHydrating || state.demoMode) return;
+        window.clearTimeout(state.autosaveTimer);
+        setSaveStatus("Live sync pending...");
+        state.autosaveTimer = window.setTimeout(() => {
+          saveHTML(true);
+        }, 700);
+      }
+
+      function canWriteToBackend() {
+        if (!state.demoMode) return true;
+        alert("Demo mode is on. Switch back to Live View before sending anything to your sheet.");
+        return false;
       }
 
       function showSection(sectionId) {
@@ -4379,7 +5709,8 @@
 
         const bufferAbsorbed = Math.max(bufferGoal - bufferHeld, 0);
         const reserveDip = Math.max(availableAfterProtected * -1, 0);
-        const reserveRemaining = Math.max(reserveFloor - reserveDip, 0);
+        const reserveActual = reserveFloor - reserveDip;
+        const reserveRemaining = Math.max(reserveActual, 0);
         const deployGap = Math.max(deployGoal - displayCapital, 0);
 
         return {
@@ -4388,6 +5719,7 @@
           bufferAbsorbed,
           displayCapital,
           reserveDip,
+          reserveActual,
           reserveRemaining,
           deployGap,
           commitments: toNumber(dueTotal) + bufferHeld + reserveFloor,
@@ -4479,103 +5811,125 @@
         deployTarget,
         deployGap,
         reserveDip,
+        reserveActual,
         reserveRemaining,
         reserveTarget,
       }) {
         const absorbed = Math.max(bufferTarget - bufferHeld, 0);
-        const guidance = $("currentBufferGuidance");
-        const note = $("currentBudgetStateNote");
-        const alert = $("currentDeployAlert");
-        let guidanceText = "";
-        let noteText = "No buffer fund is currently being held in cash.";
-        let noteState = "is-good";
-        let alertTitle = "Protected Floor Reserve Is Being Tapped";
-        let alertText =
-          "The buffer fund compresses first. If there is still a gap after that, the protected floor reserve is being tapped and needs to be refilled with the next paycheck.";
+        const bufferCard = $("currentBufferCard");
+        const deployCard = $("currentDeployCard");
+        const reserveCard = $("currentReserveCard");
+        const bufferStage = $("currentBufferStage");
+        const deployStage = $("currentDeployStage");
+        const reserveStage = $("currentReserveStage");
+        let bufferStageTitle =
+          bufferTarget > 0 ? "Fully Available" : "No Buffer Planned";
+        let bufferStageText =
+          bufferTarget > 0
+            ? "Buffer is still intact and ready to transfer if needed."
+            : "No paycheck-plan buffer is currently being held in cash.";
+        let bufferStageTone = "is-good";
+        let bufferCardTone = "is-good";
+        let deployStageTitle =
+          displayCapital > 0 ? "On Plan" : "Fully Spoken For";
+        let deployStageText =
+          displayCapital > 0
+            ? "Capital to deploy is still tracking the paycheck plan."
+            : "Nothing is currently free to deploy.";
+        let deployStageTone = "is-good";
+        let deployCardTone = "is-good";
+        let reserveStageTitle = "Protected";
+        let reserveStageText =
+          "The protected floor reserve has not been touched.";
+        let reserveStageTone = "is-good";
+        let reserveCardTone = "is-good";
 
-        if (reserveDip > 0) {
-          noteText =
-            bufferTarget > 0
-              ? "Buffer fund is empty and the protected floor reserve is now being used."
-              : "Protected floor reserve is now being used.";
-          noteState = "is-danger";
-          guidanceText = `No buffer remains to transfer out, capital to deploy is $0, and ${formatCurrency(
+        if (reserveActual < 0) {
+          bufferStageTitle = "Empty";
+          bufferStageText = "The buffer fund has been fully used.";
+          bufferStageTone = "is-danger";
+          bufferCardTone = "is-danger";
+          deployStageTitle = "Drained";
+          deployStageText = "Capital to deploy is now at $0.";
+          deployStageTone = "is-danger";
+          deployCardTone = "is-danger";
+          reserveStageTitle = "Below $0";
+          reserveStageText = `${formatCurrency(
+            Math.abs(reserveActual),
+            0,
+          )} beyond the reserve floor is now uncovered and needs urgent refill.`;
+          reserveStageTone = "is-critical";
+          reserveCardTone = "is-critical";
+        } else if (reserveDip > 0) {
+          bufferStageTitle = "Empty";
+          bufferStageText = "The buffer fund has been fully used.";
+          bufferStageTone = "is-danger";
+          bufferCardTone = "is-danger";
+          deployStageTitle = "Drained";
+          deployStageText = "Capital to deploy is now at $0.";
+          deployStageTone = "is-danger";
+          deployCardTone = "is-danger";
+          reserveStageTitle = "Being Tapped";
+          reserveStageText = `${formatCurrency(
             reserveDip,
             0,
-          )} is being pulled from the protected floor reserve, leaving ${formatCurrency(
+          )} is being pulled from reserve, leaving ${formatCurrency(
             reserveRemaining,
             0,
-          )} against the ${formatCurrency(
-            reserveTarget,
-            0,
-          )} target.`;
-          alertText = `Capital to deploy is $0. The buffer fund has already compressed to $0, and ${formatCurrency(
-            reserveDip,
-            0,
-          )} is now being pulled from the protected floor reserve. That leaves ${formatCurrency(
-            reserveRemaining,
-            0,
-          )} in the reserve, which needs to be refilled with the next paycheck before capital is available to deploy again.`;
+          )} against the ${formatCurrency(reserveTarget, 0)} floor.`;
+          reserveStageTone = "is-danger";
+          reserveCardTone = "is-danger";
+        } else if (deployGap > 0 && deployTarget > 0) {
+          bufferStageTitle = "Empty";
+          bufferStageText = "The buffer fund has already been fully used.";
+          bufferStageTone = "is-danger";
+          bufferCardTone = "is-danger";
+          deployStageTitle = displayCapital > 0 ? "Reduced" : "Drained";
+          deployStageText =
+            displayCapital > 0
+              ? `${formatCurrency(
+                  deployGap,
+                  0,
+                )} of the paycheck-plan deploy amount has been lost.`
+              : "Capital to deploy is now at $0 until cash improves.";
+          deployStageTone = displayCapital > 0 ? "is-warning" : "is-danger";
+          deployCardTone = deployStageTone;
         } else if (absorbed > 0) {
-          noteText = `${formatCurrency(
+          bufferStageTitle = "Compressing";
+          bufferStageText = `${formatCurrency(
             absorbed,
             0,
-          )} of the buffer fund is already covering the gap so deployable cash can stay aligned with the paycheck plan.`;
-          noteState = "is-warning";
-          guidanceText = `${formatCurrency(
+          )} has already been absorbed, leaving ${formatCurrency(
             bufferHeld,
             0,
-          )} can still transfer out as buffer, and ${formatCurrency(
+          )} still available to transfer.`;
+          bufferStageTone = "is-warning";
+          bufferCardTone = "is-warning";
+          deployStageTitle = "On Plan";
+          deployStageText = `${formatCurrency(
             displayCapital,
             0,
-          )} can still be deployed.`;
-        } else if (bufferHeld > 0 || displayCapital > 0) {
-          noteText =
-            bufferTarget > 0
-              ? "Full buffer fund is still available to transfer."
-              : noteText;
-          noteState = "is-good";
-          guidanceText =
-            bufferTarget > 0
-              ? `${formatCurrency(
-                  bufferHeld,
-                  0,
-                )} can still transfer out as buffer, and ${formatCurrency(
-                  displayCapital,
-                  0,
-                )} can still be deployed.`
-              : `${formatCurrency(
-                  displayCapital,
-                  0,
-                )} can still be deployed.`;
-        } else if (deployGap > 0 && deployTarget > 0) {
-          noteText = "Buffer fund is empty, and capital to deploy has started falling below the paycheck plan target.";
-          noteState = "is-danger";
-          guidanceText = `Buffer fund is at $0, capital to deploy is ${formatCurrency(
-            displayCapital,
-            0,
-          )}, and ${formatCurrency(
-            deployGap,
-            0,
-          )} of the paycheck plan deploy target is no longer available.`;
+          )} can still be deployed on plan.`;
+          deployStageTone = "is-good";
+        } else if (displayCapital <= 0) {
+          deployStageTitle = "Fully Spoken For";
+          deployStageText = "Current cash is fully spoken for before anything can deploy.";
+          deployStageTone = "is-warning";
+          deployCardTone = "is-warning";
         }
 
-        setText("currentBudgetStateNote", noteText);
-        if (note) {
-          note.classList.remove("is-good", "is-warning", "is-danger");
-          note.classList.add(noteState);
-        }
-
-        if (guidance) {
-          guidance.hidden = !guidanceText;
-          guidance.textContent = guidanceText;
-        }
-
-        if (alert) {
-          alert.hidden = !(reserveDip > 0);
-          setText("currentDeployAlertTitle", alertTitle);
-          setText("currentDeployAlertText", alertText);
-        }
+        setText("currentBufferStageTitle", bufferStageTitle);
+        setText("currentBufferStageText", bufferStageText);
+        setText("currentDeployStageTitle", deployStageTitle);
+        setText("currentDeployStageText", deployStageText);
+        setText("currentReserveStageTitle", reserveStageTitle);
+        setText("currentReserveStageText", reserveStageText);
+        applyStatusTone(bufferCard, bufferCardTone);
+        applyStatusTone(deployCard, deployCardTone);
+        applyStatusTone(reserveCard, reserveCardTone);
+        applyStatusTone(bufferStage, bufferStageTone);
+        applyStatusTone(deployStage, deployStageTone);
+        applyStatusTone(reserveStage, reserveStageTone);
       }
 
       function getLegacyCurrentDueRows() {
@@ -4718,6 +6072,7 @@
         });
 
         setText("currentDueTotal", formatCurrency(getCurrentDueTotal(), 0));
+        scheduleAutosave();
       }
 
       function getLegacyPlanExpenseRows() {
@@ -4834,6 +6189,199 @@
           serialized.value = JSON.stringify(state.planExpenseRows);
         }
         setText("planExpenseTotal", formatCurrency(getPlanExpenseTotal(), 0));
+        scheduleAutosave();
+      }
+
+      function getLegacyInvestChannels() {
+        return [
+          {
+            label: "Planned Buffer",
+            percent: 70,
+            role: "Future obligation",
+          },
+          {
+            label: "Investing",
+            percent: 30,
+            role: "Long-term growth",
+          },
+        ];
+      }
+
+      function sanitizeInvestChannels(rows) {
+        return (Array.isArray(rows) ? rows : [])
+          .map((row) => ({
+            label: String(row?.label ?? "").trim() || "Channel",
+            percent: toNumber(row?.percent),
+            role: String(row?.role ?? "").trim() || "Destination",
+          }))
+          .filter((row) => row.label);
+      }
+
+      function initializeInvestChannels() {
+        const raw = $("investChannelsData")?.value || "";
+        const lockValue = $("investChannelsLocked")?.value;
+        let rows = [];
+
+        state.investChannelsLocked =
+          lockValue === undefined || lockValue === ""
+            ? true
+            : isTruthy(lockValue);
+
+        if (raw) {
+          try {
+            rows = sanitizeInvestChannels(JSON.parse(raw));
+          } catch (error) {
+            console.error("Error parsing saved deployment channels:", error);
+          }
+        }
+
+        if (!rows.length) {
+          rows = getLegacyInvestChannels();
+        }
+
+        if (!rows.length) {
+          rows = [{ label: "Channel", percent: 100, role: "Destination" }];
+        }
+
+        state.investChannels = rows;
+        renderInvestChannels();
+      }
+
+      function renderInvestChannels() {
+        const list = $("investChannelList");
+        if (!list) return;
+
+        if (!state.investChannels.length) {
+          state.investChannels = [
+            { label: "Channel", percent: 100, role: "Destination" },
+          ];
+        }
+
+        const locked = state.investChannelsLocked;
+        const liquid = Math.max(toNumber($("investLiquidAmount")?.value), 0);
+        const paycheck = toNumber($("overviewPaycheck")?.value);
+        const tablePanel = list.closest(".money-map-table-panel");
+        const lockButton = $("toggleInvestChannelsLockBtn");
+        const addButton = $("addInvestChannelBtn");
+
+        if (tablePanel) {
+          tablePanel.dataset.locked = locked ? "true" : "false";
+        }
+
+        if (lockButton) {
+          lockButton.classList.toggle("is-locked", locked);
+          lockButton.classList.toggle("is-unlocked", !locked);
+          lockButton.setAttribute("aria-pressed", String(locked));
+        }
+
+        setText(
+          "investChannelsLockLabel",
+          locked ? "Locked" : "Editing",
+        );
+
+        if (addButton) {
+          addButton.disabled = locked;
+        }
+
+        list.innerHTML = state.investChannels
+          .map((row, index) => {
+            const percent = toNumber(row.percent);
+            const amount = liquid * (percent / 100);
+            const paycheckPercent = paycheck ? (amount / paycheck) * 100 : 0;
+
+            const labelCell = locked
+              ? `<div class="field-readout">${escapeHtml(row.label)}</div>`
+              : `
+                  <div class="field">
+                    <input
+                      type="text"
+                      data-field="label"
+                      value="${escapeHtml(row.label)}"
+                      placeholder="Channel"
+                    />
+                  </div>
+                `;
+
+            const percentCell = locked
+              ? `<div class="field-readout field-readout-compact">${formatPercent(
+                  percent,
+                  percent % 1 === 0 ? 0 : 1,
+                )}</div>`
+              : `
+                  <div class="input-shell suffix-shell invest-percent-shell">
+                    <input
+                      type="number"
+                      data-field="percent"
+                      step="0.1"
+                      value="${compactNumber(percent)}"
+                      placeholder="0"
+                    />
+                    <span>%</span>
+                  </div>
+                `;
+
+            const roleCell = locked
+              ? `<div class="field-readout">${escapeHtml(row.role)}</div>`
+              : `
+                  <div class="field">
+                    <input
+                      type="text"
+                      data-field="role"
+                      value="${escapeHtml(row.role)}"
+                      placeholder="Role"
+                    />
+                  </div>
+                `;
+
+            return `
+              <tr class="invest-channel-row${locked ? " is-locked" : ""}" data-index="${index}">
+                <td data-label="Channel">
+                  ${labelCell}
+                </td>
+                <td data-label="Deploy %">
+                  ${percentCell}
+                </td>
+                <td data-label="Amount" data-field-display="amount">${formatCurrency(amount, 2)}</td>
+                <td data-label="Paycheck %" data-field-display="paycheckPercent">${formatPercent(
+                  paycheckPercent,
+                  2,
+                )}</td>
+                <td data-label="Role">
+                  ${roleCell}
+                </td>
+                <td class="invest-channel-remove-cell">
+                  ${
+                    locked
+                      ? ""
+                      : `<button
+                          class="icon-button"
+                          type="button"
+                          data-action="remove-invest-channel"
+                          aria-label="Remove deployment channel"
+                          ${state.investChannels.length === 1 ? "disabled" : ""}
+                        >
+                          ×
+                        </button>`
+                  }
+                </td>
+              </tr>
+            `;
+          })
+          .join("");
+
+        syncInvestChannels();
+      }
+
+      function syncInvestChannels() {
+        const serialized = $("investChannelsData");
+        if (serialized) {
+          serialized.value = JSON.stringify(state.investChannels);
+        }
+        const lockedField = $("investChannelsLocked");
+        if (lockedField) {
+          lockedField.value = state.investChannelsLocked ? "true" : "false";
+        }
+        scheduleAutosave();
       }
 
       function getPlanSummary() {
@@ -4857,42 +6405,130 @@
       }
 
       function getFlowSections(liquid, paycheck) {
-        return [
-          {
-            label: "Roth",
-            percent: toNumber($("investRothPercent").value),
-          },
-          {
-            label: "Flex",
-            percent: toNumber($("investFunPercent").value),
-          },
-          {
-            label: "Planned Buffer",
-            percent: toNumber($("investPlannedPercent").value),
-          },
-          {
-            label: "Cash Reserve",
-            percent: toNumber($("investCashPercent").value),
-          },
-          {
-            label: "Wedding",
-            percent: toNumber($("investWeddingPercent").value),
-          },
-          {
-            label: "Down Payment",
-            percent: toNumber($("investDownPercent").value),
-          },
-          {
-            label: "Investing",
-            percent: toNumber($("investInvestPercent").value),
-          },
-        ].map((section) => ({
+        return sanitizeInvestChannels(state.investChannels).map((section) => ({
           ...section,
-          amount: liquid * (section.percent / 100),
+          amount: liquid * (toNumber(section.percent) / 100),
           paycheckPercent: paycheck
-            ? ((liquid * (section.percent / 100)) / paycheck) * 100
+            ? ((liquid * (toNumber(section.percent) / 100)) / paycheck) * 100
             : 0,
         }));
+      }
+
+      function getChannelTone(label, role) {
+        const haystack = `${label} ${role}`.toLowerCase();
+        if (haystack.includes("buffer")) return "buffer";
+        if (haystack.includes("reserve")) return "reserve";
+        if (
+          haystack.includes("invest") ||
+          haystack.includes("roth") ||
+          haystack.includes("retire") ||
+          haystack.includes("brokerage")
+        ) {
+          return "growth";
+        }
+        if (
+          haystack.includes("wedding") ||
+          haystack.includes("house") ||
+          haystack.includes("down payment") ||
+          haystack.includes("goal")
+        ) {
+          return "optional";
+        }
+        return "hold";
+      }
+
+      function renderMoneyMapCascade({ liquid, sections, totalAmount }) {
+        const container = $("moneyMapBuckets");
+        if (!container) return;
+
+        const sourceAmount = Math.max(liquid, 0);
+        const difference = sourceAmount - totalAmount;
+        const maxAmount = Math.max(
+          sourceAmount,
+          ...sections.map((section) => section.amount),
+          Math.abs(difference),
+          1,
+        );
+        const buckets = sections
+          .filter((section) => section.amount > 0)
+          .map((section) => ({
+            ...section,
+            tone: getChannelTone(section.label, section.role),
+          }));
+
+        if (difference > 0) {
+          buckets.push({
+            label: "Undeployed Cash",
+            role: "Still sitting in the source pool.",
+            percent: sourceAmount ? (difference / sourceAmount) * 100 : 0,
+            paycheckPercent: 0,
+            amount: difference,
+            tone: "hold",
+          });
+        }
+
+        if (difference < 0) {
+          buckets.push({
+            label: "Overflow",
+            role: "Channel percentages are routing more than is available.",
+            percent: sourceAmount ? (Math.abs(difference) / sourceAmount) * 100 : 0,
+            paycheckPercent: 0,
+            amount: Math.abs(difference),
+            tone: "overflow",
+          });
+        }
+
+        if (!buckets.length) {
+          container.innerHTML = `
+            <article class="money-map-source-card">
+              <span>Source Pool</span>
+              <strong>${formatCurrency(sourceAmount, 0)}</strong>
+              <p>Capital to deploy is ready. Unlock the channels to start routing it.</p>
+            </article>
+          `;
+          return;
+        }
+
+        container.innerHTML = `
+          <article class="money-map-source-card">
+            <span>Source Pool</span>
+            <strong>${formatCurrency(sourceAmount, 0)}</strong>
+            <p>Capital to deploy pours out of the source pool and settles into each active bucket.</p>
+          </article>
+          <div class="money-map-runoff" aria-hidden="true"></div>
+          <div class="money-map-bucket-grid">
+            ${buckets
+              .map((bucket) => {
+                const fillLevel = Math.max(
+                  12,
+                  Math.min(92, (bucket.amount / maxAmount) * 100),
+                );
+                const vesselHeight = Math.round(
+                  172 + (bucket.amount / maxAmount) * 128,
+                );
+                return `
+                  <article
+                    class="money-map-bucket"
+                    data-tone="${escapeHtml(bucket.tone)}"
+                    style="--bucket-fill: ${fillLevel}%; --bucket-height: ${vesselHeight}px;"
+                  >
+                    <div class="money-map-bucket-vessel">
+                      <div class="money-map-bucket-fill" aria-hidden="true"></div>
+                      <div class="money-map-bucket-content">
+                        <div class="money-map-bucket-head">
+                          <p class="money-map-bucket-name">${escapeHtml(
+                            bucket.label,
+                          )}</p>
+                          <strong>${formatCurrency(bucket.amount, 0)}</strong>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                `;
+              })
+              .join("")}
+          </div>
+        `;
       }
 
       function updateDashboard() {
@@ -4921,6 +6557,7 @@
         const currentReserveDip = currentState.reserveDip;
         const currentSafe = currentState.displayCapital;
         const reserveRemaining = currentState.reserveRemaining;
+        const reserveActual = currentState.reserveActual;
 
         const plannedDeploy = deployTarget;
         const flowInputValue = $("investLiquidAmount")?.value ?? "";
@@ -4939,15 +6576,15 @@
 
         setText("dashboardCurrentSafeMetric", formatCurrency(currentSafe, 0));
         setText("dashboardPlanLeftMetric", formatCurrency(plannedDeploy, 0));
-        setText("dashboardReserveMetric", formatCurrency(reserveRemaining, 0));
+        setText("dashboardReserveMetric", formatCurrency(reserveActual, 0));
         setText("dashboardFlowReadyMetric", formatCurrency(flowCarry, 0));
         $("dashboardReserveMetric")?.classList.toggle(
           "negative",
-          reserveRemaining < reserveFloor,
+          reserveActual < reserveFloor,
         );
         $("dashboardReserveMetric")?.classList.toggle(
           "neutral",
-          reserveRemaining >= reserveFloor,
+          reserveActual >= reserveFloor,
         );
 
         setText("dashboardCashMetric", formatCurrency(cash, 0));
@@ -4969,90 +6606,55 @@
             ? `${formatCurrency(
                 currentSafe,
                 0,
-              )} is currently available as capital to deploy after buffer transfer room and the protected floor reserve are accounted for.`
+              )} is free to deploy right now.`
             : currentReserveDip > 0
-              ? `${formatCurrency(
+              ? `Reserve is currently covering ${formatCurrency(
                   currentReserveDip,
                   0,
-                )} is currently coming out of the protected floor reserve, leaving ${formatCurrency(
-                  reserveRemaining,
-                  0,
-                )}.`
-            : "Capital to deploy is currently $0 because current cash is fully spoken for.",
+                )}, leaving ${formatCurrency(reserveActual, 0)}.`
+            : "Current cash is fully spoken for right now.",
         );
         setText(
           "dashboardPlanNarrative",
           plan.pay > 0
-            ? `The current paycheck plan leaves ${formatCurrency(
+            ? `The next paycheck is aiming to leave ${formatCurrency(
                 plannedDeploy,
                 0,
-              )} after planned expenses and the misc. budget are covered.`
-            : "Set the paycheck amount to see the intended structure here.",
+              )} deployable.`
+            : "Set the paycheck to define the target.",
         );
 
         setText(
           "dashboardTimingHeadline",
-          totalBudget > 0
-            ? "Buffer still in cash"
+          currentReserveDip > 0
+            ? "Reserve Being Tapped"
+            : totalBudget > 0
+            ? "Buffer Still Intact"
             : bufferTarget > 0
-              ? "No buffer left in cash"
-              : "No buffer fund",
+              ? "Buffer Fully Used"
+              : "No Buffer Planned",
         );
         setText(
           "dashboardTimingCopy",
           bufferTarget <= 0 && totalBudget <= 0
-            ? `No buffer fund is being held in cash right now, and the protected floor reserve remains ${formatCurrency(
-                reserveRemaining,
-                0,
-              )}.`
+            ? "No buffer is being held."
             : currentReserveDip > 0
-              ? `${formatCurrency(
-                  currentReserveDip,
-                  0,
-                )} is now coming out of the protected floor reserve after the buffer fund has compressed to $0, leaving ${formatCurrency(
-                  reserveRemaining,
-                  0,
-                )}.`
+              ? `${formatCurrency(currentReserveDip, 0)} is coming from reserve.`
             : budgetVariance === 0
-              ? `${formatCurrency(
-                  totalBudget,
-                  0,
-                )} is still sitting in current cash as the full funded buffer, with the protected floor reserve still at ${formatCurrency(
-                  reserveRemaining,
-                  0,
-                )}.`
+              ? `${formatCurrency(totalBudget, 0)} of buffer is still intact.`
               : totalBudget < bufferTarget
-                ? `${formatCurrency(
-                    bufferTarget - totalBudget,
-                    0,
-                  )} of the buffer fund is already covering the gap, leaving ${formatCurrency(
-                    totalBudget,
-                    0,
-                  )} still in cash while the protected floor reserve remains ${formatCurrency(
-                    reserveRemaining,
-                    0,
-                  )}.`
-                : `${formatCurrency(
-                    totalBudget,
-                    0,
-                  )} is being held back, which is ${formatCurrency(
-                    Math.abs(budgetVariance),
-                    0,
-                  )} above the paycheck plan buffer, while the protected floor reserve remains ${formatCurrency(
-                    reserveRemaining,
-                    0,
-                  )}.`,
+                ? `${formatCurrency(bufferTarget - totalBudget, 0)} used, ${formatCurrency(totalBudget, 0)} left.`
+                : `${formatCurrency(totalBudget, 0)} held, ${formatCurrency(Math.abs(budgetVariance), 0)} above plan.`,
         );
         setText(
           "dashboardVarianceHeadline",
-          "Plan vs. current variance",
+          variance === 0 ? "On Plan" : variance > 0 ? "Above Plan" : "Below Plan",
         );
         setText(
           "dashboardVarianceCopy",
-          `Current capital to deploy is ${formatCurrency(
-            Math.abs(variance),
-            0,
-          )} ${variance >= 0 ? "above" : "below"} the planned leftover target.`,
+          variance === 0
+            ? "Current deployable cash matches the paycheck plan."
+            : `${formatCurrency(Math.abs(variance), 0)} ${variance > 0 ? "above" : "below"} the paycheck plan target.`,
         );
 
         setText("dashboardCarryForwardMetric", formatCurrency(flowCarry, 0));
@@ -5068,27 +6670,25 @@
             ? `${formatCurrency(
                 flowCarry,
                 0,
-              )} is currently set to deploy, led by ${topChannel.label}.`
-            : "Set capital to deploy and deployment percentages to preview the money map.",
+              )} is currently routed, led by ${topChannel.label}.`
+            : "Set channels in Money Map to preview the routing.",
         );
         setText(
           "dashboardHistoryNote",
-          "Recent checkpoint notes will appear here after they are logged.",
+          "No checkpoint logged yet.",
         );
         setText("dashboardRecentFlowMetric", "None yet");
 
         if (state.latestBudgetCheck) {
           setText(
             "dashboardHistoryNote",
-            `Latest checkpoint: ${formatLongDate(
-              state.latestBudgetCheck.Date,
-            )} with ${formatCurrency(
-              toNumber(state.latestBudgetCheck.Budget),
-              0,
-            )} budgeted and ${formatCurrency(
+            `${formatLongDate(state.latestBudgetCheck.Date)} checkpoint: ${formatCurrency(
               toNumber(state.latestBudgetCheck.Spent),
               0,
-            )} spent.`,
+            )} spent of ${formatCurrency(
+              toNumber(state.latestBudgetCheck.Budget),
+              0,
+            )}.`,
           );
         }
 
@@ -5101,7 +6701,16 @@
 
         setText(
           "dashboardStatusNote",
-          "Reserved for future status signals like reserve health, deployment confidence, and timing alerts.",
+          reserveActual < reserveFloor
+            ? `Protected reserve is below its ${formatCurrency(
+                reserveFloor,
+                0,
+              )} floor.`
+            : currentReserveDip > 0
+              ? "Reserve is being used to stay current."
+              : currentSafe > 0
+                ? "Capital is available to deploy."
+                : "Nothing is currently free to deploy.",
         );
       }
 
@@ -5112,6 +6721,7 @@
         const cash = Math.max(data.cash, 0);
         const deployableCapital = Math.max(data.displayCapital, 0);
         const reserveDip = Math.max(data.reserveDip, 0);
+        const reserveBelowZero = Math.max((data.reserveActual ?? 0) * -1, 0);
         const shareOfCash = (amount) => (cash > 0 ? (amount / cash) * 100 : 0);
         const claims = [
           {
@@ -5154,7 +6764,12 @@
             tone: reserveDip > 0 ? "shortfall" : "reserve",
             color: reserveDip > 0 ? "#dc2626" : "#64748b",
             description:
-              reserveDip > 0
+              reserveBelowZero > 0
+                ? `Reserve is overdrawn by ${formatCurrency(
+                    reserveBelowZero,
+                    0,
+                  )} beyond $0.`
+                : reserveDip > 0
                 ? `${formatCurrency(
                     reserveDip,
                     0,
@@ -5171,7 +6786,12 @@
           tone: reserveDip > 0 ? "shortfall" : "deploy",
           color: reserveDip > 0 ? "#dc2626" : "#2563eb",
           description:
-            reserveDip > 0
+            reserveBelowZero > 0
+              ? `No capital is left to deploy, and the reserve is overdrawn by ${formatCurrency(
+                  reserveBelowZero,
+                  0,
+                )}.`
+              : reserveDip > 0
               ? `No capital is left to deploy. ${formatCurrency(
                   reserveDip,
                   0,
@@ -5302,6 +6922,7 @@
         const afterDue = Math.max(afterDebt - data.dueTotal, 0);
         const afterBuffer = Math.max(afterDue - data.bufferHeld, 0);
         const reserveDip = Math.max(data.reserveDip, 0);
+        const reserveBelowZero = Math.max((data.reserveActual ?? 0) * -1, 0);
         const finalAmount = Math.max(data.displayCapital, 0);
         const widthFor = (amount) =>
           cash > 0 && amount > 0
@@ -5370,15 +6991,24 @@
                 ? "linear-gradient(135deg, #0f172a, #2563eb)"
                 : "linear-gradient(135deg, #dc2626, #f97316)",
             chipLabel:
-              reserveDip <= 0
+              reserveBelowZero > 0
+                ? "Reserve Overdraw"
+                : reserveDip <= 0
                 ? "Protected Floor Reserve Left"
                 : "Reserve Pull",
             chipValue:
-              reserveDip <= 0
+              reserveBelowZero > 0
+                ? formatCurrency(reserveBelowZero, 0)
+                : reserveDip <= 0
                 ? formatCurrency(data.reserveRemaining, 0)
                 : formatCurrency(reserveDip, 0),
             noteText:
-              reserveDip <= 0
+              reserveBelowZero > 0
+                ? `Reserve is ${formatCurrency(
+                    reserveBelowZero,
+                    0,
+                  )} below $0 and needs urgent refill.`
+                : reserveDip <= 0
                 ? `${formatPercent(cash > 0 ? (finalAmount / cash) * 100 : 0, 0)} of starting cash remains available to deploy.`
                 : `${formatCurrency(
                     data.reserveRemaining,
@@ -5447,6 +7077,7 @@
           bufferAbsorbed,
           displayCapital,
           reserveDip,
+          reserveActual,
           reserveRemaining,
           deployGap,
           commitments,
@@ -5458,55 +7089,21 @@
 
         setText("currentDueTotal", formatCurrency(futureTotal, 0));
         setText("currentBufferAvailable", formatCurrency(bufferHeld, 0));
+        setText("currentReserveReadout", formatCurrency(reserveActual, 0));
         setText("weeklyCheckCashMetric", formatCurrency(cash, 0));
         setText("weeklyCheckExpensesMetric", formatCurrency(commitments, 0));
         setText("weeklyCheckBufferMetric", formatCurrency(displayCapital, 0));
-        setText("weeklyCheckReserveMetric", formatCurrency(reserveRemaining, 0));
+        setText("weeklyCheckReserveMetric", formatCurrency(reserveActual, 0));
         $("weeklyCheckReserveMetric")?.classList.toggle(
           "negative",
-          reserveRemaining < reserveTarget,
+          reserveActual < reserveTarget,
         );
         $("weeklyCheckReserveMetric")?.classList.toggle(
           "neutral",
-          reserveRemaining >= reserveTarget,
+          reserveActual >= reserveTarget,
         );
 
-        const narrative =
-          displayCapital > 0
-            ? `${formatCurrency(
-                displayCapital,
-                2,
-              )} is available as capital to deploy after buffer fund transfer room and the protected floor reserve are accounted for.`
-            : reserveDip > 0
-              ? `${formatCurrency(
-                  reserveDip,
-                  2,
-                )} is now being pulled from the protected floor reserve, leaving ${formatCurrency(
-                  reserveRemaining,
-                  0,
-                )} against the ${formatCurrency(
-                  reserveTarget,
-                  0,
-                )} target.`
-              : bufferAbsorbed > 0
-                ? `The buffer fund has compressed to ${formatCurrency(
-                    bufferHeld,
-                    0,
-                  )} so capital to deploy can stay aligned with the paycheck plan.`
-              : deployGap > 0
-                ? `Buffer fund is fully used, and capital to deploy is now ${formatCurrency(
-                    displayCapital,
-                    0,
-                  )} versus the ${formatCurrency(
-                    deployTarget,
-                    0,
-                  )} paycheck plan target.`
-                : "Capital to deploy is currently $0 because current cash is fully spoken for.";
-        setText("weeklyCheckNarrative", narrative);
-
-        if (!$("investLiquidAmount").value) {
-          $("investLiquidAmount").value = compactNumber(displayCapital);
-        }
+        setInputValue("investLiquidAmount", compactNumber(displayCapital));
 
         updateWeeklyCheckCharts({
           cash,
@@ -5525,11 +7122,11 @@
           bufferTarget,
           bufferAbsorbed,
           reserveFloor: reserveTarget,
+          reserveActual,
           reserveRemaining,
           reserveDip,
         });
 
-        updateDashboard();
         updateCurrentBufferGuidance({
           bufferTarget,
           bufferHeld,
@@ -5537,9 +7134,11 @@
           deployTarget,
           deployGap,
           reserveDip,
+          reserveActual,
           reserveRemaining,
           reserveTarget,
         });
+        updateInvestTable();
 
         return displayCapital;
       }
@@ -5752,6 +7351,86 @@
         updateSplitTotal();
       }
 
+      function renderBudgetCheckTable(rows) {
+        const tbody = $("budgetCheckTable")?.querySelector("tbody") || null;
+        const sorted = [...(Array.isArray(rows) ? rows : [])].sort(
+          (a, b) =>
+            (parseDate(b.Date)?.getTime() || 0) -
+            (parseDate(a.Date)?.getTime() || 0),
+        );
+
+        state.budgetCheckRows = sorted;
+        state.latestBudgetCheck = sorted[0] || null;
+
+        if (!tbody) {
+          updateDashboard();
+          return;
+        }
+
+        if (!sorted.length) {
+          renderEmptyRow(tbody, 4, "No budget check entries yet.");
+          updateDashboard();
+          return;
+        }
+
+        tbody.innerHTML = sorted
+          .map(
+            (row) => `
+              <tr>
+                <td>${escapeHtml(normalizeDateValue(row.Date))}</td>
+                <td>${formatCurrency(toNumber(row.Budget), 2)}</td>
+                <td>${formatCurrency(toNumber(row.Spent), 2)}</td>
+                <td>${escapeHtml(row.Notes || "")}</td>
+              </tr>
+            `,
+          )
+          .join("");
+        updateDashboard();
+      }
+
+      function renderLiquidationLogTable(rows) {
+        const tbody = $("liquidationLogTable")?.querySelector("tbody") || null;
+        const sorted = [...(Array.isArray(rows) ? rows : [])].sort(
+          (a, b) =>
+            (parseDate(b.Date)?.getTime() || 0) -
+            (parseDate(a.Date)?.getTime() || 0),
+        );
+
+        state.liquidationLogRows = sorted;
+        state.latestLiquidationLog = sorted[0] || null;
+
+        if (!tbody) {
+          updateDashboard();
+          return;
+        }
+
+        if (!sorted.length) {
+          renderEmptyRow(tbody, 7, "No deployment entries yet.");
+          updateDashboard();
+          return;
+        }
+
+        tbody.innerHTML = sorted
+          .map(
+            (row) => `
+              <tr>
+                <td>${escapeHtml(row["Liquidation Number"] || "")}</td>
+                <td>${formatCurrency(
+                  toNumber(row["Total Liquidation Amount"]),
+                  2,
+                )}</td>
+                <td>${escapeHtml(normalizeDateValue(row.Date))}</td>
+                <td>${escapeHtml(row["Liquidation Transfer"] || "")}</td>
+                <td>${escapeHtml(row.Crypto || "")}</td>
+                <td>${escapeHtml(row.Fidelity || "")}</td>
+                <td>${escapeHtml(row.Wealthfront || "")}</td>
+              </tr>
+            `,
+          )
+          .join("");
+        updateDashboard();
+      }
+
       async function safeFetchJson(url) {
         const response = await fetch(url, { cache: "no-store" });
         if (!response.ok) {
@@ -5763,14 +7442,18 @@
       async function loadSavedInputs() {
         try {
           const data = await safeFetchJson(apiUrl);
+          if (state.demoMode) return;
           Object.entries(data || {}).forEach(([key, value]) => {
             setInputValue(key, value);
           });
         } catch (error) {
           console.error("Error loading saved inputs:", error);
         } finally {
+          if (state.demoMode) return;
+          state.isHydrating = true;
           initializeCurrentDueRows();
           initializePlanExpenses();
+          initializeInvestChannels();
           seedManualDate();
           seedActionDates();
           updateFocusDateIndicators();
@@ -5781,96 +7464,43 @@
           if (state.weeklyBudgetRows.length) {
             renderWeeklyBudgetTables(state.weeklyBudgetRows);
           }
+          state.isHydrating = false;
+          state.inputsLoaded = true;
+          state.autosaveReady = true;
+          setSaveStatus("Live sync is on.");
         }
       }
 
       async function loadBudgetCheck() {
-        const tbody = $("budgetCheckTable")?.querySelector("tbody") || null;
         try {
           const rows = await safeFetchJson(apiUrl3);
-          const sorted = [...rows].sort(
-            (a, b) =>
-              (parseDate(b.Date)?.getTime() || 0) -
-              (parseDate(a.Date)?.getTime() || 0),
-          );
-          state.latestBudgetCheck = sorted[0] || null;
-
-          if (!sorted.length) {
-            if (tbody) {
-              renderEmptyRow(tbody, 4, "No budget check entries yet.");
-            }
-            updateDashboard();
-            return;
-          }
-
-          if (tbody) {
-            tbody.innerHTML = sorted
-              .map(
-                (row) => `
-                  <tr>
-                    <td>${escapeHtml(normalizeDateValue(row.Date))}</td>
-                    <td>${formatCurrency(toNumber(row.Budget), 2)}</td>
-                    <td>${formatCurrency(toNumber(row.Spent), 2)}</td>
-                    <td>${escapeHtml(row.Notes || "")}</td>
-                  </tr>
-                `,
-              )
-              .join("");
-          }
-          updateDashboard();
+          if (state.demoMode) return;
+          renderBudgetCheckTable(rows);
         } catch (error) {
           console.error("Error loading budget check data:", error);
+          if (state.demoMode) return;
+          state.budgetCheckRows = [];
           state.latestBudgetCheck = null;
+          const tbody = $("budgetCheckTable")?.querySelector("tbody") || null;
           if (tbody) {
-            renderEmptyRow(
-              tbody,
-              4,
-              "Unable to load budget check data right now.",
-            );
+            renderEmptyRow(tbody, 4, "Unable to load budget check data right now.");
           }
           updateDashboard();
         }
       }
 
       async function loadLiquidationLog() {
-        const tbody = $("liquidationLogTable").querySelector("tbody");
         try {
           const rows = await safeFetchJson(apiUrl2);
-          const sorted = [...rows].sort(
-            (a, b) =>
-              (parseDate(b.Date)?.getTime() || 0) -
-              (parseDate(a.Date)?.getTime() || 0),
-          );
-          state.latestLiquidationLog = sorted[0] || null;
-
-          if (!sorted.length) {
-            renderEmptyRow(tbody, 7, "No deployment entries yet.");
-            updateDashboard();
-            return;
-          }
-
-          tbody.innerHTML = sorted
-            .map(
-              (row) => `
-                <tr>
-                  <td>${escapeHtml(row["Liquidation Number"] || "")}</td>
-                  <td>${formatCurrency(
-                    toNumber(row["Total Liquidation Amount"]),
-                    2,
-                  )}</td>
-                  <td>${escapeHtml(normalizeDateValue(row.Date))}</td>
-                  <td>${escapeHtml(row["Liquidation Transfer"] || "")}</td>
-                  <td>${escapeHtml(row.Crypto || "")}</td>
-                  <td>${escapeHtml(row.Fidelity || "")}</td>
-                  <td>${escapeHtml(row.Wealthfront || "")}</td>
-                </tr>
-              `,
-            )
-            .join("");
-          updateDashboard();
+          if (state.demoMode) return;
+          renderLiquidationLogTable(rows);
         } catch (error) {
           console.error("Error loading liquidation log:", error);
+          if (state.demoMode) return;
+          state.liquidationLogRows = [];
           state.latestLiquidationLog = null;
+          const tbody = $("liquidationLogTable")?.querySelector("tbody") || null;
+          if (!tbody) return;
           renderEmptyRow(tbody, 7, "Unable to load deployment log right now.");
           updateDashboard();
         }
@@ -5880,10 +7510,12 @@
         const txnBody = $("wb-txn-table").querySelector("tbody");
         try {
           const rows = await safeFetchJson(apiUrl4);
+          if (state.demoMode) return;
           state.weeklyBudgetRows = Array.isArray(rows) ? rows : [];
           renderWeeklyBudgetTables(state.weeklyBudgetRows);
         } catch (error) {
           console.error("Error loading weekly budget transactions:", error);
+          if (state.demoMode) return;
           renderEmptyRow(
             txnBody,
             4,
@@ -5983,10 +7615,22 @@
       function updateOverviewCharts(data) {
         const rankedExpenses = [...state.planExpenseRows]
           .filter((row) => row.amount > 0)
-          .sort((a, b) => b.amount - a.amount)
-          .slice(0, 6);
+          .sort((a, b) => b.amount - a.amount);
+        const overviewCanvas = $("pieChartOverview");
+        const expenseColors = rankedExpenses.map((_, index) => {
+          const hue = 220 - ((index * 17) % 70);
+          const lightness = 46 + ((index * 7) % 18);
+          return `hsl(${hue}, 84%, ${lightness}%)`;
+        });
 
-        destroyChart("overviewBar");
+        if (overviewCanvas) {
+          overviewCanvas.style.setProperty(
+            "--overview-chart-height",
+            `${Math.max(280, rankedExpenses.length * 44 + 100)}px`,
+          );
+        }
+
+        destroyChart("overviewPie");
         renderPlanFlowMap(data);
 
         ensureChart(
@@ -6003,14 +7647,9 @@
                 data: rankedExpenses.length
                   ? rankedExpenses.map((entry) => entry.amount)
                   : [0],
-                backgroundColor: [
-                  "#1d4ed8",
-                  "#2563eb",
-                  "#3b82f6",
-                  "#60a5fa",
-                  "#38bdf8",
-                  "#0ea5e9",
-                ],
+                backgroundColor: rankedExpenses.length
+                  ? expenseColors
+                  : ["#1d4ed8"],
                 borderWidth: 0,
               },
             ],
@@ -6033,6 +7672,7 @@
           liquid,
           reserveDip,
         } = getPlanSummary();
+        const miscBudgetPerDay = toNumber($("overviewBudgetPerDay").value);
 
         setText("overviewLiquidation", formatCurrency(liquid, 0));
         setText(
@@ -6044,6 +7684,7 @@
           pay ? formatPercent((requiredExpense / pay) * 100, 0) : "0%",
         );
         setText("overviewBudgetTotal", formatCurrency(miscBudget, 0));
+        setText("overviewBudgetPerDayValue", formatCurrency(miscBudgetPerDay, 0));
         setText("overviewOutputBudgetTotal", formatCurrency(miscBudget, 0));
         setText("overviewExpenseTotal", formatCurrency(requiredExpense, 0));
         setText(
@@ -6081,10 +7722,6 @@
               : "This is what the paycheck leaves available to deploy after the plan is covered.",
         );
 
-        if (!$("investLiquidAmount").value) {
-          $("investLiquidAmount").value = compactNumber(Math.max(liquid, 0));
-        }
-
         updateOverviewCharts({
           pay,
           requiredExpense,
@@ -6099,103 +7736,43 @@
         return liquid;
       }
 
-      function updateMacroAllocationsPieChart(amounts) {
-        const entries = amounts.filter((entry) => entry.amount > 0);
-        ensureChart(
-          "macroAllocations",
-          "macroAllocationsPieChart",
-          "doughnut",
-          {
-            labels: entries.map((entry) => entry.label),
-            datasets: [
-              {
-                data: entries.map((entry) => entry.amount),
-                backgroundColor: [
-                  "#2563eb",
-                  "#38bdf8",
-                  "#7c3aed",
-                  "#06b6d4",
-                  "#f59e0b",
-                  "#fb7185",
-                  "#0ea5e9",
-                  "#0f172a",
-                ],
-                borderWidth: 0,
-              },
-            ],
-          },
-          chartOptions({ legendPosition: "right" }),
-        );
-      }
-
       function updateInvestTable() {
-        const liquid = toNumber($("investLiquidAmount").value);
+        const liquid = Math.max(toNumber($("investLiquidAmount").value), 0);
         const paycheck = toNumber($("overviewPaycheck").value);
-        const sections = [
-          {
-            label: "Roth",
-            percentId: "investRothPercent",
-            amountId: "investRothAmount",
-            paycheckPercentId: "investRothPaycheckPercent",
-          },
-          {
-            label: "Flex",
-            percentId: "investFunPercent",
-            amountId: "investFunAmount",
-            paycheckPercentId: "investFunPaycheckPercent",
-          },
-          {
-            label: "Planned Buffer",
-            percentId: "investPlannedPercent",
-            amountId: "investPlannedAmount",
-            paycheckPercentId: "investPlannedPaycheckPercent",
-          },
-          {
-            label: "Cash Reserve",
-            percentId: "investCashPercent",
-            amountId: "investCashAmount",
-            paycheckPercentId: "investCashPaycheckPercent",
-          },
-          {
-            label: "Wedding",
-            percentId: "investWeddingPercent",
-            amountId: "investWeddingAmount",
-            paycheckPercentId: "investWeddingPaycheckPercent",
-          },
-          {
-            label: "Down Payment",
-            percentId: "investDownPercent",
-            amountId: "investDownAmount",
-            paycheckPercentId: "investDownPaycheckPercent",
-          },
-          {
-            label: "Investing",
-            percentId: "investInvestPercent",
-            amountId: "investInvestAmount",
-            paycheckPercentId: "investInvestPaycheckPercent",
-          },
-        ];
+        const sections = getFlowSections(liquid, paycheck);
+        const rows = Array.from(
+          $("investChannelList")?.querySelectorAll(".invest-channel-row") || [],
+        );
 
         let totalPercent = 0;
         let totalAmount = 0;
         let totalPaycheckPercent = 0;
+        const activeChannels = sections.filter(
+          (section) => toNumber(section.percent) > 0,
+        ).length;
+        sections.forEach((section) => {
+          totalPercent += toNumber(section.percent);
+          totalAmount += section.amount;
+          totalPaycheckPercent += section.paycheckPercent;
+        });
+        const difference = liquid - totalAmount;
 
-        const amounts = sections.map((section) => {
-          const percent = toNumber($(section.percentId).value);
-          const amount = liquid * (percent / 100);
-          const paycheckPercent = paycheck ? (amount / paycheck) * 100 : 0;
-
-          totalPercent += percent;
-          totalAmount += amount;
-          totalPaycheckPercent += paycheckPercent;
-
-          setText(section.amountId, formatCurrency(amount, 2));
-          setText(section.paycheckPercentId, formatPercent(paycheckPercent, 2));
-
-          return {
-            label: section.label,
-            amount,
-          };
+        rows.forEach((row, index) => {
+          const section = sections[index];
+          if (!section) return;
+          const amountCell = row.querySelector('[data-field-display="amount"]');
+          const paycheckPercentCell = row.querySelector(
+            '[data-field-display="paycheckPercent"]',
+          );
+          if (amountCell) {
+            amountCell.textContent = formatCurrency(section.amount, 2);
+          }
+          if (paycheckPercentCell) {
+            paycheckPercentCell.textContent = formatPercent(
+              section.paycheckPercent,
+              2,
+            );
+          }
         });
 
         setText("investTotalsPercent", formatPercent(totalPercent, 2));
@@ -6204,27 +7781,35 @@
           "investTotalsPaycheckPercent",
           formatPercent(totalPaycheckPercent, 2),
         );
-
         setText("liquidationLiquidMetric", formatCurrency(liquid, 0));
+        setText("liquidationAssignedAmountMetric", formatCurrency(totalAmount, 0));
         setText(
-          "liquidationPlannedMetric",
-          $("investPlannedAmount").textContent || "$0",
+          "liquidationVarianceLabel",
+          difference >= 0 ? "Unassigned Cash" : "Overflow",
         );
         setText(
-          "liquidationCashMetric",
-          $("investCashAmount").textContent || "$0",
+          "liquidationVarianceMetric",
+          formatCurrency(Math.abs(difference), 0),
         );
         setText(
-          "liquidationInvestMetric",
-          $("investInvestAmount").textContent || "$0",
+          "liquidationChannelsMetric",
+          `${activeChannels}`,
         );
 
-        updateMacroAllocationsPieChart(amounts);
+        renderMoneyMapCascade({
+          liquid,
+          sections,
+          totalAmount,
+        });
         updateDashboard();
       }
 
-      function saveHTML() {
-        const saveStatus = $("saveStatus");
+      function saveHTML(isAuto = false) {
+        if (state.demoMode) {
+          setSaveStatus("Demo mode is on. Live sync is paused.");
+          return Promise.resolve();
+        }
+
         const formData = {};
         document.querySelectorAll("input").forEach((input) => {
           if (!input.id) return;
@@ -6232,30 +7817,38 @@
             input.type === "checkbox" ? input.checked : input.value;
         });
 
-        saveStatus.textContent = "Syncing to your sheet...";
+        setSaveStatus(isAuto ? "Live syncing..." : "Syncing to your sheet...");
 
-        fetch(apiUrl, {
+        return fetch(apiUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
           mode: "no-cors",
         })
           .then(() => {
-            saveStatus.textContent = `Synced at ${new Date().toLocaleTimeString(
-              [],
-              {
+            if (state.demoMode) {
+              setSaveStatus("Demo mode is on. Live sync is paused.");
+              return;
+            }
+            setSaveStatus(
+              `Synced at ${new Date().toLocaleTimeString([], {
                 hour: "numeric",
                 minute: "2-digit",
-              },
-            )}.`;
+              })}.`,
+            );
           })
           .catch((error) => {
             console.error("Error saving inputs:", error);
-            saveStatus.textContent = "Sync failed. Try again.";
+            if (state.demoMode) {
+              setSaveStatus("Demo mode is on. Live sync is paused.");
+              return;
+            }
+            setSaveStatus("Live sync failed. Changes are still local.");
           });
       }
 
       function addBudgetCheckEntry() {
+        if (!canWriteToBackend()) return;
         const date = $("budgetCheckDate").value;
         const budget = $("budgetCheckBudget").value;
         const spent = $("budgetCheckSpent").value;
@@ -6293,6 +7886,7 @@
       }
 
       function addweeklybudgetNewtransaction() {
+        if (!canWriteToBackend()) return;
         const date = $("weeklybudgetNewtransactionDate").value;
         const amount = $("weeklybudgetNewtransactionAmount").value;
         const description = $("weeklybudgetNewtransactionDescription").value;
@@ -6327,6 +7921,7 @@
       }
 
       function addLiquidationLog() {
+        if (!canWriteToBackend()) return;
         const liquidationNumber = $("logLiquidationNumber").value;
         const totalLiquidationAmount = $("logTotalLiquidationAmount").value;
         const date = $("logDate").value;
@@ -6369,6 +7964,7 @@
       }
 
       function markSplitAsPaid(rowIndex) {
+        if (!canWriteToBackend()) return;
         fetch(apiUrl4, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -6400,8 +7996,9 @@
       }
 
       function bindEvents() {
-        $("saveHTMLBtn").addEventListener("click", saveHTML);
-        $("calculateInvestBtn").addEventListener("click", updateInvestTable);
+        $("demoModeToggleBtn")?.addEventListener("click", toggleDemoMode);
+        $("cancelLiveUnlockBtn")?.addEventListener("click", closeLiveUnlockGate);
+        $("liveUnlockForm")?.addEventListener("submit", handleLiveUnlock);
         $("addBudgetCheckEntryBtn")?.addEventListener(
           "click",
           addBudgetCheckEntry,
@@ -6417,6 +8014,22 @@
           state.currentDueRows.push({ label: "Reserved Item", amount: 0 });
           renderCurrentDueRows();
           calculateLiquid();
+        });
+        $("addInvestChannelBtn").addEventListener("click", () => {
+          if (state.investChannelsLocked) return;
+          state.investChannels.push({
+            label: "Channel",
+            percent: 0,
+            role: "Destination",
+          });
+          renderInvestChannels();
+          updateInvestTable();
+        });
+        $("toggleInvestChannelsLockBtn").addEventListener("click", () => {
+          state.investChannelsLocked = !state.investChannelsLocked;
+          syncInvestChannels();
+          renderInvestChannels();
+          updateInvestTable();
         });
         $("planExpenseList").addEventListener("input", (event) => {
           const row = event.target.closest(".plan-expense-row");
@@ -6455,6 +8068,28 @@
           syncCurrentDueRows();
           calculateLiquid();
         });
+        $("investChannelList").addEventListener("input", (event) => {
+          const row = event.target.closest(".invest-channel-row");
+          if (!row) return;
+          const field = event.target.dataset.field;
+          const index = Number(row.dataset.index);
+          if (!Number.isInteger(index) || !state.investChannels[index]) return;
+
+          if (field === "label") {
+            state.investChannels[index].label = event.target.value;
+          }
+
+          if (field === "percent") {
+            state.investChannels[index].percent = toNumber(event.target.value);
+          }
+
+          if (field === "role") {
+            state.investChannels[index].role = event.target.value;
+          }
+
+          syncInvestChannels();
+          updateInvestTable();
+        });
         $("planExpenseList").addEventListener("click", (event) => {
           const button = event.target.closest('[data-action="remove-expense"]');
           if (!button) return;
@@ -6477,6 +8112,19 @@
           state.currentDueRows.splice(index, 1);
           renderCurrentDueRows();
           calculateLiquid();
+        });
+        $("investChannelList").addEventListener("click", (event) => {
+          const button = event.target.closest(
+            '[data-action="remove-invest-channel"]',
+          );
+          if (!button) return;
+          const row = button.closest(".invest-channel-row");
+          const index = Number(row?.dataset.index);
+          if (!Number.isInteger(index)) return;
+
+          state.investChannels.splice(index, 1);
+          renderInvestChannels();
+          updateInvestTable();
         });
         $("wb-entry-form").addEventListener("submit", (event) => {
           event.preventDefault();
@@ -6516,16 +8164,7 @@
           $(id).addEventListener("input", autoCalculateRemaining),
         );
 
-        [
-          "investLiquidAmount",
-          "investRothPercent",
-          "investFunPercent",
-          "investPlannedPercent",
-          "investCashPercent",
-          "investWeddingPercent",
-          "investDownPercent",
-          "investInvestPercent",
-        ].forEach((id) => $(id).addEventListener("input", updateInvestTable));
+        $("investLiquidAmount").addEventListener("input", updateInvestTable);
 
         $("manualDate").addEventListener("change", () => {
           updateFocusDateIndicators();
@@ -6535,31 +8174,46 @@
           }
         });
 
+        document.addEventListener("input", (event) => {
+          const target = event.target;
+          if (!(target instanceof HTMLInputElement)) return;
+          if (target.type === "hidden" || target.readOnly) return;
+          if (!target.id && !target.dataset.field) return;
+          scheduleAutosave();
+        });
+
+        document.addEventListener("change", (event) => {
+          const target = event.target;
+          if (!(target instanceof HTMLInputElement)) return;
+          if (target.type === "hidden" || target.readOnly) return;
+          if (!target.id && !target.dataset.field) return;
+          scheduleAutosave();
+        });
+
         window.addEventListener("resize", autoCalculateRemaining);
         window.addEventListener("resize", calculateLiquid);
+        window.addEventListener("resize", updateInvestTable);
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && !$("liveUnlockGate")?.hidden) {
+            closeLiveUnlockGate();
+          }
+        });
       }
 
       function init() {
         initializeCurrentDueRows();
         initializePlanExpenses();
+        initializeInvestChannels();
+        state.demoMode = true;
+        setDemoToggleState();
         bindNavigation();
         bindEvents();
-        seedManualDate();
-        seedActionDates();
-        updateFocusDateIndicators();
         showSection(
           localStorage.getItem("moneySiteActiveSection") ||
             "dashboardSection",
         );
-        calculateLiquid();
-        calculateLiquidOverview();
-        autoCalculateRemaining();
-        updateInvestTable();
-        updateDashboard();
-        loadSavedInputs();
-        loadBudgetCheck();
-        loadLiquidationLog();
-        loadWeeklyBudgetTransactions();
+        hydratePresentationState(getDemoDataset());
+        setSaveStatus("Demo mode is on. Live sync is paused.");
       }
 
       window.saveHTML = saveHTML;
