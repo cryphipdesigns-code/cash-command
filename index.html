@@ -58,6 +58,9 @@
         overflow: hidden;
         padding: 16px;
         font-family: "Manrope", sans-serif;
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+        -webkit-tap-highlight-color: transparent;
         color: var(--text-main);
         background:
           radial-gradient(
@@ -803,6 +806,7 @@
       input,
       button {
         font: inherit;
+        touch-action: manipulation;
       }
 
       input[type="text"],
@@ -1765,6 +1769,30 @@
         vertical-align: middle;
       }
 
+      .invest-channel-cell-channel {
+        grid-area: channel;
+      }
+
+      .invest-channel-cell-percent {
+        grid-area: percent;
+      }
+
+      .invest-channel-cell-amount {
+        grid-area: amount;
+      }
+
+      .invest-channel-cell-paycheck {
+        grid-area: paycheck;
+      }
+
+      .invest-channel-cell-role {
+        grid-area: role;
+      }
+
+      .invest-channel-cell-remove {
+        grid-area: remove;
+      }
+
       .invest-channel-table .field {
         min-width: 0;
       }
@@ -1803,6 +1831,119 @@
       .invest-channel-table .icon-button:hover {
         background: transparent;
         color: var(--danger);
+      }
+
+      .invest-channel-mobile-list {
+        display: none;
+      }
+
+      .invest-channel-mobile-card,
+      .invest-channel-mobile-summary {
+        display: grid;
+        gap: 10px;
+        padding: 12px;
+        border-radius: 18px;
+        border: 1px solid rgba(15, 23, 42, 0.06);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.98),
+          rgba(245, 249, 255, 0.96)
+        );
+        box-shadow: 0 16px 28px rgba(15, 23, 42, 0.04);
+      }
+
+      .invest-channel-mobile-card {
+        position: relative;
+      }
+
+      .invest-channel-mobile-head {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 96px;
+        gap: 8px 10px;
+        align-items: end;
+      }
+
+      .invest-channel-mobile-card .field {
+        gap: 4px;
+      }
+
+      .invest-channel-mobile-card .field label,
+      .invest-channel-mobile-metric span {
+        font-size: 0.64rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text-dim);
+      }
+
+      .invest-channel-mobile-card .field input,
+      .invest-channel-mobile-card .field-readout,
+      .invest-channel-mobile-card .invest-percent-shell input {
+        min-height: 42px;
+        padding: 9px 10px;
+        border-radius: 12px;
+      }
+
+      .invest-channel-mobile-card .invest-percent-shell {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .invest-channel-mobile-card .invest-percent-shell input {
+        text-align: center;
+        padding-right: 24px;
+      }
+
+      .invest-channel-mobile-card .invest-percent-shell span {
+        right: 10px;
+      }
+
+      .invest-channel-mobile-metrics {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .invest-channel-mobile-metric {
+        display: grid;
+        gap: 4px;
+        min-height: 42px;
+        padding: 8px 10px;
+        border-radius: 12px;
+        border: 1px solid rgba(37, 99, 235, 0.06);
+        background: linear-gradient(
+          180deg,
+          rgba(248, 250, 255, 0.99),
+          rgba(240, 246, 255, 0.96)
+        );
+        text-align: center;
+      }
+
+      .invest-channel-mobile-metric strong {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1rem;
+        line-height: 1;
+        letter-spacing: -0.03em;
+      }
+
+      .invest-channel-mobile-card .invest-channel-remove-cell {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+      }
+
+      .invest-channel-mobile-summary {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        align-items: stretch;
+      }
+
+      .invest-channel-mobile-summary .invest-channel-mobile-metric {
+        min-height: 0;
+      }
+
+      .mobile-visual-toggle {
+        display: none;
       }
 
       .money-map-visual-panel {
@@ -3557,12 +3698,14 @@
         }
 
         #mainContent {
+          width: min(100%, 430px);
+          margin: 0 auto;
           padding-top: 50px;
           padding-bottom: 14px;
         }
 
         .dashboard-section {
-          gap: 12px;
+          gap: 10px;
         }
 
         .page-intro,
@@ -3570,6 +3713,50 @@
         .placeholder-banner {
           padding: 16px 14px;
           border-radius: 18px;
+        }
+
+        .mobile-visual-toggle {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          margin-left: auto;
+          padding: 6px 10px;
+          min-height: 32px;
+          border-radius: 999px;
+          border: 1px solid rgba(37, 99, 235, 0.08);
+          background: rgba(248, 250, 255, 0.96);
+          color: var(--accent);
+          font-size: 0.68rem;
+          font-weight: 800;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          box-shadow: none;
+        }
+
+        .mobile-visual-panel .panel-heading {
+          align-items: center;
+        }
+
+        .mobile-visual-panel.is-collapsed > :not(.panel-heading) {
+          display: none !important;
+        }
+
+        .mobile-visual-panel.is-collapsed .panel-heading {
+          margin-bottom: 0;
+        }
+
+        .field-grid,
+        .output-stack,
+        .dashboard-compact-grid,
+        .summary-card-grid,
+        .current-obligation-shell,
+        .current-insight-grid {
+          gap: 10px;
+        }
+
+        .field,
+        .inline-field {
+          gap: 6px;
         }
 
         .metric-strip,
@@ -3594,6 +3781,14 @@
           grid-template-columns: 1fr;
         }
 
+        .metric-strip,
+        .plan-metric-strip,
+        .summary-card-grid,
+        .dashboard-compact-grid,
+        .current-insight-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
         .page-intro h1 {
           font-size: clamp(1.65rem, 6.5vw, 2rem);
         }
@@ -3605,8 +3800,8 @@
         }
 
         .panel-heading {
-          gap: 10px;
-          margin-bottom: 12px;
+          gap: 8px;
+          margin-bottom: 10px;
         }
 
         .panel-heading h2 {
@@ -3617,12 +3812,29 @@
         .plan-metric-strip,
         .flow-stack,
         .plan-row {
-          gap: 12px;
+          gap: 10px;
+        }
+
+        .plan-step-divider {
+          gap: 4px;
+          padding: 0;
+        }
+
+        .plan-step-divider-lines {
+          gap: 10px;
+        }
+
+        .plan-step-divider p:last-child {
+          font-size: 0.76rem;
+          line-height: 1.4;
+          max-width: 34ch;
+          justify-self: center;
         }
 
         .plan-metric-strip .metric-tile {
-          min-height: 78px;
-          padding: 14px 12px 16px;
+          min-height: 70px;
+          gap: 6px;
+          padding: 12px 10px 13px;
         }
 
         .plan-metric-strip .metric-tile strong {
@@ -3638,6 +3850,125 @@
 
         .chart-shell canvas {
           height: 200px !important;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        button {
+          border-radius: 12px;
+          padding: 10px 12px;
+          min-height: 40px;
+        }
+
+        .input-shell span {
+          font-size: 0.82rem;
+        }
+
+        .input-shell:not(.suffix-shell) span {
+          left: 12px;
+        }
+
+        .input-shell:not(.suffix-shell) input {
+          padding-left: 36px;
+        }
+
+        .input-shell.suffix-shell span {
+          right: 12px;
+        }
+
+        .input-shell.suffix-shell input {
+          padding-right: 28px;
+        }
+
+        .subtle-button,
+        .accent-button,
+        #addLiquidationLogBtn,
+        #addBudgetCheckEntryBtn,
+        #wb-add-btn {
+          padding: 9px 12px;
+        }
+
+        .budget-pill {
+          gap: 8px;
+          padding: 7px 10px;
+          font-size: 0.78rem;
+        }
+
+        .budget-pill-stack {
+          min-width: 0;
+          padding: 10px 12px;
+          gap: 6px;
+        }
+
+        .budget-pill-stack span {
+          font-size: 0.74rem;
+        }
+
+        .summary-card,
+        .insight-card,
+        .dashboard-state-band,
+        .dashboard-note-card {
+          padding: 12px 13px;
+          border-radius: 14px;
+        }
+
+        .summary-card strong,
+        .insight-card strong,
+        .dashboard-state-band strong,
+        .dashboard-note-card strong {
+          font-size: 0.96rem;
+        }
+
+        .summary-card span,
+        .insight-card p,
+        .dashboard-state-band p,
+        .dashboard-note-card p,
+        .panel-note,
+        .quiet-text,
+        .status-text {
+          font-size: 0.8rem;
+          line-height: 1.5;
+        }
+
+        .plan-panel-paycheck .plan-input-row,
+        .money-map-source-panel .plan-input-row {
+          grid-template-columns: minmax(0, 240px);
+        }
+
+        .plan-bottom-row > .plan-panel-compact .field-grid,
+        .plan-panel-output .output-stack,
+        .current-step4-card .output-stack {
+          width: min(100%, 240px);
+        }
+
+        .output-hero {
+          gap: 8px;
+          padding: 15px 12px 13px;
+          border-radius: 15px;
+        }
+
+        .output-hero > span,
+        .output-hero-compact > span {
+          font-size: 0.66rem;
+        }
+
+        .output-hero strong {
+          font-size: clamp(1.5rem, 6.5vw, 2rem);
+        }
+
+        .output-hero p,
+        .output-percent {
+          font-size: 0.8rem;
+          line-height: 1.45;
+        }
+
+        .output-hero-secondary {
+          padding: 13px 12px 11px;
+        }
+
+        .output-hero-compact {
+          padding: 12px 12px 10px;
         }
 
         .table-wrap {
@@ -3667,12 +3998,47 @@
         }
 
         .current-readout-card {
-          padding: 16px 14px 14px;
+          gap: 8px;
+          padding: 14px 12px 12px;
           min-height: 0;
+          border-radius: 18px;
         }
 
         .current-readout-card strong {
           font-size: clamp(1.45rem, 7vw, 1.9rem);
+        }
+
+        .current-readout-card h3 {
+          font-size: 1.16rem;
+        }
+
+        .current-readout-card-head {
+          gap: 8px;
+        }
+
+        .current-readout-card-head .info-tip {
+          width: 24px;
+          height: 24px;
+          font-size: 0.72rem;
+        }
+
+        .current-readout-card-label {
+          font-size: 0.68rem;
+        }
+
+        .current-readout-state {
+          gap: 6px;
+          padding: 10px 11px 11px;
+          border-radius: 16px;
+        }
+
+        .current-readout-state strong {
+          font-size: 0.9rem;
+        }
+
+        .current-readout-state p {
+          font-size: 0.76rem;
+          line-height: 1.45;
         }
 
         .money-map-bucket-grid {
@@ -3688,8 +4054,49 @@
         .current-balance-row,
         .current-chart-row {
           width: 100%;
-          gap: 12px;
+          gap: 10px;
           margin: 0;
+        }
+
+        .current-top-row {
+          display: grid;
+          grid-template-columns: 1fr;
+          align-items: start;
+        }
+
+        .current-top-panel.panel {
+          padding: 12px 10px 10px;
+        }
+
+        .current-top-panel .current-input-grid {
+          width: 100%;
+          max-width: 100%;
+        }
+
+        .current-top-panel .field-grid.two-up {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+        }
+
+        .current-top-panel .panel-heading {
+          margin-bottom: 8px;
+        }
+
+        .current-top-panel .field label {
+          font-size: 0.6rem;
+        }
+
+        .current-top-panel input[type="number"] {
+          padding: 8px 9px;
+        }
+
+        .current-top-panel .input-shell:not(.suffix-shell) input {
+          padding-left: 32px;
+        }
+
+        .current-top-panel .input-shell:not(.suffix-shell) span {
+          left: 10px;
+          font-size: 0.76rem;
         }
 
         .current-top-panel,
@@ -3713,9 +4120,14 @@
 
         .money-map-toolbar-header {
           min-height: 0;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          grid-template-areas: "title actions";
+          align-items: start;
         }
 
         .money-map-toolbar-title {
+          grid-area: title;
           width: 100%;
         }
 
@@ -3725,12 +4137,14 @@
         }
 
         .money-map-toolbar-actions {
+          grid-area: actions;
           position: static;
           flex-direction: column;
           justify-content: flex-start;
           align-items: flex-end;
           width: auto;
           margin-left: auto;
+          margin-top: 2px;
         }
 
         .money-map-toolbar-actions .subtle-button,
@@ -3739,7 +4153,20 @@
         }
 
         .money-map-table-panel .table-wrap {
-          overflow: visible;
+          display: none;
+        }
+
+        .invest-channel-mobile-list {
+          display: grid;
+          gap: 8px;
+        }
+
+        .invest-channel-mobile-summary {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .invest-channel-mobile-head {
+          grid-template-columns: minmax(0, 1fr) 88px;
         }
 
         .invest-channel-table,
@@ -3758,14 +4185,20 @@
 
         .invest-channel-table tbody {
           display: grid;
-          gap: 14px;
+          gap: 8px;
         }
 
         .invest-channel-row {
+          position: relative;
           display: grid;
-          gap: 12px;
-          padding: 16px;
-          border-radius: 22px;
+          grid-template-columns: minmax(0, 1fr) 92px;
+          grid-template-areas:
+            "channel percent"
+            "role role"
+            "amount paycheck";
+          gap: 8px 10px;
+          padding: 10px;
+          border-radius: 16px;
           border: 1px solid rgba(15, 23, 42, 0.06);
           background: linear-gradient(
             180deg,
@@ -3775,25 +4208,46 @@
           box-shadow: 0 16px 28px rgba(15, 23, 42, 0.04);
         }
 
+        .invest-channel-row .invest-channel-cell-remove {
+          position: absolute;
+          top: 6px;
+          right: 6px;
+          width: auto;
+        }
+
         .invest-channel-table td {
           padding: 0;
           border: 0;
+          min-width: 0;
         }
 
         .invest-channel-table td[data-label]::before {
           content: attr(data-label);
           display: block;
-          margin-bottom: 6px;
+          margin-bottom: 4px;
           color: var(--text-soft);
-          font-size: 0.74rem;
+          font-size: 0.64rem;
           font-weight: 800;
-          letter-spacing: 0.1em;
+          letter-spacing: 0.12em;
           text-transform: uppercase;
         }
 
         .invest-channel-table td[data-field-display] {
           font-weight: 800;
-          font-size: 1.02rem;
+          font-size: 0.88rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
+          padding: 7px 8px;
+          min-height: 42px;
+          border-radius: 12px;
+          border: 1px solid rgba(37, 99, 235, 0.06);
+          background: linear-gradient(
+            180deg,
+            rgba(248, 250, 255, 0.99),
+            rgba(240, 246, 255, 0.96)
+          );
         }
 
         .invest-channel-table .field,
@@ -3803,32 +4257,61 @@
           min-width: 0;
         }
 
-        .invest-channel-table td:last-child {
-          display: flex;
-          justify-content: flex-end;
+        .invest-channel-table .field input,
+        .invest-percent-shell input,
+        .money-map-table-panel[data-locked="true"] .field-readout {
+          min-height: 42px;
         }
 
         .invest-channel-table td:last-child:empty {
           display: none;
         }
 
+        .invest-channel-table .field input,
+        .invest-percent-shell input,
+        .money-map-table-panel[data-locked="true"] .field-readout {
+          padding: 9px 10px;
+          border-radius: 12px;
+        }
+
+        .invest-percent-shell {
+          width: 100%;
+          min-width: 0;
+          max-width: 92px;
+          justify-self: end;
+        }
+
+        .invest-percent-shell input {
+          text-align: center;
+          padding-right: 24px;
+        }
+
+        .invest-percent-shell span {
+          right: 10px;
+        }
+
         .invest-channel-table tfoot {
           margin-top: 12px;
-          padding: 16px;
-          border-radius: 22px;
+          padding: 12px;
+          border-radius: 18px;
           border: 1px solid rgba(15, 23, 42, 0.06);
           background: rgba(255, 255, 255, 0.82);
         }
 
         .invest-channel-table tfoot tr {
           display: grid;
-          gap: 10px;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px 10px;
         }
 
         .invest-channel-table tfoot th {
           padding: 0;
           text-align: left;
           border: 0;
+        }
+
+        .invest-channel-table tfoot th:first-child {
+          grid-column: 1 / -1;
         }
 
         .invest-channel-table tfoot th:nth-child(2)::before,
@@ -3860,6 +4343,40 @@
           display: none;
         }
 
+        .money-map-toolbar-header {
+          min-height: 0;
+          margin-bottom: 6px;
+        }
+
+        .money-map-table-panel.panel,
+        .money-map-source-panel.panel {
+          padding: 12px 10px 10px;
+        }
+
+        .money-map-toolbar-actions {
+          position: static;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-end;
+          width: auto;
+          margin-left: auto;
+          gap: 4px;
+        }
+
+        .money-map-toolbar-title .info-cluster {
+          gap: 8px;
+        }
+
+        .money-map-toolbar-actions .subtle-button {
+          padding: 7px 10px;
+          font-size: 0.76rem;
+        }
+
+        .lock-toggle {
+          padding: 4px 8px;
+          font-size: 0.66rem;
+        }
+
         .current-flow-map {
           display: grid;
           grid-template-columns: 1fr;
@@ -3881,7 +4398,9 @@
           grid-column: 1 !important;
           grid-row: auto !important;
           justify-self: stretch;
-          padding: 16px 14px;
+          gap: 10px;
+          padding: 14px 12px;
+          border-radius: 18px;
         }
 
         .current-flow-source::after,
@@ -3923,14 +4442,14 @@
           content: "↓";
           display: grid;
           place-items: center;
-          width: 28px;
-          height: 28px;
-          margin: 0 auto 12px;
+          width: 24px;
+          height: 24px;
+          margin: 0 auto 10px;
           border-radius: 999px;
           background: rgba(239, 246, 255, 0.96);
           border: 1px solid rgba(96, 165, 250, 0.2);
           color: var(--flow-color, #2563eb);
-          font-size: 0.96rem;
+          font-size: 0.82rem;
           font-weight: 800;
           line-height: 1;
           box-shadow:
@@ -3944,7 +4463,9 @@
           grid-column: 1 !important;
           grid-row: auto !important;
           justify-self: stretch;
-          padding: 14px 13px 12px;
+          gap: 6px;
+          padding: 12px 11px 10px;
+          border-radius: 16px;
         }
 
         .current-flow-card-head {
@@ -3954,13 +4475,17 @@
         .current-flow-claim-card {
           width: 100%;
           min-width: 0;
-          padding: 14px 13px 12px;
+          gap: 6px;
+          padding: 12px 11px 10px;
+          border-radius: 16px;
         }
 
         .current-flow-source p,
         .current-flow-claim-card p,
         .current-flow-result-card p {
           overflow-wrap: anywhere;
+          font-size: 0.8rem;
+          line-height: 1.45;
         }
 
         .current-flow-source strong,
@@ -4073,13 +4598,125 @@
         }
 
         .plan-panel-expenses .plan-expense-toolbar {
-          justify-content: center;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: center;
+          justify-content: stretch;
+          gap: 8px;
         }
 
         .plan-panel-expenses .budget-pill,
         .plan-panel-expenses .subtle-button {
-          justify-content: center;
           text-align: center;
+        }
+
+        .plan-panel-expenses.panel {
+          padding: 12px 10px 10px;
+        }
+
+        .plan-panel-expenses .panel-heading {
+          margin-bottom: 8px;
+        }
+
+        .plan-panel-expenses .plan-expense-shell {
+          gap: 8px;
+        }
+
+        .plan-panel-expenses .plan-expense-list {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+        }
+
+        .plan-panel-expenses .budget-pill {
+          width: auto;
+          justify-self: start;
+          justify-content: center;
+          padding: 6px 9px;
+          font-size: 0.74rem;
+        }
+
+        .plan-panel-expenses .subtle-button {
+          width: auto;
+          justify-self: end;
+          justify-content: center;
+          padding: 8px 10px;
+          font-size: 0.8rem;
+        }
+
+        .plan-panel-expenses .plan-expense-row {
+          grid-template-columns: 1fr;
+          gap: 8px;
+          padding: 10px 10px 9px;
+          border-radius: 12px;
+        }
+
+        .plan-panel-expenses .field,
+        .plan-panel-expenses .inline-field {
+          gap: 4px;
+        }
+
+        .plan-panel-expenses .field label {
+          font-size: 0.6rem;
+        }
+
+        .plan-panel-expenses input[type="text"],
+        .plan-panel-expenses input[type="number"] {
+          padding: 8px 10px;
+          font-size: 0.88rem;
+        }
+
+        .plan-panel-expenses .input-shell span {
+          font-size: 0.78rem;
+        }
+
+        .plan-panel-expenses .input-shell:not(.suffix-shell) span {
+          left: 12px;
+        }
+
+        .plan-panel-expenses .input-shell:not(.suffix-shell) input {
+          padding-left: 34px;
+        }
+
+        .plan-panel-expenses .icon-button {
+          top: 6px;
+          right: 8px;
+          font-size: 0.84rem;
+        }
+
+        .money-map-bucket {
+          padding-top: 34px;
+        }
+
+        .money-map-bucket::before {
+          height: 34px;
+        }
+
+        .money-map-bucket::after {
+          top: 26px;
+          width: 12px;
+          height: 12px;
+        }
+
+        .money-map-bucket-vessel,
+        .money-map-bucket-content {
+          min-height: min(var(--bucket-height, 240px), 180px);
+        }
+
+        .money-map-bucket-content {
+          gap: 6px;
+          padding: 14px 12px 12px;
+        }
+
+        .money-map-bucket-head {
+          gap: 6px;
+        }
+
+        .money-map-bucket-head strong {
+          font-size: 1.5rem;
+        }
+
+        .money-map-bucket-name {
+          font-size: 1rem;
         }
 
         #wbFuelGauge {
@@ -4119,6 +4756,31 @@
           border-radius: 16px;
         }
 
+        .mobile-visual-toggle {
+          padding: 5px 8px;
+          min-height: 28px;
+          font-size: 0.64rem;
+        }
+
+        .field-grid,
+        .output-stack,
+        .dashboard-compact-grid,
+        .summary-card-grid,
+        .current-obligation-shell,
+        .current-insight-grid,
+        .plan-row,
+        .flow-stack {
+          gap: 8px;
+        }
+
+        .metric-strip,
+        .plan-metric-strip,
+        .summary-card-grid,
+        .dashboard-compact-grid,
+        .current-insight-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
         .page-intro h1 {
           font-size: clamp(1.5rem, 7vw, 1.8rem);
         }
@@ -4128,20 +4790,44 @@
         }
 
         .plan-metric-strip .metric-tile {
-          min-height: 72px;
-          padding: 12px 10px 14px;
+          min-height: 62px;
+          padding: 10px 8px 11px;
         }
 
         .plan-metric-strip .metric-tile strong {
           font-size: clamp(1.15rem, 5vw, 1.42rem);
         }
 
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        button {
+          padding: 8px 10px;
+        }
+
+        .budget-pill {
+          padding: 6px 9px;
+          font-size: 0.74rem;
+        }
+
+        .output-hero,
+        .current-readout-card,
+        .current-flow-source,
+        .current-flow-claim-card,
+        .current-flow-result-card,
+        .summary-card,
+        .insight-card,
+        .dashboard-state-band {
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+
         .current-readout-card,
         .current-flow-source,
         .current-flow-claim-card,
         .current-flow-result-card {
-          padding-left: 12px;
-          padding-right: 12px;
+          padding-top: 10px;
+          padding-bottom: 10px;
         }
 
         .current-readout-card strong,
@@ -4149,6 +4835,65 @@
         .current-flow-claim-card strong,
         .current-flow-result-card strong {
           font-size: clamp(1.32rem, 7vw, 1.72rem);
+        }
+
+        .plan-panel-expenses .plan-expense-toolbar {
+          grid-template-columns: minmax(0, 1fr) auto;
+          justify-items: stretch;
+        }
+
+        .plan-panel-expenses .budget-pill,
+        .plan-panel-expenses .subtle-button {
+          width: auto;
+        }
+
+        .plan-panel-expenses .plan-expense-row {
+          grid-template-columns: 1fr;
+          gap: 6px;
+          padding: 9px 8px 8px;
+        }
+
+        .plan-panel-expenses .plan-expense-list {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 6px;
+        }
+
+        .current-top-row {
+          grid-template-columns: 1fr;
+        }
+
+        .invest-channel-mobile-head {
+          grid-template-columns: minmax(0, 1fr) 78px;
+        }
+
+        .invest-channel-mobile-card,
+        .invest-channel-mobile-summary {
+          gap: 8px;
+          padding: 10px;
+          border-radius: 16px;
+        }
+
+        .invest-channel-mobile-metrics {
+          gap: 6px;
+        }
+
+        .invest-channel-mobile-metric {
+          padding: 7px 8px;
+          min-height: 40px;
+        }
+
+        .invest-channel-mobile-metric strong {
+          font-size: 0.92rem;
+        }
+
+        .money-map-toolbar-actions .subtle-button {
+          padding: 6px 9px;
+          font-size: 0.72rem;
+        }
+
+        .money-map-bucket-vessel,
+        .money-map-bucket-content {
+          min-height: min(var(--bucket-height, 240px), 164px);
         }
       }
     </style>
@@ -4607,7 +5352,7 @@
             </div>
 
             <div class="plan-row plan-chart-row current-chart-row">
-              <article class="panel chart-shell tooltip-panel plan-panel plan-flow-panel current-chart-panel current-flow-panel">
+              <article class="panel chart-shell tooltip-panel plan-panel plan-flow-panel current-chart-panel current-flow-panel mobile-visual-panel">
                 <div class="panel-heading">
                   <div class="info-cluster">
                     <div>
@@ -4627,7 +5372,7 @@
                 <div id="currentFlowMap" class="current-flow-map" aria-live="polite"></div>
               </article>
 
-              <article class="panel chart-shell tooltip-panel plan-panel plan-chart-panel current-chart-panel">
+              <article class="panel chart-shell tooltip-panel plan-panel plan-chart-panel current-chart-panel mobile-visual-panel">
                 <div class="panel-heading">
                   <div class="info-cluster">
                     <div>
@@ -4735,7 +5480,7 @@
                 </div>
               </article>
 
-              <article class="panel plan-panel plan-chart-panel" id="wb-fuel-tile">
+              <article class="panel plan-panel plan-chart-panel mobile-visual-panel" id="wb-fuel-tile">
                 <div class="panel-heading">
                   <div>
                     <p class="eyebrow">Step 2</p>
@@ -5076,7 +5821,7 @@
             </div>
 
             <div class="plan-row plan-chart-row">
-              <article class="panel chart-shell tooltip-panel plan-panel plan-chart-panel plan-flow-panel">
+              <article class="panel chart-shell tooltip-panel plan-panel plan-chart-panel plan-flow-panel mobile-visual-panel">
                 <div class="panel-heading">
                   <div class="info-cluster">
                     <div>
@@ -5096,7 +5841,7 @@
                 <div id="planFlowMap" class="plan-flow-map" aria-live="polite"></div>
               </article>
 
-              <article class="panel chart-shell tooltip-panel plan-panel plan-chart-panel">
+              <article class="panel chart-shell tooltip-panel plan-panel plan-chart-panel mobile-visual-panel">
                 <div class="panel-heading">
                   <div class="info-cluster">
                     <div>
@@ -5233,10 +5978,11 @@
                   </tfoot>
                 </table>
               </div>
+              <div id="investChannelCards" class="invest-channel-mobile-list"></div>
             </article>
             </div>
 
-            <article class="panel chart-shell tooltip-panel plan-panel money-map-visual-panel">
+            <article class="panel chart-shell tooltip-panel plan-panel money-map-visual-panel mobile-visual-panel">
               <div class="panel-heading money-map-visual-heading">
                 <div class="info-cluster">
                   <div>
@@ -6613,6 +7359,7 @@
 
       function renderInvestChannels() {
         const list = $("investChannelList");
+        const mobileList = $("investChannelCards");
         if (!list) return;
 
         if (!state.investChannels.length) {
@@ -6624,6 +7371,7 @@
         const locked = state.investChannelsLocked;
         const liquid = Math.max(toNumber($("investLiquidAmount")?.value), 0);
         const paycheck = toNumber($("overviewPaycheck")?.value);
+        const sections = getFlowSections(liquid, paycheck);
         const tablePanel = list.closest(".money-map-table-panel");
         const lockButton = $("toggleInvestChannelsLockBtn");
         const addButton = $("addInvestChannelBtn");
@@ -6647,11 +7395,23 @@
           addButton.disabled = locked;
         }
 
-        list.innerHTML = state.investChannels
+        let totalPercent = 0;
+        let totalAmount = 0;
+        let totalPaycheckPercent = 0;
+
+        const desktopRows = state.investChannels
           .map((row, index) => {
             const percent = toNumber(row.percent);
-            const amount = liquid * (percent / 100);
-            const paycheckPercent = paycheck ? (amount / paycheck) * 100 : 0;
+            const section = sections[index] || {
+              amount: liquid * (percent / 100),
+              paycheckPercent: paycheck ? ((liquid * (percent / 100)) / paycheck) * 100 : 0,
+            };
+            const amount = section.amount;
+            const paycheckPercent = section.paycheckPercent;
+
+            totalPercent += percent;
+            totalAmount += amount;
+            totalPaycheckPercent += paycheckPercent;
 
             const labelCell = locked
               ? `<div class="field-readout">${escapeHtml(row.label)}</div>`
@@ -6699,21 +7459,21 @@
 
             return `
               <tr class="invest-channel-row${locked ? " is-locked" : ""}" data-index="${index}">
-                <td data-label="Channel">
+                <td class="invest-channel-cell-channel" data-label="Channel">
                   ${labelCell}
                 </td>
-                <td data-label="Deploy %">
+                <td class="invest-channel-cell-percent" data-label="Deploy %">
                   ${percentCell}
                 </td>
-                <td data-label="Amount" data-field-display="amount">${formatCurrency(amount, 2)}</td>
-                <td data-label="Paycheck %" data-field-display="paycheckPercent">${formatPercent(
+                <td class="invest-channel-cell-amount" data-label="Amount" data-field-display="amount">${formatCurrency(amount, 2)}</td>
+                <td class="invest-channel-cell-paycheck" data-label="Paycheck %" data-field-display="paycheckPercent">${formatPercent(
                   paycheckPercent,
                   2,
                 )}</td>
-                <td data-label="Role">
+                <td class="invest-channel-cell-role" data-label="Role">
                   ${roleCell}
                 </td>
-                <td class="invest-channel-remove-cell">
+                <td class="invest-channel-cell-remove invest-channel-remove-cell">
                   ${
                     locked
                       ? ""
@@ -6730,8 +7490,145 @@
                 </td>
               </tr>
             `;
-          })
-          .join("");
+          });
+
+        const mobileCards = state.investChannels
+          .map((row, index) => {
+            const percent = toNumber(row.percent);
+            const section = sections[index] || {
+              amount: liquid * (percent / 100),
+              paycheckPercent: paycheck ? ((liquid * (percent / 100)) / paycheck) * 100 : 0,
+            };
+
+            const channelField = locked
+              ? `
+                  <div class="field">
+                    <label>Channel</label>
+                    <div class="field-readout">${escapeHtml(row.label)}</div>
+                  </div>
+                `
+              : `
+                  <div class="field">
+                    <label>Channel</label>
+                    <input
+                      type="text"
+                      data-field="label"
+                      value="${escapeHtml(row.label)}"
+                      placeholder="Channel"
+                    />
+                  </div>
+                `;
+
+            const percentField = locked
+              ? `
+                  <div class="field">
+                    <label>Deploy %</label>
+                    <div class="field-readout field-readout-compact">${formatPercent(
+                      percent,
+                      percent % 1 === 0 ? 0 : 1,
+                    )}</div>
+                  </div>
+                `
+              : `
+                  <div class="field">
+                    <label>Deploy %</label>
+                    <div class="input-shell suffix-shell invest-percent-shell">
+                      <input
+                        type="number"
+                        data-field="percent"
+                        step="0.1"
+                        value="${compactNumber(percent)}"
+                        placeholder="0"
+                      />
+                      <span>%</span>
+                    </div>
+                  </div>
+                `;
+
+            const roleField = locked
+              ? `<div class="field-readout">${escapeHtml(row.role)}</div>`
+              : `
+                  <input
+                    type="text"
+                    data-field="role"
+                    value="${escapeHtml(row.role)}"
+                    placeholder="Role"
+                  />
+                `;
+
+            return `
+              <article class="invest-channel-mobile-card${locked ? " is-locked" : ""}" data-index="${index}">
+                ${
+                  locked
+                    ? ""
+                    : `<button
+                        class="icon-button invest-channel-remove-cell"
+                        type="button"
+                        data-action="remove-invest-channel"
+                        aria-label="Remove deployment channel"
+                        ${state.investChannels.length === 1 ? "disabled" : ""}
+                      >
+                        ×
+                      </button>`
+                }
+                <div class="invest-channel-mobile-head">
+                  ${channelField}
+                  ${percentField}
+                </div>
+                <div class="field">
+                  <label>Role</label>
+                  ${roleField}
+                </div>
+                <div class="invest-channel-mobile-metrics">
+                  <div class="invest-channel-mobile-metric">
+                    <span>Amount</span>
+                    <strong data-field-display="amount">${formatCurrency(
+                      section.amount,
+                      2,
+                    )}</strong>
+                  </div>
+                  <div class="invest-channel-mobile-metric">
+                    <span>Paycheck %</span>
+                    <strong data-field-display="paycheckPercent">${formatPercent(
+                      section.paycheckPercent,
+                      2,
+                    )}</strong>
+                  </div>
+                </div>
+              </article>
+            `;
+          });
+
+        list.innerHTML = desktopRows.join("");
+
+        if (mobileList) {
+          mobileList.innerHTML = `
+            ${mobileCards.join("")}
+            <article class="invest-channel-mobile-summary">
+              <div class="invest-channel-mobile-metric">
+                <span>Deploy %</span>
+                <strong id="investMobileTotalsPercent">${formatPercent(
+                  totalPercent,
+                  2,
+                )}</strong>
+              </div>
+              <div class="invest-channel-mobile-metric">
+                <span>Amount</span>
+                <strong id="investMobileTotalsAmount">${formatCurrency(
+                  totalAmount,
+                  2,
+                )}</strong>
+              </div>
+              <div class="invest-channel-mobile-metric">
+                <span>Paycheck %</span>
+                <strong id="investMobileTotalsPaycheckPercent">${formatPercent(
+                  totalPaycheckPercent,
+                  2,
+                )}</strong>
+              </div>
+            </article>
+          `;
+        }
 
         syncInvestChannels();
       }
@@ -8114,10 +9011,6 @@
         const liquid = Math.max(toNumber($("investLiquidAmount").value), 0);
         const paycheck = toNumber($("overviewPaycheck").value);
         const sections = getFlowSections(liquid, paycheck);
-        const rows = Array.from(
-          $("investChannelList")?.querySelectorAll(".invest-channel-row") || [],
-        );
-
         let totalPercent = 0;
         let totalAmount = 0;
         let totalPaycheckPercent = 0;
@@ -8131,28 +9024,34 @@
         });
         const difference = liquid - totalAmount;
 
-        rows.forEach((row, index) => {
-          const section = sections[index];
-          if (!section) return;
-          const amountCell = row.querySelector('[data-field-display="amount"]');
-          const paycheckPercentCell = row.querySelector(
-            '[data-field-display="paycheckPercent"]',
-          );
-          if (amountCell) {
-            amountCell.textContent = formatCurrency(section.amount, 2);
-          }
-          if (paycheckPercentCell) {
-            paycheckPercentCell.textContent = formatPercent(
-              section.paycheckPercent,
-              2,
-            );
-          }
+        sections.forEach((section, index) => {
+          document
+            .querySelectorAll(
+              `[data-index="${index}"] [data-field-display="amount"]`,
+            )
+            .forEach((cell) => {
+              cell.textContent = formatCurrency(section.amount, 2);
+            });
+
+          document
+            .querySelectorAll(
+              `[data-index="${index}"] [data-field-display="paycheckPercent"]`,
+            )
+            .forEach((cell) => {
+              cell.textContent = formatPercent(section.paycheckPercent, 2);
+            });
         });
 
         setText("investTotalsPercent", formatPercent(totalPercent, 2));
         setText("investTotalsAmount", formatCurrency(totalAmount, 2));
         setText(
           "investTotalsPaycheckPercent",
+          formatPercent(totalPaycheckPercent, 2),
+        );
+        setText("investMobileTotalsPercent", formatPercent(totalPercent, 2));
+        setText("investMobileTotalsAmount", formatCurrency(totalAmount, 2));
+        setText(
+          "investMobileTotalsPaycheckPercent",
           formatPercent(totalPaycheckPercent, 2),
         );
         setText("liquidationLiquidMetric", formatCurrency(liquid, 0));
@@ -8393,7 +9292,95 @@
         });
       }
 
+      function refreshAllCharts() {
+        Object.values(state.charts || {}).forEach((chart) => {
+          if (!chart) return;
+          if (typeof chart.resize === "function") {
+            chart.resize();
+          }
+          if (typeof chart.update === "function") {
+            chart.update("none");
+          }
+        });
+      }
+
+      function ensureMobileVisualToggles() {
+        document.querySelectorAll(".mobile-visual-panel .panel-heading").forEach(
+          (heading) => {
+            if (heading.querySelector(".mobile-visual-toggle")) return;
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "mobile-visual-toggle";
+            button.setAttribute("aria-expanded", "true");
+            button.textContent = "Hide";
+            heading.appendChild(button);
+          },
+        );
+      }
+
+      function syncMobileVisualPanels(forceCollapse = false) {
+        const isMobile = window.matchMedia("(max-width: 760px)").matches;
+        document.querySelectorAll(".mobile-visual-panel").forEach((panel) => {
+          if (!(panel instanceof HTMLElement)) return;
+          const toggle = panel.querySelector(".mobile-visual-toggle");
+          if (!(toggle instanceof HTMLButtonElement)) return;
+
+          if (!isMobile) {
+            panel.classList.remove("is-collapsed");
+            delete panel.dataset.mobileVisualReady;
+          } else if (forceCollapse || !panel.dataset.mobileVisualReady) {
+            panel.classList.add("is-collapsed");
+            panel.dataset.mobileVisualReady = "true";
+          }
+
+          const expanded = !panel.classList.contains("is-collapsed");
+          toggle.setAttribute("aria-expanded", String(expanded));
+          toggle.textContent = expanded ? "Hide" : "Show";
+        });
+      }
+
       function bindEvents() {
+        const handleInvestChannelInput = (event) => {
+          const row = event.target.closest(
+            ".invest-channel-row, .invest-channel-mobile-card",
+          );
+          if (!row) return;
+          const field = event.target.dataset.field;
+          const index = Number(row.dataset.index);
+          if (!Number.isInteger(index) || !state.investChannels[index]) return;
+
+          if (field === "label") {
+            state.investChannels[index].label = event.target.value;
+          }
+
+          if (field === "percent") {
+            state.investChannels[index].percent = toNumber(event.target.value);
+          }
+
+          if (field === "role") {
+            state.investChannels[index].role = event.target.value;
+          }
+
+          syncInvestChannels();
+          updateInvestTable();
+        };
+
+        const handleInvestChannelRemove = (event) => {
+          const button = event.target.closest(
+            '[data-action="remove-invest-channel"]',
+          );
+          if (!button) return;
+          const row = button.closest(
+            ".invest-channel-row, .invest-channel-mobile-card",
+          );
+          const index = Number(row?.dataset.index);
+          if (!Number.isInteger(index)) return;
+
+          state.investChannels.splice(index, 1);
+          renderInvestChannels();
+          updateInvestTable();
+        };
+
         $("demoModeToggleBtn")?.addEventListener("click", toggleDemoMode);
         $("cancelLiveUnlockBtn")?.addEventListener("click", closeLiveUnlockGate);
         $("liveUnlockForm")?.addEventListener("submit", handleLiveUnlock);
@@ -8466,28 +9453,8 @@
           syncCurrentDueRows();
           calculateLiquid();
         });
-        $("investChannelList").addEventListener("input", (event) => {
-          const row = event.target.closest(".invest-channel-row");
-          if (!row) return;
-          const field = event.target.dataset.field;
-          const index = Number(row.dataset.index);
-          if (!Number.isInteger(index) || !state.investChannels[index]) return;
-
-          if (field === "label") {
-            state.investChannels[index].label = event.target.value;
-          }
-
-          if (field === "percent") {
-            state.investChannels[index].percent = toNumber(event.target.value);
-          }
-
-          if (field === "role") {
-            state.investChannels[index].role = event.target.value;
-          }
-
-          syncInvestChannels();
-          updateInvestTable();
-        });
+        $("investChannelList").addEventListener("input", handleInvestChannelInput);
+        $("investChannelCards")?.addEventListener("input", handleInvestChannelInput);
         $("planExpenseList").addEventListener("click", (event) => {
           const button = event.target.closest('[data-action="remove-expense"]');
           if (!button) return;
@@ -8511,19 +9478,8 @@
           renderCurrentDueRows();
           calculateLiquid();
         });
-        $("investChannelList").addEventListener("click", (event) => {
-          const button = event.target.closest(
-            '[data-action="remove-invest-channel"]',
-          );
-          if (!button) return;
-          const row = button.closest(".invest-channel-row");
-          const index = Number(row?.dataset.index);
-          if (!Number.isInteger(index)) return;
-
-          state.investChannels.splice(index, 1);
-          renderInvestChannels();
-          updateInvestTable();
-        });
+        $("investChannelList").addEventListener("click", handleInvestChannelRemove);
+        $("investChannelCards")?.addEventListener("click", handleInvestChannelRemove);
         $("wb-entry-form").addEventListener("submit", (event) => {
           event.preventDefault();
           addweeklybudgetNewtransaction();
@@ -8586,9 +9542,23 @@
           scheduleFieldSave([target.id]);
         });
 
+        document.addEventListener("click", (event) => {
+          const toggle = event.target.closest(".mobile-visual-toggle");
+          if (!(toggle instanceof HTMLButtonElement)) return;
+          const panel = toggle.closest(".mobile-visual-panel");
+          if (!(panel instanceof HTMLElement)) return;
+          panel.classList.toggle("is-collapsed");
+          panel.dataset.mobileVisualReady = "true";
+          syncMobileVisualPanels();
+          if (!panel.classList.contains("is-collapsed")) {
+            window.setTimeout(refreshAllCharts, 80);
+          }
+        });
+
         window.addEventListener("resize", autoCalculateRemaining);
         window.addEventListener("resize", calculateLiquid);
         window.addEventListener("resize", updateInvestTable);
+        window.addEventListener("resize", syncMobileVisualPanels);
         document.addEventListener("keydown", (event) => {
           if (event.key === "Escape" && !$("liveUnlockGate")?.hidden) {
             closeLiveUnlockGate();
@@ -8610,6 +9580,8 @@
             "dashboardSection",
         );
         hydratePresentationState(getDemoDataset());
+        ensureMobileVisualToggles();
+        syncMobileVisualPanels(true);
         setSaveStatus("Demo mode is on. Live sync is paused.");
       }
 
