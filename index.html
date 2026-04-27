@@ -1381,6 +1381,51 @@
         align-items: stretch;
       }
 
+      .current-checking-transfer-band {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: center;
+        gap: 16px;
+        padding: 16px 18px;
+        border-radius: 22px;
+        border: 1px solid rgba(37, 99, 235, 0.08);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.98),
+          rgba(241, 246, 255, 0.96)
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.9),
+          0 14px 28px rgba(15, 23, 42, 0.05);
+      }
+
+      .current-checking-transfer-band > div {
+        display: grid;
+        gap: 6px;
+      }
+
+      .current-checking-transfer-kicker {
+        color: var(--text-dim);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .current-checking-transfer-band strong {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(1.7rem, 4vw, 2.5rem);
+        line-height: 0.98;
+        letter-spacing: -0.05em;
+      }
+
+      .current-checking-transfer-band p {
+        margin: 0;
+        color: var(--text-soft);
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
       .current-readout-card {
         display: grid;
         align-content: start;
@@ -1858,9 +1903,7 @@
 
       .invest-channel-mobile-head {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) 96px;
-        gap: 8px 10px;
-        align-items: end;
+        gap: 10px;
       }
 
       .invest-channel-mobile-card .field {
@@ -1896,6 +1939,56 @@
 
       .invest-channel-mobile-card .invest-percent-shell span {
         right: 10px;
+      }
+
+      .invest-channel-mobile-card.is-locked {
+        gap: 12px;
+        padding: 14px 14px 12px;
+      }
+
+      .invest-channel-mobile-locked-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .invest-channel-mobile-title {
+        display: grid;
+        gap: 4px;
+        min-width: 0;
+      }
+
+      .invest-channel-mobile-name {
+        margin: 0;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.04rem;
+        line-height: 1.08;
+        letter-spacing: -0.03em;
+      }
+
+      .invest-channel-mobile-role {
+        margin: 0;
+        color: var(--text-soft);
+        font-size: 0.84rem;
+        line-height: 1.4;
+      }
+
+      .invest-channel-mobile-percent-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 34px;
+        min-width: 68px;
+        padding: 0 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(37, 99, 235, 0.08);
+        background: rgba(239, 246, 255, 0.96);
+        color: var(--accent);
+        font-size: 0.86rem;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        white-space: nowrap;
       }
 
       .invest-channel-mobile-metrics {
@@ -1940,6 +2033,26 @@
 
       .invest-channel-mobile-summary .invest-channel-mobile-metric {
         min-height: 0;
+      }
+
+      .money-map-log-breakdown {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .money-map-log-chip {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(37, 99, 235, 0.08);
+        background: rgba(248, 250, 255, 0.96);
+        color: var(--text-soft);
+        font-size: 0.76rem;
+        font-weight: 700;
+        line-height: 1.2;
       }
 
       .mobile-visual-toggle {
@@ -2301,6 +2414,185 @@
         display: grid;
         gap: 16px;
         padding-top: 18px;
+      }
+
+      .deployment-log-list {
+        display: grid;
+        gap: 14px;
+      }
+
+      .deployment-log-card {
+        display: grid;
+        gap: 14px;
+        padding: 16px;
+        border-radius: 22px;
+        border: 1px solid rgba(15, 23, 42, 0.06);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.99),
+          rgba(246, 249, 255, 0.96)
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.92),
+          0 16px 28px rgba(15, 23, 42, 0.04);
+      }
+
+      .deployment-log-card-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .deployment-log-card-head h3,
+      .deployment-log-card-head p {
+        margin: 0;
+      }
+
+      .deployment-log-card-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .deployment-log-card-head h3 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.12rem;
+        line-height: 1.08;
+        letter-spacing: -0.02em;
+      }
+
+      .deployment-log-card-head p {
+        color: var(--text-soft);
+        font-size: 0.86rem;
+        line-height: 1.45;
+      }
+
+      .deployment-log-meta {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .deployment-log-stat {
+        display: grid;
+        gap: 4px;
+        padding: 10px 12px;
+        border-radius: 16px;
+        border: 1px solid rgba(37, 99, 235, 0.06);
+        background: rgba(248, 250, 255, 0.94);
+      }
+
+      .deployment-log-stat span {
+        color: var(--text-dim);
+        font-size: 0.66rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .deployment-log-stat strong {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.08rem;
+        line-height: 1;
+        letter-spacing: -0.03em;
+      }
+
+      .deployment-log-note {
+        margin: 0;
+        color: var(--text-soft);
+        font-size: 0.88rem;
+        line-height: 1.5;
+      }
+
+      .deployment-log-channels {
+        display: grid;
+        gap: 10px;
+      }
+
+      .deployment-log-channel {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) 148px;
+        align-items: center;
+        gap: 12px;
+        padding: 11px 12px;
+        border-radius: 16px;
+        border: 1px solid rgba(15, 23, 42, 0.06);
+        background: rgba(255, 255, 255, 0.92);
+      }
+
+      .deployment-log-channel-toggle {
+        width: 18px;
+        height: 18px;
+        accent-color: #2563eb;
+      }
+
+      .deployment-log-channel-main {
+        display: grid;
+        gap: 4px;
+        min-width: 0;
+      }
+
+      .deployment-log-channel-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .deployment-log-channel-head strong,
+      .deployment-log-channel-head span {
+        margin: 0;
+      }
+
+      .deployment-log-channel-head strong {
+        font-size: 0.98rem;
+        line-height: 1.08;
+      }
+
+      .deployment-log-channel-head span {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .deployment-log-channel-status {
+        color: var(--text-soft);
+        font-size: 0.8rem;
+        line-height: 1.4;
+      }
+
+      .deployment-log-channel-date {
+        display: grid;
+        gap: 4px;
+      }
+
+      .deployment-log-channel-date label {
+        color: var(--text-dim);
+        font-size: 0.62rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .deployment-log-empty {
+        padding: 14px 16px;
+        border-radius: 18px;
+        border: 1px dashed rgba(148, 163, 184, 0.34);
+        color: var(--text-soft);
+        text-align: center;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .deployment-log-summary-copy {
+        margin: 0;
+        color: var(--text-soft);
+        font-size: 0.84rem;
+        line-height: 1.5;
       }
 
       .current-single-input-grid {
@@ -2682,7 +2974,7 @@
         display: flex;
         justify-content: space-between;
         gap: 12px;
-        align-items: flex-end;
+        align-items: flex-start;
       }
 
       .current-ladder-meta div {
@@ -2711,6 +3003,20 @@
         line-height: 1;
         letter-spacing: -0.03em;
         color: var(--text-main);
+      }
+
+      .current-ladder-value-stack {
+        display: grid;
+        justify-items: end;
+        gap: 5px;
+        text-align: right;
+      }
+
+      .current-ladder-delta {
+        color: #dc2626;
+        font-size: 0.84rem;
+        line-height: 1.35;
+        font-weight: 800;
       }
 
       .current-ladder-track {
@@ -3993,6 +4299,19 @@
           grid-template-columns: 1fr;
         }
 
+        .current-checking-transfer-band {
+          grid-template-columns: 1fr;
+          justify-items: center;
+          text-align: center;
+          gap: 8px;
+          padding: 12px 11px;
+          border-radius: 18px;
+        }
+
+        .current-checking-transfer-band p {
+          font-size: 0.8rem;
+        }
+
         .current-readout-card[data-tone="deploy"] {
           grid-column: auto;
         }
@@ -4056,6 +4375,10 @@
           width: 100%;
           gap: 10px;
           margin: 0;
+        }
+
+        .current-flow-panel {
+          display: none !important;
         }
 
         .current-top-row {
@@ -4165,8 +4488,39 @@
           grid-template-columns: repeat(3, minmax(0, 1fr));
         }
 
+        .invest-channel-mobile-card,
+        .invest-channel-mobile-summary {
+          gap: 8px;
+          padding: 10px;
+          border-radius: 16px;
+        }
+
         .invest-channel-mobile-head {
-          grid-template-columns: minmax(0, 1fr) 88px;
+          gap: 8px;
+        }
+
+        .invest-channel-mobile-card.is-locked {
+          padding: 11px 10px 10px;
+        }
+
+        .invest-channel-mobile-locked-head {
+          gap: 10px;
+          align-items: center;
+        }
+
+        .invest-channel-mobile-name {
+          font-size: 0.98rem;
+        }
+
+        .invest-channel-mobile-role {
+          font-size: 0.78rem;
+        }
+
+        .invest-channel-mobile-percent-pill {
+          min-width: 60px;
+          min-height: 30px;
+          padding: 0 10px;
+          font-size: 0.8rem;
         }
 
         .invest-channel-table,
@@ -4480,6 +4834,18 @@
           border-radius: 16px;
         }
 
+        .deployment-log-meta {
+          grid-template-columns: 1fr;
+        }
+
+        .deployment-log-channel {
+          grid-template-columns: auto minmax(0, 1fr);
+        }
+
+        .deployment-log-channel-date {
+          grid-column: 1 / -1;
+        }
+
         .current-flow-source p,
         .current-flow-claim-card p,
         .current-flow-result-card p {
@@ -4504,8 +4870,13 @@
           padding-left: 0;
         }
 
-        .current-ladder-note span:last-child {
-          text-align: left;
+        .current-ladder-meta {
+          align-items: flex-start;
+        }
+
+        .current-ladder-value-stack {
+          justify-items: end;
+          gap: 4px;
         }
 
         .plan-flow-map {
@@ -4812,6 +5183,7 @@
 
         .output-hero,
         .current-readout-card,
+        .current-checking-transfer-band,
         .current-flow-source,
         .current-flow-claim-card,
         .current-flow-result-card,
@@ -4823,6 +5195,7 @@
         }
 
         .current-readout-card,
+        .current-checking-transfer-band,
         .current-flow-source,
         .current-flow-claim-card,
         .current-flow-result-card {
@@ -4862,15 +5235,34 @@
           grid-template-columns: 1fr;
         }
 
-        .invest-channel-mobile-head {
-          grid-template-columns: minmax(0, 1fr) 78px;
+        .current-checking-transfer-band strong {
+          font-size: clamp(1.5rem, 7vw, 1.9rem);
         }
 
         .invest-channel-mobile-card,
         .invest-channel-mobile-summary {
-          gap: 8px;
-          padding: 10px;
-          border-radius: 16px;
+          gap: 7px;
+          padding: 9px;
+          border-radius: 14px;
+        }
+
+        .invest-channel-mobile-card.is-locked {
+          padding: 10px 9px 9px;
+        }
+
+        .invest-channel-mobile-name {
+          font-size: 0.92rem;
+        }
+
+        .invest-channel-mobile-role {
+          font-size: 0.74rem;
+        }
+
+        .invest-channel-mobile-percent-pill {
+          min-width: 56px;
+          min-height: 28px;
+          padding: 0 9px;
+          font-size: 0.76rem;
         }
 
         .invest-channel-mobile-metrics {
@@ -4889,6 +5281,31 @@
         .money-map-toolbar-actions .subtle-button {
           padding: 6px 9px;
           font-size: 0.72rem;
+        }
+
+        .deployment-log-card {
+          padding: 12px;
+          border-radius: 18px;
+          gap: 10px;
+        }
+
+        .deployment-log-card-head {
+          gap: 10px;
+        }
+
+        .deployment-log-channel {
+          gap: 10px;
+          padding: 10px;
+        }
+
+        .deployment-log-channel-head {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 4px;
+        }
+
+        .deployment-log-channel-head span {
+          font-size: 0.92rem;
         }
 
         .money-map-bucket-vessel,
@@ -5347,6 +5764,15 @@
                       </div>
                     </article>
                   </div>
+                  <article class="current-checking-transfer-band">
+                    <div>
+                      <span class="current-checking-transfer-kicker">Checking Transfer</span>
+                      <strong id="currentCheckingTransferNeed">$0</strong>
+                    </div>
+                    <p id="currentCheckingTransferNote">
+                      Checking already covers debt, buffer transfer, and deployable cash.
+                    </p>
+                  </article>
                 </div>
               </article>
             </div>
@@ -5901,6 +6327,7 @@
               </div>
               <input type="hidden" id="investChannelsData" />
               <input type="hidden" id="investChannelsLocked" value="true" />
+              <input type="hidden" id="moneyMapDeploymentLogData" />
               <div class="flow-row two plan-input-row">
                 <div class="field">
                   <label for="investLiquidAmount">Current Capital To Deploy</label>
@@ -6006,79 +6433,47 @@
               <summary class="money-map-log-summary">
                 <div>
                   <p class="eyebrow">Step 4</p>
-                  <h2>Deployment Log</h2>
+                  <h2>Transfer + Deployment Log</h2>
                 </div>
                 <span class="money-map-log-pill">Optional</span>
               </summary>
               <div class="money-map-log-content">
-                <div class="table-form six-up">
-                  <div class="field">
-                    <label for="logLiquidationNumber">Deploy Round #</label>
-                    <input
-                      type="text"
-                      id="logLiquidationNumber"
-                      placeholder="Number"
-                    />
-                  </div>
-                  <div class="field">
-                    <label for="logTotalLiquidationAmount">Total Routed</label>
-                    <input
-                      type="number"
-                      id="logTotalLiquidationAmount"
-                      placeholder="0"
-                    />
-                  </div>
+                <p class="panel-note">
+                  Start one deployment here, then come back later to mark each channel done on its actual date.
+                </p>
+                <div class="table-form four-up">
                   <div class="field">
                     <label for="logDate">Date</label>
                     <input type="date" id="logDate" />
                   </div>
                   <div class="field">
-                    <label for="logLiquidationTransfer">Transfer Note</label>
+                    <label for="logBufferTransfer">Buffer Moved Out</label>
                     <input
-                      type="text"
-                      id="logLiquidationTransfer"
-                      placeholder="Transfer"
+                      type="number"
+                      id="logBufferTransfer"
+                      placeholder="0"
                     />
                   </div>
                   <div class="field">
-                    <label for="logCrypto">Crypto</label>
-                    <input type="text" id="logCrypto" placeholder="Crypto" />
+                    <label for="logDeployPreview">Deploying Now</label>
+                    <div class="field-readout field-readout-compact" id="logDeployPreview">$0</div>
                   </div>
                   <div class="field">
-                    <label for="logFidelity">Fidelity</label>
-                    <input type="text" id="logFidelity" placeholder="Fidelity" />
-                  </div>
-                  <div class="field">
-                    <label for="logWealthfront">Wealthfront</label>
+                    <label for="logLiquidationTransfer">Note</label>
                     <input
                       type="text"
-                      id="logWealthfront"
-                      placeholder="Wealthfront"
+                      id="logLiquidationTransfer"
+                      placeholder="Optional note"
                     />
                   </div>
                   <div class="field">
                     <label>&nbsp;</label>
                     <button id="addLiquidationLogBtn" type="button">
-                      Add Log
+                      Start Deployment
                     </button>
                   </div>
                 </div>
-                <div class="table-wrap short">
-                  <table id="liquidationLogTable">
-                    <thead>
-                      <tr>
-                        <th>Deploy Round</th>
-                        <th>Total Routed</th>
-                        <th>Date</th>
-                        <th>Transfer Note</th>
-                        <th>Crypto</th>
-                        <th>Fidelity</th>
-                        <th>Wealthfront</th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </div>
+                <div id="liquidationLogTable" class="deployment-log-list"></div>
               </div>
             </details>
           </div>
@@ -6529,12 +6924,9 @@
             weeklybudgetNewtransactionAmount: "",
             weeklybudgetNewtransactionDescription: "",
             logDate: anchorDate,
-            logLiquidationNumber: "D-12",
-            logTotalLiquidationAmount: "660",
+            logBufferTransfer: "140",
             logLiquidationTransfer: "Demo routing sweep",
-            logCrypto: "130",
-            logFidelity: "320",
-            logWealthfront: "210",
+            moneyMapDeploymentLogData: "",
           },
           planExpenseRows: [
             { label: "Rent", amount: 250 },
@@ -6573,22 +6965,32 @@
           ],
           liquidationLogRows: [
             {
-              "Liquidation Number": "D-11",
-              "Total Liquidation Amount": 620,
-              Date: offsetInputValue(-14),
-              "Liquidation Transfer": "Treasury + brokerage sweep",
-              Crypto: "120",
-              Fidelity: "300",
-              Wealthfront: "200",
+              id: "demo-log-1",
+              label: "Deployment 1",
+              date: offsetInputValue(-14),
+              bufferTransfer: 140,
+              totalDeployed: 620,
+              note: "Treasury + brokerage sweep",
+              channels: [
+                { id: "demo-1-a", label: "Planned Buffer", amount: 186, percent: 30, completed: true, completedDate: offsetInputValue(-14) },
+                { id: "demo-1-b", label: "Index Funds", amount: 248, percent: 40, completed: true, completedDate: offsetInputValue(-13) },
+                { id: "demo-1-c", label: "House Goal", amount: 124, percent: 20, completed: false, completedDate: "" },
+                { id: "demo-1-d", label: "Giving", amount: 62, percent: 10, completed: false, completedDate: "" },
+              ],
             },
             {
-              "Liquidation Number": "D-10",
-              "Total Liquidation Amount": 590,
-              Date: offsetInputValue(-28),
-              "Liquidation Transfer": "Quarter-end demo deploy",
-              Crypto: "115",
-              Fidelity: "285",
-              Wealthfront: "190",
+              id: "demo-log-2",
+              label: "Deployment 2",
+              date: offsetInputValue(-28),
+              bufferTransfer: 120,
+              totalDeployed: 590,
+              note: "Quarter-end demo deploy",
+              channels: [
+                { id: "demo-2-a", label: "Planned Buffer", amount: 177, percent: 30, completed: true, completedDate: offsetInputValue(-28) },
+                { id: "demo-2-b", label: "Index Funds", amount: 236, percent: 40, completed: true, completedDate: offsetInputValue(-28) },
+                { id: "demo-2-c", label: "House Goal", amount: 118, percent: 20, completed: true, completedDate: offsetInputValue(-27) },
+                { id: "demo-2-d", label: "Giving", amount: 59, percent: 10, completed: true, completedDate: offsetInputValue(-26) },
+              ],
             },
           ],
           weeklyBudgetRows: [
@@ -6654,6 +7056,7 @@
         renderCurrentDueRows();
         renderPlanExpenseRows();
         renderInvestChannels();
+        syncDeploymentLogRows(false);
         renderWeeklyBudgetTables(state.weeklyBudgetRows);
         renderBudgetCheckTable(state.budgetCheckRows);
         renderLiquidationLogTable(state.liquidationLogRows);
@@ -6704,7 +7107,7 @@
           );
         }
         loadBudgetCheck();
-        loadLiquidationLog();
+        initializeDeploymentLogRows();
         loadWeeklyBudgetTransactions();
       }
 
@@ -7357,6 +7760,205 @@
         renderInvestChannels();
       }
 
+      function sanitizeDeploymentLogRows(rows) {
+        return (Array.isArray(rows) ? rows : [])
+          .map((row, index) => {
+            const legacyChannels = [
+              ["Crypto", row?.Crypto],
+              ["Fidelity", row?.Fidelity],
+              ["Wealthfront", row?.Wealthfront],
+            ]
+              .map(([label, amount]) => ({
+                label,
+                amount: toNumber(amount),
+                percent: 0,
+              }))
+              .filter((channel) => channel.amount > 0);
+            const hasExplicitChannelState = Array.isArray(row?.channels)
+              ? row.channels.some(
+                  (channel) =>
+                    channel &&
+                    (Object.prototype.hasOwnProperty.call(channel, "completed") ||
+                      Object.prototype.hasOwnProperty.call(channel, "completedDate")),
+                )
+              : false;
+            const channels = Array.isArray(row?.channels)
+              ? row.channels
+                  .map((channel) => ({
+                    id:
+                      String(channel?.id ?? "").trim() ||
+                      `deployment-channel-${index}-${String(
+                        channel?.label ?? "channel",
+                      )
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]+/g, "-")}`,
+                    label: String(channel?.label ?? "").trim() || "Channel",
+                    amount: toNumber(channel?.amount),
+                    percent: toNumber(channel?.percent),
+                    completedDate: normalizeDateValue(
+                      channel?.completedDate || channel?.date || "",
+                    ),
+                    completed:
+                      typeof channel?.completed === "boolean"
+                        ? channel.completed
+                        : Boolean(
+                            normalizeDateValue(
+                              channel?.completedDate || channel?.date || "",
+                            ),
+                          ) || !hasExplicitChannelState,
+                  }))
+                  .filter(
+                    (channel) =>
+                      channel.label && (channel.amount > 0 || channel.percent > 0),
+                  )
+              : legacyChannels.map((channel, channelIndex) => ({
+                  ...channel,
+                  id: `legacy-deployment-channel-${index}-${channelIndex}`,
+                  completed: true,
+                  completedDate: normalizeDateValue(row?.date || row?.Date || ""),
+                }));
+
+            return {
+              id:
+                String(row?.id ?? "").trim() ||
+                `deployment-log-${index}-${Date.now()}`,
+              label:
+                String(row?.label ?? row?.deploymentLabel ?? "").trim() ||
+                `Deployment ${index + 1}`,
+              date: normalizeDateValue(row?.date || row?.Date || ""),
+              locked:
+                typeof row?.locked === "boolean" ? row.locked : false,
+              bufferTransfer: toNumber(
+                row?.bufferTransfer ?? row?.["Buffer Transfer"] ?? 0,
+              ),
+              bufferCompleted:
+                typeof row?.bufferCompleted === "boolean"
+                  ? row.bufferCompleted
+                  : toNumber(
+                        row?.bufferTransfer ?? row?.["Buffer Transfer"] ?? 0,
+                      ) > 0,
+              bufferCompletedDate: normalizeDateValue(
+                row?.bufferCompletedDate || row?.bufferDate || row?.date || row?.Date || "",
+              ),
+              totalDeployed: toNumber(
+                row?.totalDeployed ??
+                  row?.["Total Deployed"] ??
+                  row?.["Total Liquidation Amount"] ??
+                  0,
+              ),
+              note: String(
+                row?.note ??
+                  row?.Note ??
+                  row?.["Liquidation Transfer"] ??
+                  "",
+              ).trim(),
+              channels,
+            };
+          })
+          .filter(
+            (row) =>
+              row.date ||
+              row.bufferTransfer > 0 ||
+              row.totalDeployed > 0 ||
+              row.channels.length ||
+              row.note,
+          );
+      }
+
+      function getDeploymentProgress(row) {
+        const channels = Array.isArray(row?.channels) ? row.channels : [];
+        const completed = channels.filter((channel) => channel.completed).length;
+        const completedAmount = channels
+          .filter((channel) => channel.completed)
+          .reduce((sum, channel) => sum + toNumber(channel.amount), 0);
+
+        return {
+          total: channels.length,
+          completed,
+          completedAmount,
+        };
+      }
+
+      function describeDeploymentSummary(row) {
+        const progress = getDeploymentProgress(row);
+        const pendingChannels = Math.max(progress.total - progress.completed, 0);
+        const bufferSummary =
+          row.bufferTransfer > 0
+            ? row.bufferCompleted
+              ? `Buffer transferred${row.bufferCompletedDate ? ` on ${formatMonthDay(
+                  row.bufferCompletedDate,
+                )}` : ""}.`
+              : "Buffer still pending."
+            : "No buffer transfer planned.";
+        const channelSummary =
+          progress.total > 0
+            ? pendingChannels > 0
+              ? `${progress.completed} of ${progress.total} channels finished.`
+              : "All channel deployments are complete."
+            : "No channel deployments planned.";
+        return `${bufferSummary} ${channelSummary}`.trim();
+      }
+
+      function nextDeploymentLabel() {
+        return `Deployment ${state.liquidationLogRows.length + 1}`;
+      }
+
+      function initializeDeploymentLogRows() {
+        const raw = $("moneyMapDeploymentLogData")?.value || "";
+        let rows = [];
+
+        if (raw) {
+          try {
+            rows = sanitizeDeploymentLogRows(JSON.parse(raw));
+          } catch (error) {
+            console.error("Error parsing saved deployment log:", error);
+          }
+        }
+
+        state.liquidationLogRows = rows;
+        state.latestLiquidationLog = rows[0] || null;
+        renderLiquidationLogTable(rows);
+      }
+
+      function syncDeploymentLogRows(shouldSave = true) {
+        const serialized = $("moneyMapDeploymentLogData");
+        if (serialized) {
+          serialized.value = JSON.stringify(state.liquidationLogRows);
+        }
+        state.latestLiquidationLog = state.liquidationLogRows[0] || null;
+        if (shouldSave) {
+          scheduleFieldSave(["moneyMapDeploymentLogData"]);
+        }
+      }
+
+      function updateDeploymentLogEntry(logId, updater) {
+        const row = state.liquidationLogRows.find((entry) => entry.id === logId);
+        if (!row) return;
+        updater(row);
+        syncDeploymentLogRows();
+        renderLiquidationLogTable(state.liquidationLogRows);
+      }
+
+      function buildCurrentDeploymentSnapshot() {
+        const deployTotal = Math.max(toNumber($("investLiquidAmount")?.value), 0);
+        return {
+          deployTotal,
+          channels: getFlowSections(
+            deployTotal,
+            toNumber($("overviewPaycheck")?.value),
+          )
+            .filter((section) => section.amount > 0)
+            .map((section, index) => ({
+              id: `deployment-channel-${Date.now()}-${index}`,
+              label: section.label,
+              amount: section.amount,
+              percent: toNumber(section.percent),
+              completed: false,
+              completedDate: "",
+            })),
+        };
+      }
+
       function renderInvestChannels() {
         const list = $("investChannelList");
         const mobileList = $("investChannelCards");
@@ -7500,14 +8102,55 @@
               paycheckPercent: paycheck ? ((liquid * (percent / 100)) / paycheck) * 100 : 0,
             };
 
-            const channelField = locked
-              ? `
-                  <div class="field">
-                    <label>Channel</label>
-                    <div class="field-readout">${escapeHtml(row.label)}</div>
+            if (locked) {
+              return `
+                <article class="invest-channel-mobile-card is-locked" data-index="${index}">
+                  <div class="invest-channel-mobile-locked-head">
+                    <div class="invest-channel-mobile-title">
+                      <p class="invest-channel-mobile-name">${escapeHtml(
+                        row.label,
+                      )}</p>
+                      <p class="invest-channel-mobile-role">${escapeHtml(
+                        row.role,
+                      )}</p>
+                    </div>
+                    <span class="invest-channel-mobile-percent-pill">${formatPercent(
+                      percent,
+                      percent % 1 === 0 ? 0 : 1,
+                    )}</span>
                   </div>
-                `
-              : `
+                  <div class="invest-channel-mobile-metrics">
+                    <div class="invest-channel-mobile-metric">
+                      <span>Amount</span>
+                      <strong data-field-display="amount">${formatCurrency(
+                        section.amount,
+                        2,
+                      )}</strong>
+                    </div>
+                    <div class="invest-channel-mobile-metric">
+                      <span>Paycheck %</span>
+                      <strong data-field-display="paycheckPercent">${formatPercent(
+                        section.paycheckPercent,
+                        2,
+                      )}</strong>
+                    </div>
+                  </div>
+                </article>
+              `;
+            }
+
+            return `
+              <article class="invest-channel-mobile-card" data-index="${index}">
+                <button
+                  class="icon-button invest-channel-remove-cell"
+                  type="button"
+                  data-action="remove-invest-channel"
+                  aria-label="Remove deployment channel"
+                  ${state.investChannels.length === 1 ? "disabled" : ""}
+                >
+                  ×
+                </button>
+                <div class="invest-channel-mobile-head">
                   <div class="field">
                     <label>Channel</label>
                     <input
@@ -7517,19 +8160,6 @@
                       placeholder="Channel"
                     />
                   </div>
-                `;
-
-            const percentField = locked
-              ? `
-                  <div class="field">
-                    <label>Deploy %</label>
-                    <div class="field-readout field-readout-compact">${formatPercent(
-                      percent,
-                      percent % 1 === 0 ? 0 : 1,
-                    )}</div>
-                  </div>
-                `
-              : `
                   <div class="field">
                     <label>Deploy %</label>
                     <div class="input-shell suffix-shell invest-percent-shell">
@@ -7543,41 +8173,15 @@
                       <span>%</span>
                     </div>
                   </div>
-                `;
-
-            const roleField = locked
-              ? `<div class="field-readout">${escapeHtml(row.role)}</div>`
-              : `
+                </div>
+                <div class="field">
+                  <label>Role</label>
                   <input
                     type="text"
                     data-field="role"
                     value="${escapeHtml(row.role)}"
                     placeholder="Role"
                   />
-                `;
-
-            return `
-              <article class="invest-channel-mobile-card${locked ? " is-locked" : ""}" data-index="${index}">
-                ${
-                  locked
-                    ? ""
-                    : `<button
-                        class="icon-button invest-channel-remove-cell"
-                        type="button"
-                        data-action="remove-invest-channel"
-                        aria-label="Remove deployment channel"
-                        ${state.investChannels.length === 1 ? "disabled" : ""}
-                      >
-                        ×
-                      </button>`
-                }
-                <div class="invest-channel-mobile-head">
-                  ${channelField}
-                  ${percentField}
-                </div>
-                <div class="field">
-                  <label>Role</label>
-                  ${roleField}
                 </div>
                 <div class="invest-channel-mobile-metrics">
                   <div class="invest-channel-mobile-metric">
@@ -7956,7 +8560,9 @@
         if (state.latestLiquidationLog) {
           setText(
             "dashboardRecentFlowMetric",
-            `${formatLongDate(state.latestLiquidationLog.Date)}`,
+            `${formatLongDate(
+              state.latestLiquidationLog.date || state.latestLiquidationLog.Date,
+            )}`,
           );
         }
 
@@ -8192,58 +8798,48 @@
 
         const rows = [
           {
-            kicker: "Start",
             label: "Cash On Hand",
             amount: cash,
             width: widthFor(cash),
             fill: "linear-gradient(135deg, #1d4ed8, #60a5fa)",
-            chipLabel: "Source",
-            chipValue: "Starting position",
-            noteText: "100% of starting cash remains at this stage.",
+            deltaText:
+              data.debt > 0
+                ? `- ${formatCurrency(data.debt, 0)} Debt`
+                : "No debt next",
           },
           {
-            kicker: "After Cut 1",
             label: "After Debt",
             amount: afterDebt,
             width: widthFor(afterDebt),
             fill: "linear-gradient(135deg, #ef4444, #f97316)",
-            chipLabel: "Minus Debt",
-            chipValue:
-              data.debt > 0
-                ? formatCurrency(data.debt, 0)
-                : "Nothing removed",
-            noteText: `${formatPercent(cash > 0 ? (afterDebt / cash) * 100 : 0, 0)} of starting cash remains at this stage.`,
+            deltaText:
+              data.dueTotal > 0
+                ? `- ${formatCurrency(data.dueTotal, 0)} Scheduled Reserves`
+                : "No reserves next",
           },
           {
-            kicker: "After Cut 2",
             label: "After Scheduled Reserves",
             amount: afterDue,
             width: widthFor(afterDue),
             fill: "linear-gradient(135deg, #f97316, #fb923c)",
-            chipLabel: "Minus Scheduled Reserves",
-            chipValue:
-              data.dueTotal > 0
-                ? formatCurrency(data.dueTotal, 0)
-                : "Nothing removed",
-            noteText: `${formatPercent(cash > 0 ? (afterDue / cash) * 100 : 0, 0)} of starting cash remains at this stage.`,
+            deltaText:
+              data.bufferHeld > 0
+                ? `- ${formatCurrency(data.bufferHeld, 0)} Buffer Fund`
+                : data.bufferTarget > 0
+                  ? "Buffer compresses to $0"
+                  : "No buffer next",
           },
           {
-            kicker: "After Cut 3",
             label: "After Buffer Fund",
             amount: afterBuffer,
             width: widthFor(afterBuffer),
             fill: "linear-gradient(135deg, #7c3aed, #a855f7)",
-            chipLabel: "Minus Buffer Fund",
-            chipValue:
-              data.bufferHeld > 0
-                ? formatCurrency(data.bufferHeld, 0)
-                : data.bufferTarget > 0
-                  ? "Compressed to $0"
-                  : "Nothing held back",
-            noteText: `${formatPercent(cash > 0 ? (afterBuffer / cash) * 100 : 0, 0)} of starting cash remains at this stage.`,
+            deltaText: `- ${formatCurrency(
+              Math.max(afterBuffer - finalAmount, 0),
+              0,
+            )} Protected Floor`,
           },
           {
-            kicker: reserveDip > 0 ? "Reserve" : "Final",
             label: "Capital To Deploy",
             amount: finalAmount,
             width: widthFor(finalAmount),
@@ -8251,30 +8847,13 @@
               reserveDip <= 0
                 ? "linear-gradient(135deg, #0f172a, #2563eb)"
                 : "linear-gradient(135deg, #dc2626, #f97316)",
-            chipLabel:
+            chipText:
               reserveBelowZero > 0
-                ? "Reserve Overdraw"
+                ? `Reserve below $0 by ${formatCurrency(reserveBelowZero, 0)}`
                 : reserveDip <= 0
-                ? "Protected Floor Reserve Left"
-                : "Reserve Pull",
-            chipValue:
-              reserveBelowZero > 0
-                ? formatCurrency(reserveBelowZero, 0)
-                : reserveDip <= 0
-                ? formatCurrency(data.reserveRemaining, 0)
-                : formatCurrency(reserveDip, 0),
-            noteText:
-              reserveBelowZero > 0
-                ? `Reserve is ${formatCurrency(
-                    reserveBelowZero,
-                    0,
-                  )} below $0 and needs urgent refill.`
-                : reserveDip <= 0
-                ? `${formatPercent(cash > 0 ? (finalAmount / cash) * 100 : 0, 0)} of starting cash remains available to deploy.`
-                : `${formatCurrency(
-                    data.reserveRemaining,
-                    0,
-                  )} is left in the protected floor reserve after this pull.`,
+                ? `Reserve left ${formatCurrency(data.reserveRemaining, 0)}`
+                : `Pulled ${formatCurrency(reserveDip, 0)} from reserve`,
+            deltaText: "",
           },
         ];
 
@@ -8284,14 +8863,18 @@
               <div class="current-ladder-row" style="--ladder-indent: ${index * 16}px;">
                 <div class="current-ladder-meta">
                   <div>
-                    <span class="current-ladder-kicker">${escapeHtml(row.kicker)}</span>
                     <strong class="current-ladder-label">${escapeHtml(row.label)}</strong>
                   </div>
-                  <strong class="current-ladder-value">${formatCurrency(row.amount, 0)}</strong>
-                </div>
-                <div class="current-ladder-note">
-                  <span class="current-ladder-chip">${escapeHtml(row.chipLabel)} ${escapeHtml(row.chipValue)}</span>
-                  <span>${escapeHtml(row.noteText)}</span>
+                  <div class="current-ladder-value-stack">
+                    <strong class="current-ladder-value">${formatCurrency(row.amount, 0)}</strong>
+                    ${
+                      row.deltaText
+                        ? `<span class="current-ladder-delta">${escapeHtml(
+                            row.deltaText,
+                          )}</span>`
+                        : ""
+                    }
+                  </div>
                 </div>
                 <div class="current-ladder-track">
                   <div
@@ -8351,6 +8934,53 @@
         setText("currentDueTotal", formatCurrency(futureTotal, 0));
         setText("currentBufferAvailable", formatCurrency(bufferHeld, 0));
         setText("currentReserveReadout", formatCurrency(reserveActual, 0));
+        const perAccountFloor = reserveTarget / 2;
+        const requiredCheckingBalance =
+          debt + bufferHeld + displayCapital + perAccountFloor;
+        const checkingTransferNeed = Math.max(
+          requiredCheckingBalance - checking,
+          0,
+        );
+        const maxTransferFromSavings = Math.max(savings - perAccountFloor, 0);
+        const transferShortfall = Math.max(
+          checkingTransferNeed - maxTransferFromSavings,
+          0,
+        );
+        setText(
+          "currentCheckingTransferNeed",
+          formatCurrency(checkingTransferNeed, 0),
+        );
+        setText(
+          "currentCheckingTransferNote",
+          transferShortfall > 0
+            ? `${formatCurrency(
+                checkingTransferNeed,
+                0,
+              )} is needed in Checking, but Savings can only spare ${formatCurrency(
+                maxTransferFromSavings,
+                0,
+              )} before hitting its ${formatCurrency(
+                perAccountFloor,
+                0,
+              )} floor. ${formatCurrency(
+                transferShortfall,
+                0,
+              )} would still be uncovered.`
+            : checkingTransferNeed > 0
+            ? `${formatCurrency(
+                checkingTransferNeed,
+                0,
+              )} needs to move into Checking so debt, buffer transfer, and deployable cash can clear while both Checking and Savings stay above ${formatCurrency(
+                perAccountFloor,
+                0,
+              )}.`
+            : debt + bufferHeld + displayCapital > 0
+              ? `Checking already covers debt, buffer transfer, and deployable cash while both accounts stay above ${formatCurrency(
+                  perAccountFloor,
+                  0,
+                )}.`
+              : "No extra checking transfer is needed right now.",
+        );
         setText("weeklyCheckCashMetric", formatCurrency(cash, 0));
         setText("weeklyCheckExpensesMetric", formatCurrency(commitments, 0));
         setText("weeklyCheckBufferMetric", formatCurrency(displayCapital, 0));
@@ -8365,6 +8995,7 @@
         );
 
         setInputValue("investLiquidAmount", compactNumber(displayCapital));
+        setText("logDeployPreview", formatCurrency(displayCapital, 2));
 
         updateWeeklyCheckCharts({
           cash,
@@ -8650,45 +9281,218 @@
       }
 
       function renderLiquidationLogTable(rows) {
-        const tbody = $("liquidationLogTable")?.querySelector("tbody") || null;
-        const sorted = [...(Array.isArray(rows) ? rows : [])].sort(
+        const container = $("liquidationLogTable");
+        const sorted = sanitizeDeploymentLogRows(rows).sort(
           (a, b) =>
-            (parseDate(b.Date)?.getTime() || 0) -
-            (parseDate(a.Date)?.getTime() || 0),
+            (parseDate(b.date)?.getTime() || 0) -
+            (parseDate(a.date)?.getTime() || 0),
         );
 
         state.liquidationLogRows = sorted;
         state.latestLiquidationLog = sorted[0] || null;
 
-        if (!tbody) {
+        if (!container) {
           updateDashboard();
           return;
         }
 
         if (!sorted.length) {
-          renderEmptyRow(tbody, 7, "No deployment entries yet.");
+          container.innerHTML = `
+            <div class="deployment-log-empty">
+              No transfers or deployment snapshots logged yet.
+            </div>
+          `;
           updateDashboard();
           return;
         }
 
-        tbody.innerHTML = sorted
-          .map(
-            (row) => `
-              <tr>
-                <td>${escapeHtml(row["Liquidation Number"] || "")}</td>
-                <td>${formatCurrency(
-                  toNumber(row["Total Liquidation Amount"]),
-                  2,
-                )}</td>
-                <td>${escapeHtml(normalizeDateValue(row.Date))}</td>
-                <td>${escapeHtml(row["Liquidation Transfer"] || "")}</td>
-                <td>${escapeHtml(row.Crypto || "")}</td>
-                <td>${escapeHtml(row.Fidelity || "")}</td>
-                <td>${escapeHtml(row.Wealthfront || "")}</td>
-              </tr>
-            `,
-          )
+        container.innerHTML = sorted
+          .map((row) => {
+            const progress = getDeploymentProgress(row);
+            if (row.locked) {
+              return `
+                <article class="deployment-log-card" data-log-id="${escapeHtml(
+                  row.id,
+                )}">
+                  <div class="deployment-log-card-head">
+                    <div>
+                      <p class="eyebrow">${escapeHtml(row.label)}</p>
+                      <h3>${escapeHtml(formatLongDate(row.date))}</h3>
+                      <p class="deployment-log-summary-copy">${escapeHtml(
+                        describeDeploymentSummary(row),
+                      )}</p>
+                    </div>
+                    <div class="deployment-log-card-actions">
+                      <button
+                        type="button"
+                        class="inline-table-button"
+                        data-action="toggle-deployment-log-lock"
+                        data-log-id="${escapeHtml(row.id)}"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        class="inline-table-button"
+                        data-action="remove-deployment-log"
+                        data-log-id="${escapeHtml(row.id)}"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                  <div class="deployment-log-meta">
+                    <div class="deployment-log-stat">
+                      <span>Buffer Out</span>
+                      <strong>${formatCurrency(row.bufferTransfer, 2)}</strong>
+                    </div>
+                    <div class="deployment-log-stat">
+                      <span>Deployed</span>
+                      <strong>${formatCurrency(progress.completedAmount, 2)}</strong>
+                    </div>
+                    <div class="deployment-log-stat">
+                      <span>Channels Done</span>
+                      <strong>${progress.completed} / ${progress.total}</strong>
+                    </div>
+                  </div>
+                </article>
+              `;
+            }
+
+            return `
+              <article class="deployment-log-card" data-log-id="${escapeHtml(
+                row.id,
+              )}">
+                <div class="deployment-log-card-head">
+                  <div>
+                    <p class="eyebrow">${escapeHtml(row.label)}</p>
+                    <h3>${escapeHtml(formatLongDate(row.date))}</h3>
+                    <p>${escapeHtml(row.note || "No note added.")}</p>
+                  </div>
+                  <div class="deployment-log-card-actions">
+                    <button
+                      type="button"
+                      class="inline-table-button"
+                      data-action="toggle-deployment-log-lock"
+                      data-log-id="${escapeHtml(row.id)}"
+                    >
+                      Lock
+                    </button>
+                    <button
+                      type="button"
+                      class="inline-table-button"
+                      data-action="remove-deployment-log"
+                      data-log-id="${escapeHtml(row.id)}"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+                <div class="deployment-log-meta">
+                  <div class="deployment-log-stat">
+                    <span>Buffer Out</span>
+                    <strong>${formatCurrency(row.bufferTransfer, 2)}</strong>
+                  </div>
+                  <div class="deployment-log-stat">
+                    <span>Planned Deploy</span>
+                    <strong>${formatCurrency(row.totalDeployed, 2)}</strong>
+                  </div>
+                  <div class="deployment-log-stat">
+                    <span>Completed</span>
+                    <strong>${progress.completed} / ${progress.total}</strong>
+                  </div>
+                </div>
+                <div class="deployment-log-channels">
+                  ${
+                    row.bufferTransfer > 0
+                      ? `
+                        <div class="deployment-log-channel">
+                          <input
+                            class="deployment-log-channel-toggle"
+                            type="checkbox"
+                            data-action="toggle-deployment-buffer"
+                            data-log-id="${escapeHtml(row.id)}"
+                            ${row.bufferCompleted ? "checked" : ""}
+                          />
+                          <div class="deployment-log-channel-main">
+                            <div class="deployment-log-channel-head">
+                              <strong>Buffer Transfer</strong>
+                              <span>${formatCurrency(row.bufferTransfer, 0)}</span>
+                            </div>
+                            <span class="deployment-log-channel-status">
+                              ${
+                                row.bufferCompleted
+                                  ? `Transferred${row.bufferCompletedDate ? ` on ${escapeHtml(
+                                      formatMonthDay(row.bufferCompletedDate),
+                                    )}` : ""}`
+                                  : "Still pending"
+                              }
+                            </span>
+                          </div>
+                          <div class="deployment-log-channel-date">
+                            <label>Transfer Date</label>
+                            <input
+                              type="date"
+                              data-action="deployment-buffer-date"
+                              data-log-id="${escapeHtml(row.id)}"
+                              value="${escapeHtml(row.bufferCompletedDate || "")}"
+                            />
+                          </div>
+                        </div>
+                      `
+                      : ""
+                  }
+                  ${
+                    row.channels.length
+                      ? row.channels
+                          .map(
+                            (channel) => `
+                              <div class="deployment-log-channel">
+                                <input
+                                  class="deployment-log-channel-toggle"
+                                  type="checkbox"
+                                  data-action="toggle-deployment-channel"
+                                  data-log-id="${escapeHtml(row.id)}"
+                                  data-channel-id="${escapeHtml(channel.id)}"
+                                  ${channel.completed ? "checked" : ""}
+                                />
+                                <div class="deployment-log-channel-main">
+                                  <div class="deployment-log-channel-head">
+                                    <strong>${escapeHtml(channel.label)}</strong>
+                                    <span>${formatCurrency(channel.amount, 0)}</span>
+                                  </div>
+                                  <span class="deployment-log-channel-status">
+                                    ${
+                                      channel.completed
+                                        ? `Deployed${channel.completedDate ? ` on ${escapeHtml(
+                                            formatMonthDay(channel.completedDate),
+                                          )}` : ""}`
+                                        : "Still pending"
+                                    }
+                                  </span>
+                                </div>
+                                <div class="deployment-log-channel-date">
+                                  <label>Completion Date</label>
+                                  <input
+                                    type="date"
+                                    data-action="deployment-channel-date"
+                                    data-log-id="${escapeHtml(row.id)}"
+                                    data-channel-id="${escapeHtml(channel.id)}"
+                                    value="${escapeHtml(channel.completedDate || "")}"
+                                  />
+                                </div>
+                              </div>
+                            `,
+                          )
+                          .join("")
+                      : '<div class="deployment-log-empty">No deployment channels were captured for this deployment.</div>'
+                  }
+                </div>
+              </article>
+            `;
+          })
           .join("");
+        syncDeploymentLogRows(false);
         updateDashboard();
       }
 
@@ -8722,6 +9526,7 @@
           initializeCurrentDueRows();
           initializePlanExpenses();
           initializeInvestChannels();
+          initializeDeploymentLogRows();
           seedManualDate();
           seedActionDates();
           updateFocusDateIndicators();
@@ -8761,20 +9566,7 @@
       }
 
       async function loadLiquidationLog() {
-        try {
-          const rows = await safeFetchJson(apiUrl2);
-          if (state.demoMode) return;
-          renderLiquidationLogTable(rows);
-        } catch (error) {
-          console.error("Error loading liquidation log:", error);
-          if (state.demoMode) return;
-          state.liquidationLogRows = [];
-          state.latestLiquidationLog = null;
-          const tbody = $("liquidationLogTable")?.querySelector("tbody") || null;
-          if (!tbody) return;
-          renderEmptyRow(tbody, 7, "Unable to load deployment log right now.");
-          updateDashboard();
-        }
+        initializeDeploymentLogRows();
       }
 
       async function loadWeeklyBudgetTransactions() {
@@ -9218,46 +10010,37 @@
       }
 
       function addLiquidationLog() {
-        if (!canWriteToBackend()) return;
-        const liquidationNumber = $("logLiquidationNumber").value;
-        const totalLiquidationAmount = $("logTotalLiquidationAmount").value;
         const date = $("logDate").value;
+        const bufferTransfer = toNumber($("logBufferTransfer")?.value);
+        const note = $("logLiquidationTransfer")?.value || "";
+        const snapshot = buildCurrentDeploymentSnapshot();
 
-        if (!liquidationNumber || !totalLiquidationAmount || !date) {
+        if (!date) {
+          alert("Please add a date before logging the transfer.");
+          return;
+        }
+
+        if (bufferTransfer <= 0 && snapshot.deployTotal <= 0) {
           alert(
-            "Please fill in at least the Deploy Round, Total Routed, and Date fields.",
+            "Add a buffer transfer amount or have capital available to deploy before logging this entry.",
           );
           return;
         }
 
-        fetch(apiUrl2, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            "Liquidation Number": liquidationNumber,
-            "Total Liquidation Amount": totalLiquidationAmount,
-            Date: date,
-            "Liquidation Transfer": $("logLiquidationTransfer").value,
-            Crypto: $("logCrypto").value,
-            Fidelity: $("logFidelity").value,
-            Wealthfront: $("logWealthfront").value,
-            sheet: "Liquidation sheet",
-          }),
-          mode: "no-cors",
-        })
-          .then(() => {
-            [
-              "logLiquidationNumber",
-              "logTotalLiquidationAmount",
-              "logLiquidationTransfer",
-              "logCrypto",
-              "logFidelity",
-              "logWealthfront",
-            ].forEach((id) => setInputValue(id, ""));
-            seedActionDates();
-            setTimeout(loadLiquidationLog, 1200);
-          })
-          .catch((error) => console.error("Error sending deployment log:", error));
+        state.liquidationLogRows.unshift({
+          id: `deployment-log-${Date.now()}`,
+          label: nextDeploymentLabel(),
+          date,
+          bufferTransfer,
+          totalDeployed: snapshot.deployTotal,
+          note: note.trim(),
+          channels: snapshot.channels,
+        });
+        syncDeploymentLogRows();
+        renderLiquidationLogTable(state.liquidationLogRows);
+        setInputValue("logBufferTransfer", "");
+        setInputValue("logLiquidationTransfer", "");
+        seedActionDates();
       }
 
       function markSplitAsPaid(rowIndex) {
@@ -9381,6 +10164,86 @@
           updateInvestTable();
         };
 
+        const handleDeploymentLogRemove = (event) => {
+          const button = event.target.closest(
+            '[data-action="remove-deployment-log"]',
+          );
+          if (!button) return;
+          const logId = button.dataset.logId;
+          state.liquidationLogRows = state.liquidationLogRows.filter(
+            (row) => row.id !== logId,
+          );
+          syncDeploymentLogRows();
+          renderLiquidationLogTable(state.liquidationLogRows);
+        };
+
+        const handleDeploymentLogLock = (event) => {
+          const button = event.target.closest(
+            '[data-action="toggle-deployment-log-lock"]',
+          );
+          if (!button) return;
+          const logId = button.dataset.logId;
+          updateDeploymentLogEntry(logId, (row) => {
+            row.locked = !row.locked;
+          });
+        };
+
+        const handleDeploymentBufferToggle = (event) => {
+          const toggle = event.target.closest(
+            '[data-action="toggle-deployment-buffer"]',
+          );
+          if (!toggle) return;
+          const { logId } = toggle.dataset;
+          updateDeploymentLogEntry(logId, (row) => {
+            row.bufferCompleted = toggle.checked;
+            row.bufferCompletedDate = toggle.checked
+              ? row.bufferCompletedDate || $("logDate")?.value || todayInputValue()
+              : "";
+          });
+        };
+
+        const handleDeploymentBufferDate = (event) => {
+          const input = event.target.closest(
+            '[data-action="deployment-buffer-date"]',
+          );
+          if (!input) return;
+          const { logId } = input.dataset;
+          updateDeploymentLogEntry(logId, (row) => {
+            row.bufferCompletedDate = normalizeDateValue(input.value);
+            row.bufferCompleted = Boolean(row.bufferCompletedDate);
+          });
+        };
+
+        const handleDeploymentChannelToggle = (event) => {
+          const toggle = event.target.closest(
+            '[data-action="toggle-deployment-channel"]',
+          );
+          if (!toggle) return;
+          const { logId, channelId } = toggle.dataset;
+          updateDeploymentLogEntry(logId, (row) => {
+            const channel = row.channels.find((item) => item.id === channelId);
+            if (!channel) return;
+            channel.completed = toggle.checked;
+            channel.completedDate = toggle.checked
+              ? channel.completedDate || $("logDate")?.value || todayInputValue()
+              : "";
+          });
+        };
+
+        const handleDeploymentChannelDate = (event) => {
+          const input = event.target.closest(
+            '[data-action="deployment-channel-date"]',
+          );
+          if (!input) return;
+          const { logId, channelId } = input.dataset;
+          updateDeploymentLogEntry(logId, (row) => {
+            const channel = row.channels.find((item) => item.id === channelId);
+            if (!channel) return;
+            channel.completedDate = normalizeDateValue(input.value);
+            channel.completed = Boolean(channel.completedDate);
+          });
+        };
+
         $("demoModeToggleBtn")?.addEventListener("click", toggleDemoMode);
         $("cancelLiveUnlockBtn")?.addEventListener("click", closeLiveUnlockGate);
         $("liveUnlockForm")?.addEventListener("submit", handleLiveUnlock);
@@ -9480,6 +10343,12 @@
         });
         $("investChannelList").addEventListener("click", handleInvestChannelRemove);
         $("investChannelCards")?.addEventListener("click", handleInvestChannelRemove);
+        $("liquidationLogTable")?.addEventListener("click", handleDeploymentLogRemove);
+        $("liquidationLogTable")?.addEventListener("click", handleDeploymentLogLock);
+        $("liquidationLogTable")?.addEventListener("change", handleDeploymentChannelToggle);
+        $("liquidationLogTable")?.addEventListener("change", handleDeploymentBufferToggle);
+        $("liquidationLogTable")?.addEventListener("change", handleDeploymentChannelDate);
+        $("liquidationLogTable")?.addEventListener("change", handleDeploymentBufferDate);
         $("wb-entry-form").addEventListener("submit", (event) => {
           event.preventDefault();
           addweeklybudgetNewtransaction();
@@ -9570,6 +10439,7 @@
         initializeCurrentDueRows();
         initializePlanExpenses();
         initializeInvestChannels();
+        initializeDeploymentLogRows();
         state.initialLiveSnapshot = captureDemoSnapshot();
         state.demoMode = true;
         setDemoToggleState();
