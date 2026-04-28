@@ -811,7 +811,9 @@
 
       input[type="text"],
       input[type="number"],
-      input[type="date"] {
+      input[type="date"],
+      input[type="password"],
+      select {
         width: 100%;
         border: 1px solid rgba(15, 23, 42, 0.08);
         border-radius: 14px;
@@ -828,7 +830,8 @@
         color: rgba(139, 152, 173, 0.72);
       }
 
-      input:focus {
+      input:focus,
+      select:focus {
         outline: none;
         border-color: rgba(37, 99, 235, 0.28);
         box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
@@ -1276,6 +1279,14 @@
       .current-top-panel input[type="number"] {
         padding: 11px 12px;
         text-align: center;
+        appearance: textfield;
+        -moz-appearance: textfield;
+      }
+
+      .current-top-panel input[type="number"]::-webkit-outer-spin-button,
+      .current-top-panel input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
       }
 
       .current-top-panel .input-shell:not(.suffix-shell) span {
@@ -1285,6 +1296,7 @@
 
       .current-top-panel .input-shell:not(.suffix-shell) input {
         padding-left: 38px;
+        padding-right: 14px;
       }
 
       .current-obligation-shell {
@@ -1912,7 +1924,7 @@
 
       .invest-channel-mobile-card .field label,
       .invest-channel-mobile-metric span {
-        font-size: 0.64rem;
+        font-size: 0.68rem;
         font-weight: 800;
         letter-spacing: 0.12em;
         text-transform: uppercase;
@@ -1972,6 +1984,28 @@
         color: var(--text-soft);
         font-size: 0.84rem;
         line-height: 1.4;
+      }
+
+      .invest-channel-mobile-stats {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 10px;
+        padding-top: 2px;
+      }
+
+      .invest-channel-mobile-stats strong {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.12rem;
+        line-height: 1;
+        letter-spacing: -0.03em;
+      }
+
+      .invest-channel-mobile-stats span {
+        color: var(--text-soft);
+        font-size: 0.8rem;
+        line-height: 1.35;
+        text-align: right;
       }
 
       .invest-channel-mobile-percent-pill {
@@ -3167,6 +3201,196 @@
         min-width: 0;
       }
 
+      .current-due-row {
+        grid-template-columns: minmax(136px, 1fr) minmax(92px, 110px) minmax(70px, 84px);
+        grid-template-areas:
+          "label target held"
+          "flags flags flags";
+        align-items: start;
+        gap: 8px;
+      }
+
+      .current-due-label-field {
+        grid-area: label;
+      }
+
+      .current-due-target-field {
+        grid-area: target;
+      }
+
+      .current-due-held-field {
+        grid-area: held;
+        text-align: center;
+      }
+
+      .current-due-row.is-inactive-cycle {
+        opacity: 0.78;
+      }
+
+      .current-due-held-field label {
+        width: 100%;
+        text-align: center;
+      }
+
+      .current-due-held-field .field-readout {
+        justify-content: center;
+        min-height: 42px;
+        padding: 8px 8px;
+      }
+
+      .current-due-flags {
+        grid-area: flags;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 12px;
+        align-items: center;
+        padding-top: 2px;
+      }
+
+      .current-due-flags .icon-button {
+        position: static;
+        margin-left: auto;
+        width: 14px;
+        min-width: 14px;
+        padding: 0;
+        font-size: 0.76rem;
+      }
+
+      .compact-check {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--text-soft);
+        font-size: 0.72rem;
+        font-weight: 700;
+        line-height: 1;
+        user-select: none;
+      }
+
+      .compact-check input {
+        width: 14px;
+        height: 14px;
+        margin: 0;
+        accent-color: #2563eb;
+      }
+
+      .compact-check input:disabled {
+        opacity: 0.45;
+      }
+
+      .current-due-cycle-note {
+        margin: 0;
+        color: var(--text-soft);
+        font-size: 0.84rem;
+        line-height: 1.5;
+        text-align: center;
+      }
+
+      .execution-top-row {
+        align-items: start;
+      }
+
+      .execution-action-panel .panel-heading,
+      .execution-channel-panel .panel-heading {
+        justify-content: center;
+        text-align: center;
+      }
+
+      .execution-action-panel .panel-heading p,
+      .execution-channel-panel .panel-heading p {
+        max-width: 40ch;
+      }
+
+      .execution-channel-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+        width: min(100%, 860px);
+        max-width: 100%;
+        margin: 0 auto;
+      }
+
+      .execution-channel-card {
+        display: grid;
+        gap: 8px;
+        padding: 14px 14px 12px;
+        border-radius: 18px;
+        border: 1px solid rgba(15, 23, 42, 0.06);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.99),
+          rgba(245, 249, 255, 0.96)
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.92),
+          0 12px 24px rgba(15, 23, 42, 0.04);
+      }
+
+      .execution-channel-card[data-tone="debt"] {
+        box-shadow:
+          inset 4px 0 0 #ef4444,
+          inset 0 1px 0 rgba(255, 255, 255, 0.92),
+          0 12px 24px rgba(15, 23, 42, 0.04);
+      }
+
+      .execution-channel-card[data-tone="expense"] {
+        box-shadow:
+          inset 4px 0 0 #f97316,
+          inset 0 1px 0 rgba(255, 255, 255, 0.92),
+          0 12px 24px rgba(15, 23, 42, 0.04);
+      }
+
+      .execution-channel-card[data-tone="buffer"] {
+        box-shadow:
+          inset 4px 0 0 #8b5cf6,
+          inset 0 1px 0 rgba(255, 255, 255, 0.92),
+          0 12px 24px rgba(15, 23, 42, 0.04);
+      }
+
+      .execution-channel-card[data-tone="growth"] {
+        box-shadow:
+          inset 4px 0 0 #0f172a,
+          inset 0 1px 0 rgba(255, 255, 255, 0.92),
+          0 12px 24px rgba(15, 23, 42, 0.04);
+      }
+
+      .execution-channel-card[data-tone="optional"],
+      .execution-channel-card[data-tone="hold"] {
+        box-shadow:
+          inset 4px 0 0 #38bdf8,
+          inset 0 1px 0 rgba(255, 255, 255, 0.92),
+          0 12px 24px rgba(15, 23, 42, 0.04);
+      }
+
+      .execution-channel-card[data-tone="overflow"] {
+        box-shadow:
+          inset 4px 0 0 #dc2626,
+          inset 0 1px 0 rgba(255, 255, 255, 0.92),
+          0 12px 24px rgba(15, 23, 42, 0.04);
+      }
+
+      .execution-channel-card span {
+        color: var(--text-dim);
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .execution-channel-card strong {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.32rem;
+        line-height: 0.98;
+        letter-spacing: -0.04em;
+      }
+
+      .execution-channel-card p {
+        margin: 0;
+        color: var(--text-soft);
+        font-size: 0.84rem;
+        line-height: 1.45;
+      }
+
       .plan-panel-expenses .field label {
         font-size: 0.66rem;
         letter-spacing: 0.12em;
@@ -3865,7 +4089,7 @@
           padding-left: 0;
           overflow-x: hidden;
           overscroll-behavior-x: none;
-          touch-action: pan-y;
+          touch-action: pan-y pinch-zoom;
         }
 
         .plan-panel-expenses .plan-expense-list {
@@ -4095,6 +4319,18 @@
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
+        .metric-strip,
+        .plan-metric-strip {
+          width: 100%;
+          justify-self: stretch;
+        }
+
+        .metric-strip,
+        .plan-metric-strip {
+          width: 100%;
+          justify-self: stretch;
+        }
+
         .page-intro h1 {
           font-size: clamp(1.65rem, 6.5vw, 2rem);
         }
@@ -4141,6 +4377,7 @@
           min-height: 70px;
           gap: 6px;
           padding: 12px 10px 13px;
+          min-width: 0;
         }
 
         .plan-metric-strip .metric-tile strong {
@@ -4161,6 +4398,17 @@
         input[type="text"],
         input[type="number"],
         input[type="date"],
+        input[type="password"],
+        select,
+        textarea {
+          font-size: 16px !important;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="password"],
+        select,
         button {
           border-radius: 12px;
           padding: 10px 12px;
@@ -4406,7 +4654,8 @@
         }
 
         .current-top-panel .field label {
-          font-size: 0.6rem;
+          font-size: 0.68rem;
+          letter-spacing: 0.1em;
         }
 
         .current-top-panel input[type="number"] {
@@ -4441,12 +4690,51 @@
           justify-items: stretch;
         }
 
+        .current-due-shell .plan-expense-toolbar {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: center;
+          gap: 8px;
+        }
+
+        #currentDueList.plan-expense-list {
+          grid-template-columns: 1fr;
+        }
+
+        .current-due-row {
+          grid-template-columns: minmax(0, 1fr) minmax(84px, 96px);
+          grid-template-areas:
+            "label label"
+            "target held"
+            "flags flags";
+          gap: 6px 8px;
+        }
+
+        .current-due-flags {
+          gap: 8px 10px;
+        }
+
+        .current-due-flags .compact-check {
+          font-size: 0.68rem;
+        }
+
+        .current-due-cycle-note {
+          max-width: 34ch;
+          justify-self: center;
+          font-size: 0.76rem;
+          line-height: 1.45;
+        }
+
         .money-map-toolbar-header {
           min-height: 0;
           display: grid;
-          grid-template-columns: minmax(0, 1fr) auto;
-          grid-template-areas: "title actions";
-          align-items: start;
+          grid-template-columns: 1fr;
+          grid-template-areas:
+            "title"
+            "actions";
+          align-items: center;
+          justify-items: center;
+          gap: 8px;
         }
 
         .money-map-toolbar-title {
@@ -4462,12 +4750,12 @@
         .money-map-toolbar-actions {
           grid-area: actions;
           position: static;
-          flex-direction: column;
-          justify-content: flex-start;
-          align-items: flex-end;
-          width: auto;
-          margin-left: auto;
-          margin-top: 2px;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          margin: 0;
+          gap: 8px;
         }
 
         .money-map-toolbar-actions .subtle-button,
@@ -4481,7 +4769,7 @@
 
         .invest-channel-mobile-list {
           display: grid;
-          gap: 8px;
+          gap: 10px;
         }
 
         .invest-channel-mobile-summary {
@@ -4493,6 +4781,45 @@
           gap: 8px;
           padding: 10px;
           border-radius: 16px;
+        }
+
+        .invest-channel-mobile-card.is-locked {
+          gap: 8px;
+          padding: 12px 12px 10px;
+        }
+
+        .invest-channel-mobile-locked-head {
+          align-items: center;
+        }
+
+        .invest-channel-mobile-stats {
+          gap: 8px;
+          padding-top: 0;
+        }
+
+        .invest-channel-mobile-stats strong {
+          font-size: 1rem;
+        }
+
+        .invest-channel-mobile-stats span {
+          font-size: 0.74rem;
+        }
+
+        .money-map-log-summary {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+        }
+
+        .execution-action-panel .panel-heading p,
+        .execution-channel-panel .panel-heading p {
+          max-width: 30ch;
+          font-size: 0.78rem;
+          line-height: 1.45;
+        }
+
+        .execution-channel-grid {
+          gap: 10px;
         }
 
         .invest-channel-mobile-head {
@@ -4709,12 +5036,13 @@
 
         .money-map-toolbar-actions {
           position: static;
-          flex-direction: column;
-          justify-content: flex-start;
-          align-items: flex-end;
-          width: auto;
-          margin-left: auto;
-          gap: 4px;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          margin: 0;
+          gap: 8px;
+          flex-wrap: wrap;
         }
 
         .money-map-toolbar-title .info-cluster {
@@ -4960,6 +5288,12 @@
           grid-template-columns: 1fr;
         }
 
+        .responsive-metric-strip {
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          width: 100% !important;
+          justify-self: stretch;
+        }
+
         .plan-panel-expenses .plan-expense-shell,
         .plan-panel-expenses .plan-expense-toolbar,
         .plan-panel-expenses .budget-pill,
@@ -5027,13 +5361,15 @@
         }
 
         .plan-panel-expenses .field label {
-          font-size: 0.6rem;
+          font-size: 0.7rem;
+          letter-spacing: 0.1em;
         }
 
         .plan-panel-expenses input[type="text"],
         .plan-panel-expenses input[type="number"] {
           padding: 8px 10px;
-          font-size: 0.88rem;
+          font-weight: 500;
+          line-height: 1.2;
         }
 
         .plan-panel-expenses .input-shell span {
@@ -5231,6 +5567,36 @@
           gap: 6px;
         }
 
+        #currentDueList.plan-expense-list {
+          grid-template-columns: 1fr;
+        }
+
+        .current-due-shell .plan-expense-toolbar {
+          grid-template-columns: 1fr;
+          justify-items: stretch;
+        }
+
+        .current-due-shell .budget-pill,
+        .current-due-shell .subtle-button {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .current-due-row {
+          grid-template-columns: minmax(0, 1fr) minmax(80px, 92px);
+          grid-template-areas:
+            "label label"
+            "target held"
+            "flags flags";
+          gap: 6px 8px;
+        }
+
+        .current-due-row .field label,
+        .current-due-held-field label {
+          font-size: 0.72rem;
+          letter-spacing: 0.095em;
+        }
+
         .current-top-row {
           grid-template-columns: 1fr;
         }
@@ -5258,6 +5624,22 @@
           font-size: 0.74rem;
         }
 
+        .invest-channel-mobile-card .field label,
+        .invest-channel-mobile-metric span {
+          font-size: 0.7rem;
+          letter-spacing: 0.1em;
+        }
+
+        .invest-channel-mobile-stats {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 4px;
+        }
+
+        .invest-channel-mobile-stats span {
+          text-align: left;
+        }
+
         .invest-channel-mobile-percent-pill {
           min-width: 56px;
           min-height: 28px;
@@ -5281,6 +5663,38 @@
         .money-map-toolbar-actions .subtle-button {
           padding: 6px 9px;
           font-size: 0.72rem;
+        }
+
+        .money-map-toolbar-header {
+          grid-template-columns: 1fr;
+          grid-template-areas:
+            "title"
+            "actions";
+          justify-items: center;
+          gap: 8px;
+        }
+
+        .money-map-toolbar-actions {
+          width: 100%;
+          margin: 0;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+
+        #dashboardSection .metric-strip,
+        #planSection .plan-metric-strip,
+        #currentSection .plan-metric-strip,
+        #executionSection .plan-metric-strip {
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          width: 100%;
+          justify-self: stretch;
+        }
+
+        #currentDueList.plan-expense-list {
+          grid-template-columns: 1fr !important;
         }
 
         .deployment-log-card {
@@ -5311,6 +5725,10 @@
         .money-map-bucket-vessel,
         .money-map-bucket-content {
           min-height: min(var(--bucket-height, 240px), 164px);
+        }
+
+        .execution-channel-grid {
+          grid-template-columns: 1fr;
         }
       }
     </style>
@@ -5349,6 +5767,10 @@
             <li id="navFlow">
               <span class="nav-index">04</span>
               Money Map
+            </li>
+            <li id="navExecution">
+              <span class="nav-index">05</span>
+              Deployment
             </li>
           </ul>
         </div>
@@ -5389,7 +5811,7 @@
             <div class="plan-summary-heading">
               <p class="eyebrow">At A Glance</p>
             </div>
-            <div class="metric-strip plan-metric-strip">
+            <div class="metric-strip plan-metric-strip responsive-metric-strip">
               <article class="panel metric-tile">
                 <span>Current Capital To Deploy</span>
                 <strong id="dashboardCurrentSafeMetric">$0</strong>
@@ -5528,7 +5950,7 @@
             <div class="plan-summary-heading">
               <p class="eyebrow">Current Snapshot</p>
             </div>
-            <div class="metric-strip plan-metric-strip">
+            <div class="metric-strip plan-metric-strip responsive-metric-strip">
               <article class="panel metric-tile">
                 <span>Cash On Hand</span>
                 <strong id="weeklyCheckCashMetric">$0</strong>
@@ -5640,7 +6062,7 @@
                   <span
                     class="info-tip"
                     tabindex="0"
-                    data-tip="Cash already spoken for by scheduled upcoming expenses before the next paycheck lands."
+                    data-tip="Enter the full reserve amount for each monthly item. Tag it to 1st, 2nd, or Every. The active paycheck window counts that item at 100%, while the opposite window holds 50% until its turn arrives. For Groceries, enter one week's spend and the app will hold two weekends of reserve after the 1st or 15th paycheck, one weekend after the first Sunday, then $0 after the following Sunday. Mark manual payments so they show up in Deployment."
                     aria-label="Scheduled reserves help"
                   >
                     ?
@@ -5661,7 +6083,7 @@
                 <input type="hidden" id="otherExpense" />
                 <div class="plan-expense-toolbar">
                   <div class="budget-pill">
-                    Reserved Total
+                    <span id="currentDueTotalLabel">Held</span>
                     <strong id="currentDueTotal">$0</strong>
                   </div>
                   <button
@@ -5669,10 +6091,13 @@
                     class="subtle-button"
                     type="button"
                   >
-                    Add Reserved Item
+                    Add Reserve
                   </button>
                 </div>
                 <div id="currentDueList" class="plan-expense-list"></div>
+                <p id="currentDueCycleNote" class="current-due-cycle-note">
+                  Counting items due in the current paycheck window.
+                </p>
               </div>
             </article>
 
@@ -5832,7 +6257,7 @@
             </p>
           </article>
 
-          <div class="metric-strip plan-metric-strip">
+          <div class="metric-strip plan-metric-strip responsive-metric-strip">
             <article class="panel metric-tile">
               <span>Budget</span>
               <strong id="weeklyBudgetBudgetMetric">$0</strong>
@@ -6049,7 +6474,7 @@
             <div class="plan-summary-heading">
               <p class="eyebrow">Plan Snapshot</p>
             </div>
-            <div class="metric-strip plan-metric-strip">
+            <div class="metric-strip plan-metric-strip responsive-metric-strip">
               <article class="panel metric-tile">
                 <span>Paycheck</span>
                 <strong id="overviewPayMetric">$0</strong>
@@ -6294,7 +6719,7 @@
           <article class="panel page-intro plan-panel plan-panel-title">
             <p class="eyebrow">Capital Deployment</p>
             <h1>Money Map</h1>
-            <p>Route current deployable cash into the channels you actually use.</p>
+            <p>Set the future routing plan for deployable cash across the channels you actually use.</p>
           </article>
 
           <div class="plan-step-divider">
@@ -6428,18 +6853,78 @@
               </div>
               <div id="moneyMapBuckets" class="money-map-cascade" aria-live="polite"></div>
             </article>
+          </div>
+        </section>
 
-            <details class="panel plan-panel plan-panel-table money-map-log-panel">
+        <section id="executionSection" class="dashboard-section" hidden>
+          <article class="panel page-intro plan-panel plan-panel-title">
+            <p class="eyebrow">Live Deployment</p>
+            <h1>Deployment</h1>
+            <p>Use the live numbers from Current Cash and the future routing plan from Money Map to make the real transfers and log what actually cleared.</p>
+          </article>
+
+          <div class="metric-strip plan-metric-strip responsive-metric-strip">
+            <article class="panel metric-tile">
+              <span>Active Cycle</span>
+              <strong id="executionCycleMetric">1st Paycheck</strong>
+            </article>
+            <article class="panel metric-tile">
+              <span>Move To Checking</span>
+              <strong id="executionCheckingMetric">$0</strong>
+            </article>
+            <article class="panel metric-tile">
+              <span>Pay From Checking Now</span>
+              <strong id="executionBufferMetric">$0</strong>
+            </article>
+            <article class="panel metric-tile">
+              <span>Capital To Deploy</span>
+              <strong id="executionDeployMetric">$0</strong>
+            </article>
+          </div>
+
+          <div class="flow-stack plan-flow-stack">
+            <div class="plan-row execution-top-row">
+              <article class="panel plan-panel plan-panel-compact execution-action-panel">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Step 1</p>
+                    <h2>Move Cash Into Place</h2>
+                  </div>
+                  <p id="executionActionNote">
+                    Check how much needs to move into Checking before the transfer and deployment steps begin.
+                  </p>
+                </div>
+                <div class="field-grid">
+                  <div class="budget-pill">
+                    Protected Floor Left
+                    <strong id="executionReserveMetric">$0</strong>
+                  </div>
+                </div>
+              </article>
+
+              <article class="panel plan-panel plan-panel-wide execution-channel-panel">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Step 2</p>
+                    <h2>Today's Money Moves</h2>
+                  </div>
+                  <p>Debt, manual reserve payments, buffer movement, and channel deployments all gather here from the live cash picture. Auto-pay reserves still count in checking, but only manual items show up here.</p>
+                </div>
+                <div id="executionChannelList" class="execution-channel-grid"></div>
+              </article>
+            </div>
+
+            <details class="panel plan-panel plan-panel-table money-map-log-panel" open>
               <summary class="money-map-log-summary">
                 <div>
-                  <p class="eyebrow">Step 4</p>
-                  <h2>Transfer + Deployment Log</h2>
+                  <p class="eyebrow">Step 3</p>
+                  <h2>Deployment Log</h2>
                 </div>
-                <span class="money-map-log-pill">Optional</span>
+                <span class="money-map-log-pill">Live</span>
               </summary>
               <div class="money-map-log-content">
                 <p class="panel-note">
-                  Start one deployment here, then come back later to mark each channel done on its actual date.
+                  Start one deployment here, then come back later to mark debt payments, manual reserve payments, buffer transfer, and each channel on their actual completion dates.
                 </p>
                 <div class="table-form four-up">
                   <div class="field">
@@ -6576,6 +7061,7 @@
         navPlan: "planSection",
         navCurrent: "currentSection",
         navFlow: "flowSection",
+        navExecution: "executionSection",
       };
 
       function $(id) {
@@ -6750,6 +7236,105 @@
       function getFocusDate() {
         const dateValue = $("manualDate")?.value || todayInputValue();
         return parseDate(dateValue) || new Date();
+      }
+
+      function getCurrentPayCycle(baseDate = getFocusDate()) {
+        return baseDate.getDate() < 15 ? "first" : "second";
+      }
+
+      function formatPayCycleLabel(cycle) {
+        if (cycle === "first") return "1st Paycheck";
+        if (cycle === "second") return "2nd Paycheck";
+        return "Every Paycheck";
+      }
+
+      function normalizeDueCycle(value) {
+        return ["first", "second", "both"].includes(String(value))
+          ? String(value)
+          : getCurrentPayCycle();
+      }
+
+      function normalizeDuePaymentType(value) {
+        return ["manual", "auto"].includes(String(value))
+          ? String(value)
+          : "auto";
+      }
+
+      function isGroceriesReserve(label) {
+        return /grocer(y|ies)/i.test(String(label || ""));
+      }
+
+      function startOfDay(value) {
+        const date = value instanceof Date ? new Date(value) : parseDate(value);
+        if (!date || Number.isNaN(date.getTime())) return null;
+        date.setHours(0, 0, 0, 0);
+        return date;
+      }
+
+      function getCyclePayday(baseDate = getFocusDate()) {
+        const anchorDate = startOfDay(baseDate) || startOfDay(getFocusDate()) || new Date();
+        const paydayDay = anchorDate.getDate() < 15 ? 1 : 15;
+        const payday = new Date(
+          anchorDate.getFullYear(),
+          anchorDate.getMonth(),
+          paydayDay,
+        );
+        payday.setHours(0, 0, 0, 0);
+        return payday;
+      }
+
+      function getNextWeekday(baseDate, weekday) {
+        const date = startOfDay(baseDate);
+        if (!date) return null;
+        const nextDate = new Date(date);
+        let diff = (weekday - nextDate.getDay() + 7) % 7;
+        if (diff === 0) diff = 7;
+        nextDate.setDate(nextDate.getDate() + diff);
+        return nextDate;
+      }
+
+      function getGroceriesReserveAmounts(
+        weeklyAmount,
+        baseDate = getFocusDate(),
+      ) {
+        const baseAmount = Math.max(toNumber(weeklyAmount), 0);
+        const anchorDate = startOfDay(baseDate);
+        if (!baseAmount || !anchorDate) {
+          return {
+            holdAmount: 0,
+            dueNowAmount: 0,
+            groceriesStage: "spent-down",
+          };
+        }
+
+        const payday = getCyclePayday(anchorDate);
+        const firstSunday = getNextWeekday(payday, 0);
+        const secondSunday = firstSunday ? new Date(firstSunday) : null;
+        if (secondSunday) {
+          secondSunday.setDate(secondSunday.getDate() + 7);
+        }
+
+        if (firstSunday && anchorDate < firstSunday) {
+          return {
+            holdAmount: baseAmount * 2,
+            dueNowAmount: baseAmount * 2,
+            groceriesStage: "two-week",
+          };
+        }
+
+        if (secondSunday && anchorDate < secondSunday) {
+          return {
+            holdAmount: baseAmount,
+            dueNowAmount: baseAmount,
+            groceriesStage: "one-week",
+          };
+        }
+
+        return {
+          holdAmount: 0,
+          dueNowAmount: 0,
+          groceriesStage: "spent-down",
+        };
       }
 
       function getWeekRange(baseDate = getFocusDate()) {
@@ -6938,9 +7523,9 @@
             { label: "Other", amount: 10 },
           ],
           currentDueRows: [
-            { label: "Rent Hold", amount: 220 },
-            { label: "Utilities Hold", amount: 70 },
-            { label: "Insurance Hold", amount: 60 },
+            { label: "Rent Hold", amount: 220, cycle: "first", paymentType: "manual" },
+            { label: "Utilities Hold", amount: 70, cycle: "both", paymentType: "auto" },
+            { label: "Insurance Hold", amount: 60, cycle: "second", paymentType: "manual" },
           ],
           investChannels: [
             { label: "Planned Buffer", percent: 30, role: "Future obligation" },
@@ -7460,6 +8045,8 @@
         ].map(([label, id]) => ({
           label,
           amount: toNumber($(id)?.value),
+          cycle: getCurrentPayCycle(),
+          paymentType: "auto",
         }));
       }
 
@@ -7468,6 +8055,8 @@
           .map((row) => ({
             label: String(row?.label ?? "").trim() || "Reserved Item",
             amount: toNumber(row?.amount),
+            cycle: normalizeDueCycle(row?.cycle),
+            paymentType: normalizeDuePaymentType(row?.paymentType),
           }))
           .filter((row) => row.label);
       }
@@ -7476,10 +8065,118 @@
         return sanitizeCurrentDueRows(state.currentDueRows);
       }
 
+      function getCurrentDueReserveRows() {
+        const activeCycle = getCurrentPayCycle();
+        return getCurrentDueRows().map((row) => {
+          if (isGroceriesReserve(row.label)) {
+            const groceriesReserve = getGroceriesReserveAmounts(row.amount);
+            return {
+              ...row,
+              isFullThisCycle: true,
+              holdAmount: groceriesReserve.holdAmount,
+              dueNowAmount: groceriesReserve.dueNowAmount,
+              reserveMode: "groceries",
+              groceriesStage: groceriesReserve.groceriesStage,
+            };
+          }
+
+          const isFullThisCycle =
+            row.cycle === "both" || row.cycle === activeCycle;
+          const holdAmount =
+            row.cycle === "both"
+              ? row.amount
+              : row.amount * (isFullThisCycle ? 1 : 0.5);
+          return {
+            ...row,
+            isFullThisCycle,
+            holdAmount,
+            dueNowAmount: isFullThisCycle ? row.amount : 0,
+            reserveMode: "standard",
+          };
+        });
+      }
+
       function getCurrentDueTotal() {
-        return getCurrentDueRows().reduce(
-          (sum, row) => sum + toNumber(row.amount),
+        return getCurrentDueReserveRows().reduce(
+          (sum, row) => sum + toNumber(row.holdAmount),
           0,
+        );
+      }
+
+      function refreshCurrentDueRowDisplays() {
+        const list = $("currentDueList");
+        if (!list) return;
+        const reserveRows = getCurrentDueReserveRows();
+        Array.from(list.querySelectorAll(".plan-expense-row")).forEach(
+          (rowElement, index) => {
+            const reserveRow = reserveRows[index];
+            if (!reserveRow) return;
+            rowElement.classList.toggle(
+              "is-inactive-cycle",
+              reserveRow.reserveMode !== "groceries" &&
+                !reserveRow.isFullThisCycle &&
+                reserveRow.cycle !== "both",
+            );
+            const heldField = rowElement.querySelector(
+              '[data-field-display="heldAmount"]',
+            );
+            if (heldField) {
+              heldField.textContent = formatCurrency(reserveRow.holdAmount, 0);
+            }
+          },
+        );
+      }
+
+      function getCurrentManualReserveRows() {
+        return getCurrentDueReserveRows().filter(
+          (row) => row.paymentType === "manual" && row.dueNowAmount > 0,
+        );
+      }
+
+      function updateCurrentDueCycleCopy() {
+        const activeCycle = getCurrentPayCycle();
+        const activeLabel = formatPayCycleLabel(activeCycle);
+        const reserveRows = getCurrentDueReserveRows();
+        const oppositeLabel =
+          activeCycle === "first" ? "2nd Paycheck" : "1st Paycheck";
+        const standardRows = reserveRows.filter(
+          (row) => row.reserveMode !== "groceries",
+        );
+        const groceriesRows = reserveRows.filter(
+          (row) => row.reserveMode === "groceries",
+        );
+        const fullCount = standardRows.filter((row) => row.isFullThisCycle).length;
+        const halfCount = standardRows.filter(
+          (row) =>
+            !row.isFullThisCycle &&
+            row.cycle !== "both",
+        ).length;
+        const groceriesHeld = groceriesRows.reduce(
+          (sum, row) => sum + toNumber(row.holdAmount),
+          0,
+        );
+        const standardSummary = standardRows.length
+          ? `${fullCount} item${fullCount === 1 ? "" : "s"} count at 100% now. ${
+              halfCount
+                ? `${halfCount} ${oppositeLabel.toLowerCase()} item${
+                    halfCount === 1 ? "" : "s"
+                  } count at 50% until that window arrives.`
+                : "Nothing is currently being half-held for the opposite paycheck window."
+            }`
+          : "No monthly reserve items are being split across the paycheck windows right now.";
+        setText("currentDueTotalLabel", `Held · ${activeLabel}`);
+        setText(
+          "currentDueCycleNote",
+          reserveRows.length
+            ? `${standardSummary}${
+                groceriesRows.length
+                  ? ` Groceries are holding ${formatCurrency(
+                      groceriesHeld,
+                      0,
+                    )} right now and auto-roll from two weekends of reserve to one weekend, then to $0 before the next paycheck.`
+                  : ""
+              }`
+            : "No scheduled reserves are set yet.",
         );
       }
 
@@ -7500,7 +8197,12 @@
         }
 
         if (!rows.length) {
-          rows = [{ label: "Reserved Item", amount: 0 }];
+          rows = [{
+            label: "Reserved Item",
+            amount: 0,
+            cycle: getCurrentPayCycle(),
+            paymentType: "auto",
+          }];
         }
 
         state.currentDueRows = rows;
@@ -7512,15 +8214,21 @@
         if (!list) return;
 
         if (!state.currentDueRows.length) {
-          state.currentDueRows = [{ label: "Reserved Item", amount: 0 }];
+          state.currentDueRows = [{
+            label: "Reserved Item",
+            amount: 0,
+            cycle: getCurrentPayCycle(),
+            paymentType: "auto",
+          }];
         }
 
+        const reserveRows = getCurrentDueReserveRows();
         list.innerHTML = state.currentDueRows
           .map(
             (row, index) => `
-              <div class="plan-expense-row" data-index="${index}">
-                <div class="field">
-                  <label>Reserve Label</label>
+              <div class="plan-expense-row current-due-row${reserveRows[index] && !reserveRows[index].isFullThisCycle && row.cycle !== "both" ? " is-inactive-cycle" : ""}" data-index="${index}">
+                <div class="field current-due-label-field">
+                  <label>Reserve</label>
                   <input
                     type="text"
                     data-field="label"
@@ -7528,8 +8236,8 @@
                     placeholder="What is reserved?"
                   />
                 </div>
-                <div class="field">
-                  <label>Amount</label>
+                <div class="field current-due-target-field">
+                  <label>Total</label>
                   <div class="input-shell">
                     <span>$</span>
                     <input
@@ -7540,15 +8248,57 @@
                     />
                   </div>
                 </div>
-                <button
-                  class="icon-button"
-                  type="button"
-                  data-action="remove-due-item"
-                  aria-label="Remove reserved item"
-                  ${state.currentDueRows.length === 1 ? "disabled" : ""}
-                >
-                  ×
-                </button>
+                <div class="field current-due-held-field">
+                  <label>Held</label>
+                  <div class="field-readout field-readout-compact" data-field-display="heldAmount">
+                    ${formatCurrency(reserveRows[index]?.holdAmount || 0, 0)}
+                  </div>
+                </div>
+                <div class="current-due-flags">
+                  <label class="compact-check">
+                    <input
+                      type="checkbox"
+                      data-field="cycleFirst"
+                      ${row.cycle === "first" ? "checked" : ""}
+                      ${row.cycle === "both" ? "disabled" : ""}
+                    />
+                    1st
+                  </label>
+                  <label class="compact-check">
+                    <input
+                      type="checkbox"
+                      data-field="cycleSecond"
+                      ${row.cycle === "second" ? "checked" : ""}
+                      ${row.cycle === "both" ? "disabled" : ""}
+                    />
+                    2nd
+                  </label>
+                  <label class="compact-check">
+                    <input
+                      type="checkbox"
+                      data-field="cycleBoth"
+                      ${row.cycle === "both" ? "checked" : ""}
+                    />
+                    Every
+                  </label>
+                  <label class="compact-check">
+                    <input
+                      type="checkbox"
+                      data-field="paymentManual"
+                      ${row.paymentType === "manual" ? "checked" : ""}
+                    />
+                    Manual
+                  </label>
+                  <button
+                    class="icon-button"
+                    type="button"
+                    data-action="remove-due-item"
+                    aria-label="Remove reserved item"
+                    ${state.currentDueRows.length === 1 ? "disabled" : ""}
+                  >
+                    ×
+                  </button>
+                </div>
               </div>
             `,
           )
@@ -7584,7 +8334,12 @@
           setInputValue(id, row ? compactNumber(row.amount) : "");
         });
 
-        setText("currentDueTotal", formatCurrency(getCurrentDueTotal(), 0));
+        setText(
+          "currentDueTotal",
+          formatCurrency(getCurrentDueTotal(), 0),
+        );
+        updateCurrentDueCycleCopy();
+        refreshCurrentDueRowDisplays();
         scheduleFieldSave(["currentDueRowsData"]);
       }
 
@@ -7760,6 +8515,36 @@
         renderInvestChannels();
       }
 
+      function sanitizeTransferChecklistItems(items, prefix, rowIndex) {
+        const hasExplicitState = Array.isArray(items)
+          ? items.some(
+              (item) =>
+                item &&
+                (Object.prototype.hasOwnProperty.call(item, "completed") ||
+                  Object.prototype.hasOwnProperty.call(item, "completedDate")),
+            )
+          : false;
+
+        return (Array.isArray(items) ? items : [])
+          .map((item, itemIndex) => ({
+            id:
+              String(item?.id ?? "").trim() ||
+              `${prefix}-${rowIndex}-${itemIndex}`,
+            label: String(item?.label ?? "").trim() || "Transfer",
+            amount: toNumber(item?.amount),
+            completedDate: normalizeDateValue(
+              item?.completedDate || item?.date || "",
+            ),
+            completed:
+              typeof item?.completed === "boolean"
+                ? item.completed
+                : Boolean(
+                    normalizeDateValue(item?.completedDate || item?.date || ""),
+                  ) || !hasExplicitState,
+          }))
+          .filter((item) => item.label && item.amount > 0);
+      }
+
       function sanitizeDeploymentLogRows(rows) {
         return (Array.isArray(rows) ? rows : [])
           .map((row, index) => {
@@ -7817,6 +8602,16 @@
                   completed: true,
                   completedDate: normalizeDateValue(row?.date || row?.Date || ""),
                 }));
+            const debts = sanitizeTransferChecklistItems(
+              row?.debts,
+              "deployment-debt",
+              index,
+            );
+            const manualReserves = sanitizeTransferChecklistItems(
+              row?.manualReserves,
+              "deployment-reserve",
+              index,
+            );
 
             return {
               id:
@@ -7852,6 +8647,8 @@
                   row?.["Liquidation Transfer"] ??
                   "",
               ).trim(),
+              debts,
+              manualReserves,
               channels,
             };
           })
@@ -7859,6 +8656,8 @@
             (row) =>
               row.date ||
               row.bufferTransfer > 0 ||
+              row.debts.length ||
+              row.manualReserves.length ||
               row.totalDeployed > 0 ||
               row.channels.length ||
               row.note,
@@ -7866,22 +8665,41 @@
       }
 
       function getDeploymentProgress(row) {
+        const debts = Array.isArray(row?.debts) ? row.debts : [];
+        const manualReserves = Array.isArray(row?.manualReserves)
+          ? row.manualReserves
+          : [];
         const channels = Array.isArray(row?.channels) ? row.channels : [];
-        const completed = channels.filter((channel) => channel.completed).length;
-        const completedAmount = channels
-          .filter((channel) => channel.completed)
-          .reduce((sum, channel) => sum + toNumber(channel.amount), 0);
+        const tasks = [
+          ...(row?.bufferTransfer > 0
+            ? [
+                {
+                  completed: Boolean(row?.bufferCompleted),
+                  amount: toNumber(row?.bufferTransfer),
+                },
+              ]
+            : []),
+          ...debts,
+          ...manualReserves,
+          ...channels,
+        ];
+        const completed = tasks.filter((task) => task.completed).length;
+        const completedAmount = tasks
+          .filter((task) => task.completed)
+          .reduce((sum, task) => sum + toNumber(task.amount), 0);
 
         return {
-          total: channels.length,
+          total: tasks.length,
           completed,
           completedAmount,
+          paymentTotal:
+            debts.reduce((sum, item) => sum + toNumber(item.amount), 0) +
+            manualReserves.reduce((sum, item) => sum + toNumber(item.amount), 0),
         };
       }
 
       function describeDeploymentSummary(row) {
         const progress = getDeploymentProgress(row);
-        const pendingChannels = Math.max(progress.total - progress.completed, 0);
         const bufferSummary =
           row.bufferTransfer > 0
             ? row.bufferCompleted
@@ -7890,13 +8708,11 @@
                 )}` : ""}.`
               : "Buffer still pending."
             : "No buffer transfer planned.";
-        const channelSummary =
+        const moveSummary =
           progress.total > 0
-            ? pendingChannels > 0
-              ? `${progress.completed} of ${progress.total} channels finished.`
-              : "All channel deployments are complete."
-            : "No channel deployments planned.";
-        return `${bufferSummary} ${channelSummary}`.trim();
+            ? `${progress.completed} of ${progress.total} transfer steps are complete.`
+            : "No transfer steps planned.";
+        return `${bufferSummary} ${moveSummary}`.trim();
       }
 
       function nextDeploymentLabel() {
@@ -7941,8 +8757,27 @@
 
       function buildCurrentDeploymentSnapshot() {
         const deployTotal = Math.max(toNumber($("investLiquidAmount")?.value), 0);
+        const debts = getCurrentDebtRows().map((row, index) => ({
+          id: `deployment-debt-${Date.now()}-${index}`,
+          label: row.label,
+          amount: row.amount,
+          completed: false,
+          completedDate: "",
+        }));
+        const manualReserves = getCurrentManualReserveRows().map((row, index) => ({
+          id: `deployment-reserve-${Date.now()}-${index}`,
+          label: row.label,
+          amount: row.dueNowAmount,
+          completed: false,
+          completedDate: "",
+        }));
         return {
           deployTotal,
+          debts,
+          manualReserves,
+          paymentTotal:
+            debts.reduce((sum, row) => sum + row.amount, 0) +
+            manualReserves.reduce((sum, row) => sum + row.amount, 0),
           channels: getFlowSections(
             deployTotal,
             toNumber($("overviewPaycheck")?.value),
@@ -8119,21 +8954,15 @@
                       percent % 1 === 0 ? 0 : 1,
                     )}</span>
                   </div>
-                  <div class="invest-channel-mobile-metrics">
-                    <div class="invest-channel-mobile-metric">
-                      <span>Amount</span>
-                      <strong data-field-display="amount">${formatCurrency(
-                        section.amount,
-                        2,
-                      )}</strong>
-                    </div>
-                    <div class="invest-channel-mobile-metric">
-                      <span>Paycheck %</span>
-                      <strong data-field-display="paycheckPercent">${formatPercent(
-                        section.paycheckPercent,
-                        2,
-                      )}</strong>
-                    </div>
+                  <div class="invest-channel-mobile-stats">
+                    <strong data-field-display="amount">${formatCurrency(
+                      section.amount,
+                      2,
+                    )}</strong>
+                    <span data-field-display="paycheckPercent">${formatPercent(
+                      section.paycheckPercent,
+                      2,
+                    )} of paycheck</span>
                   </div>
                 </article>
               `;
@@ -8302,6 +9131,170 @@
         return "hold";
       }
 
+      function getCurrentDebtRows() {
+        return [
+          { label: "BoA", amount: toNumber($("card1")?.value) },
+          { label: "Citi", amount: toNumber($("card2")?.value) },
+        ].filter((row) => row.amount > 0);
+      }
+
+      function renderExecutionChannels({
+        liquid,
+        sections,
+        totalAmount,
+        debtRows = [],
+        manualReserveRows = [],
+        bufferHeld = 0,
+      }) {
+        const container = $("executionChannelList");
+        if (!container) return;
+
+        const sourceAmount = Math.max(liquid, 0);
+        const activeSections = sections.filter((section) => section.amount > 0);
+        const difference = sourceAmount - totalAmount;
+        const moveCards = [
+          ...debtRows.map(
+            (row) => `
+              <article class="execution-channel-card" data-tone="debt">
+                <span>${escapeHtml(row.label)}</span>
+                <strong>${formatCurrency(row.amount, 0)}</strong>
+                <p>Debt payment that needs checking cash available now.</p>
+              </article>
+            `,
+          ),
+          ...manualReserveRows.map(
+            (row) => `
+              <article class="execution-channel-card" data-tone="expense">
+                <span>${escapeHtml(row.label)}</span>
+                <strong>${formatCurrency(row.dueNowAmount, 0)}</strong>
+                <p>Manual reserve payment due in this paycheck window.</p>
+              </article>
+            `,
+          ),
+          ...(bufferHeld > 0
+            ? [
+                `
+                  <article class="execution-channel-card" data-tone="buffer">
+                    <span>Buffer Transfer</span>
+                    <strong>${formatCurrency(bufferHeld, 0)}</strong>
+                    <p>Optional buffer move if you want it transferred fully out.</p>
+                  </article>
+                `,
+              ]
+            : []),
+          ...activeSections.map(
+            (section) => `
+              <article class="execution-channel-card" data-tone="${escapeHtml(
+                getChannelTone(section.label, section.role),
+              )}">
+                <span>${escapeHtml(section.label)}</span>
+                <strong>${formatCurrency(section.amount, 0)}</strong>
+                <p>${escapeHtml(section.role)}</p>
+              </article>
+            `,
+          ),
+        ];
+
+        if (!moveCards.length && Math.abs(difference) < 0.01) {
+          container.innerHTML = `
+            <article class="execution-channel-card">
+              <span>No live moves yet</span>
+              <strong>${formatCurrency(sourceAmount, 0)}</strong>
+              <p>Set channel percentages in Money Map and tag manual reserve items when you want them to flow into Deployment.</p>
+            </article>
+          `;
+          return;
+        }
+
+        const varianceCard =
+          Math.abs(difference) < 0.01
+            ? ""
+            : `
+                <article class="execution-channel-card" data-tone="${
+                  difference >= 0 ? "hold" : "overflow"
+                }">
+                  <span>${difference >= 0 ? "Still Unassigned" : "Overflow"}</span>
+                  <strong>${formatCurrency(Math.abs(difference), 0)}</strong>
+                  <p>${
+                    difference >= 0
+                      ? "Cash still sitting in the source pool."
+                      : "Channels are routing more than the live capital available."
+                  }</p>
+                </article>
+              `;
+
+        container.innerHTML = moveCards.join("") + varianceCard;
+      }
+
+      function updateExecutionSummary({
+        checkingTransferNeed,
+        transferShortfall,
+        maxTransferFromSavings,
+        perAccountFloor,
+        debtTotal,
+        reserveDueNowTotal,
+        bufferHeld,
+        displayCapital,
+        reserveActual,
+        reserveTarget,
+        reserveDip,
+      }) {
+        setText(
+          "executionCycleMetric",
+          formatPayCycleLabel(getCurrentPayCycle()),
+        );
+        setText(
+          "executionCheckingMetric",
+          formatCurrency(checkingTransferNeed, 0),
+        );
+        setText(
+          "executionBufferMetric",
+          formatCurrency(debtTotal + reserveDueNowTotal, 0),
+        );
+        setText("executionDeployMetric", formatCurrency(displayCapital, 0));
+        setText("executionReserveMetric", formatCurrency(reserveActual, 0));
+
+        setText(
+          "executionActionNote",
+          transferShortfall > 0
+            ? `${formatCurrency(
+                maxTransferFromSavings,
+                0,
+              )} can still move from Savings before it hits its ${formatCurrency(
+                perAccountFloor,
+                0,
+              )} protected floor, but ${formatCurrency(
+                transferShortfall,
+                0,
+              )} would still be uncovered.`
+            : checkingTransferNeed > 0
+            ? `Move ${formatCurrency(
+                checkingTransferNeed,
+                0,
+              )} into Checking first so debt, due-now reserve payments, buffer transfer, and channel deployments can clear cleanly.`
+            : reserveDip > 0
+              ? `Current cash is already leaning on ${formatCurrency(
+                  reserveDip,
+                  0,
+                )} from the protected floor reserve, leaving ${formatCurrency(
+                  reserveActual,
+                  0,
+                )} against the ${formatCurrency(reserveTarget, 0)} target.`
+              : displayCapital > 0 || bufferHeld > 0 || debtTotal > 0 || reserveDueNowTotal > 0
+                ? `Checking is already in position for ${formatCurrency(
+                    debtTotal + reserveDueNowTotal,
+                    0,
+                  )} of due-now payments, ${formatCurrency(
+                    bufferHeld,
+                    0,
+                  )} of buffer movement, and ${formatCurrency(
+                    displayCapital,
+                    0,
+                  )} of deployment.`
+                : "Nothing needs to move into Checking right now.",
+        );
+      }
+
       function renderMoneyMapCascade({ liquid, sections, totalAmount }) {
         const container = $("moneyMapBuckets");
         if (!container) return;
@@ -8405,8 +9398,11 @@
         const plan = getPlanSummary();
         const bufferTarget = calculateBudget();
         const deployTarget = Math.max(plan.liquid, 0);
-        const dueRows = getCurrentDueRows();
-        const futureTotal = dueRows.reduce((sum, row) => sum + row.amount, 0);
+        const dueRows = getCurrentDueReserveRows();
+        const futureTotal = dueRows.reduce(
+          (sum, row) => sum + row.holdAmount,
+          0,
+        );
         const cash = checking + savings;
         const shortTermPulls = card1 + card2;
         const currentState = resolveCurrentCashState({
@@ -8901,13 +9897,26 @@
         const card1 = toNumber($("card1").value);
         const card2 = toNumber($("card2").value);
         const reserveTarget = toNumber($("minBalance").value);
-        const dueRows = getCurrentDueRows();
-        const futureTotal = dueRows.reduce((sum, row) => sum + row.amount, 0);
+        const dueRows = getCurrentDueReserveRows();
+        const futureTotal = dueRows.reduce(
+          (sum, row) => sum + row.holdAmount,
+          0,
+        );
         const plan = getPlanSummary();
         const bufferTarget = calculateBudget();
         const deployTarget = Math.max(plan.liquid, 0);
         const cash = checking + savings;
         const debt = card1 + card2;
+        const manualReserveRows = getCurrentManualReserveRows();
+        const reserveDueNowTotal = dueRows.reduce(
+          (sum, row) => sum + row.dueNowAmount,
+          0,
+        );
+        const manualReserveTotal = manualReserveRows.reduce(
+          (sum, row) => sum + row.dueNowAmount,
+          0,
+        );
+        const debtRows = getCurrentDebtRows();
         const currentState = resolveCurrentCashState({
           cash,
           debt,
@@ -8936,7 +9945,7 @@
         setText("currentReserveReadout", formatCurrency(reserveActual, 0));
         const perAccountFloor = reserveTarget / 2;
         const requiredCheckingBalance =
-          debt + bufferHeld + displayCapital + perAccountFloor;
+          debt + reserveDueNowTotal + bufferHeld + displayCapital + perAccountFloor;
         const checkingTransferNeed = Math.max(
           requiredCheckingBalance - checking,
           0,
@@ -8970,17 +9979,30 @@
             ? `${formatCurrency(
                 checkingTransferNeed,
                 0,
-              )} needs to move into Checking so debt, buffer transfer, and deployable cash can clear while both Checking and Savings stay above ${formatCurrency(
+              )} needs to move into Checking so debt, due-now reserve payments, buffer transfer, and deployable cash can clear while both Checking and Savings stay above ${formatCurrency(
                 perAccountFloor,
                 0,
               )}.`
-            : debt + bufferHeld + displayCapital > 0
-              ? `Checking already covers debt, buffer transfer, and deployable cash while both accounts stay above ${formatCurrency(
-                  perAccountFloor,
-                  0,
-                )}.`
+            : debt + reserveDueNowTotal + bufferHeld + displayCapital > 0
+              ? `Checking already covers debt, due-now reserve payments, buffer transfer, and deployable cash while both accounts stay above ${formatCurrency(
+                perAccountFloor,
+                0,
+              )}.`
               : "No extra checking transfer is needed right now.",
         );
+        updateExecutionSummary({
+          checkingTransferNeed,
+          transferShortfall,
+          maxTransferFromSavings,
+          perAccountFloor,
+          debtTotal: debt,
+          reserveDueNowTotal,
+          bufferHeld,
+          displayCapital,
+          reserveActual,
+          reserveTarget,
+          reserveDip,
+        });
         setText("weeklyCheckCashMetric", formatCurrency(cash, 0));
         setText("weeklyCheckExpensesMetric", formatCurrency(commitments, 0));
         setText("weeklyCheckBufferMetric", formatCurrency(displayCapital, 0));
@@ -9309,6 +10331,14 @@
         container.innerHTML = sorted
           .map((row) => {
             const progress = getDeploymentProgress(row);
+            const debtTotal = (row.debts || []).reduce(
+              (sum, item) => sum + toNumber(item.amount),
+              0,
+            );
+            const manualReserveTotal = (row.manualReserves || []).reduce(
+              (sum, item) => sum + toNumber(item.amount),
+              0,
+            );
             if (row.locked) {
               return `
                 <article class="deployment-log-card" data-log-id="${escapeHtml(
@@ -9347,11 +10377,15 @@
                       <strong>${formatCurrency(row.bufferTransfer, 2)}</strong>
                     </div>
                     <div class="deployment-log-stat">
-                      <span>Deployed</span>
-                      <strong>${formatCurrency(progress.completedAmount, 2)}</strong>
+                      <span>Pay Now</span>
+                      <strong>${formatCurrency(progress.paymentTotal, 2)}</strong>
                     </div>
                     <div class="deployment-log-stat">
-                      <span>Channels Done</span>
+                      <span>Planned Deploy</span>
+                      <strong>${formatCurrency(row.totalDeployed, 2)}</strong>
+                    </div>
+                    <div class="deployment-log-stat">
+                      <span>Moves Done</span>
                       <strong>${progress.completed} / ${progress.total}</strong>
                     </div>
                   </div>
@@ -9394,15 +10428,109 @@
                     <strong>${formatCurrency(row.bufferTransfer, 2)}</strong>
                   </div>
                   <div class="deployment-log-stat">
+                    <span>Pay Now</span>
+                    <strong>${formatCurrency(debtTotal + manualReserveTotal, 2)}</strong>
+                  </div>
+                  <div class="deployment-log-stat">
                     <span>Planned Deploy</span>
                     <strong>${formatCurrency(row.totalDeployed, 2)}</strong>
                   </div>
                   <div class="deployment-log-stat">
-                    <span>Completed</span>
+                    <span>Moves Done</span>
                     <strong>${progress.completed} / ${progress.total}</strong>
                   </div>
                 </div>
                 <div class="deployment-log-channels">
+                  ${
+                    row.debts.length
+                      ? row.debts
+                          .map(
+                            (debt) => `
+                              <div class="deployment-log-channel">
+                                <input
+                                  class="deployment-log-channel-toggle"
+                                  type="checkbox"
+                                  data-action="toggle-deployment-debt"
+                                  data-log-id="${escapeHtml(row.id)}"
+                                  data-debt-id="${escapeHtml(debt.id)}"
+                                  ${debt.completed ? "checked" : ""}
+                                />
+                                <div class="deployment-log-channel-main">
+                                  <div class="deployment-log-channel-head">
+                                    <strong>${escapeHtml(debt.label)}</strong>
+                                    <span>${formatCurrency(debt.amount, 0)}</span>
+                                  </div>
+                                  <span class="deployment-log-channel-status">
+                                    ${
+                                      debt.completed
+                                        ? `Paid${debt.completedDate ? ` on ${escapeHtml(
+                                            formatMonthDay(debt.completedDate),
+                                          )}` : ""}`
+                                        : "Still pending"
+                                    }
+                                  </span>
+                                </div>
+                                <div class="deployment-log-channel-date">
+                                  <label>Payment Date</label>
+                                  <input
+                                    type="date"
+                                    data-action="deployment-debt-date"
+                                    data-log-id="${escapeHtml(row.id)}"
+                                    data-debt-id="${escapeHtml(debt.id)}"
+                                    value="${escapeHtml(debt.completedDate || "")}"
+                                  />
+                                </div>
+                              </div>
+                            `,
+                          )
+                          .join("")
+                      : ""
+                  }
+                  ${
+                    row.manualReserves.length
+                      ? row.manualReserves
+                          .map(
+                            (item) => `
+                              <div class="deployment-log-channel">
+                                <input
+                                  class="deployment-log-channel-toggle"
+                                  type="checkbox"
+                                  data-action="toggle-deployment-reserve"
+                                  data-log-id="${escapeHtml(row.id)}"
+                                  data-reserve-id="${escapeHtml(item.id)}"
+                                  ${item.completed ? "checked" : ""}
+                                />
+                                <div class="deployment-log-channel-main">
+                                  <div class="deployment-log-channel-head">
+                                    <strong>${escapeHtml(item.label)}</strong>
+                                    <span>${formatCurrency(item.amount, 0)}</span>
+                                  </div>
+                                  <span class="deployment-log-channel-status">
+                                    ${
+                                      item.completed
+                                        ? `Paid${item.completedDate ? ` on ${escapeHtml(
+                                            formatMonthDay(item.completedDate),
+                                          )}` : ""}`
+                                        : "Still pending"
+                                    }
+                                  </span>
+                                </div>
+                                <div class="deployment-log-channel-date">
+                                  <label>Payment Date</label>
+                                  <input
+                                    type="date"
+                                    data-action="deployment-reserve-date"
+                                    data-log-id="${escapeHtml(row.id)}"
+                                    data-reserve-id="${escapeHtml(item.id)}"
+                                    value="${escapeHtml(item.completedDate || "")}"
+                                  />
+                                </div>
+                              </div>
+                            `,
+                          )
+                          .join("")
+                      : ""
+                  }
                   ${
                     row.bufferTransfer > 0
                       ? `
@@ -9803,6 +10931,14 @@
         const liquid = Math.max(toNumber($("investLiquidAmount").value), 0);
         const paycheck = toNumber($("overviewPaycheck").value);
         const sections = getFlowSections(liquid, paycheck);
+        const currentState = resolveCurrentCashState({
+          cash: toNumber($("checking")?.value) + toNumber($("savings")?.value),
+          debt: toNumber($("card1")?.value) + toNumber($("card2")?.value),
+          dueTotal: getCurrentDueTotal(),
+          reserveTarget: toNumber($("minBalance")?.value),
+          bufferTarget: calculateBudget(),
+          deployTarget: Math.max(getPlanSummary().liquid, 0),
+        });
         let totalPercent = 0;
         let totalAmount = 0;
         let totalPaycheckPercent = 0;
@@ -9865,6 +11001,14 @@
           liquid,
           sections,
           totalAmount,
+        });
+        renderExecutionChannels({
+          liquid,
+          sections,
+          totalAmount,
+          debtRows: getCurrentDebtRows(),
+          manualReserveRows: getCurrentManualReserveRows(),
+          bufferHeld: currentState.bufferHeld,
         });
         updateDashboard();
       }
@@ -10020,9 +11164,13 @@
           return;
         }
 
-        if (bufferTransfer <= 0 && snapshot.deployTotal <= 0) {
+        if (
+          bufferTransfer <= 0 &&
+          snapshot.deployTotal <= 0 &&
+          snapshot.paymentTotal <= 0
+        ) {
           alert(
-            "Add a buffer transfer amount or have capital available to deploy before logging this entry.",
+            "Add a buffer transfer amount or have debt, manual payments, or capital available before logging this deployment.",
           );
           return;
         }
@@ -10034,6 +11182,8 @@
           bufferTransfer,
           totalDeployed: snapshot.deployTotal,
           note: note.trim(),
+          debts: snapshot.debts,
+          manualReserves: snapshot.manualReserves,
           channels: snapshot.channels,
         });
         syncDeploymentLogRows();
@@ -10214,6 +11364,66 @@
           });
         };
 
+        const handleDeploymentDebtToggle = (event) => {
+          const toggle = event.target.closest(
+            '[data-action="toggle-deployment-debt"]',
+          );
+          if (!toggle) return;
+          const { logId, debtId } = toggle.dataset;
+          updateDeploymentLogEntry(logId, (row) => {
+            const debt = row.debts.find((item) => item.id === debtId);
+            if (!debt) return;
+            debt.completed = toggle.checked;
+            debt.completedDate = toggle.checked
+              ? debt.completedDate || $("logDate")?.value || todayInputValue()
+              : "";
+          });
+        };
+
+        const handleDeploymentDebtDate = (event) => {
+          const input = event.target.closest(
+            '[data-action="deployment-debt-date"]',
+          );
+          if (!input) return;
+          const { logId, debtId } = input.dataset;
+          updateDeploymentLogEntry(logId, (row) => {
+            const debt = row.debts.find((item) => item.id === debtId);
+            if (!debt) return;
+            debt.completedDate = normalizeDateValue(input.value);
+            debt.completed = Boolean(debt.completedDate);
+          });
+        };
+
+        const handleDeploymentReserveToggle = (event) => {
+          const toggle = event.target.closest(
+            '[data-action="toggle-deployment-reserve"]',
+          );
+          if (!toggle) return;
+          const { logId, reserveId } = toggle.dataset;
+          updateDeploymentLogEntry(logId, (row) => {
+            const reserve = row.manualReserves.find((item) => item.id === reserveId);
+            if (!reserve) return;
+            reserve.completed = toggle.checked;
+            reserve.completedDate = toggle.checked
+              ? reserve.completedDate || $("logDate")?.value || todayInputValue()
+              : "";
+          });
+        };
+
+        const handleDeploymentReserveDate = (event) => {
+          const input = event.target.closest(
+            '[data-action="deployment-reserve-date"]',
+          );
+          if (!input) return;
+          const { logId, reserveId } = input.dataset;
+          updateDeploymentLogEntry(logId, (row) => {
+            const reserve = row.manualReserves.find((item) => item.id === reserveId);
+            if (!reserve) return;
+            reserve.completedDate = normalizeDateValue(input.value);
+            reserve.completed = Boolean(reserve.completedDate);
+          });
+        };
+
         const handleDeploymentChannelToggle = (event) => {
           const toggle = event.target.closest(
             '[data-action="toggle-deployment-channel"]',
@@ -10259,7 +11469,12 @@
           updateInvestTable();
         });
         $("addCurrentDueBtn").addEventListener("click", () => {
-          state.currentDueRows.push({ label: "Reserved Item", amount: 0 });
+          state.currentDueRows.push({
+            label: "Reserved Item",
+            amount: 0,
+            cycle: getCurrentPayCycle(),
+            paymentType: "auto",
+          });
           renderCurrentDueRows();
           calculateLiquid();
         });
@@ -10298,7 +11513,7 @@
           calculateLiquidOverview();
           updateInvestTable();
         });
-        $("currentDueList").addEventListener("input", (event) => {
+        const handleCurrentDueEdit = (event) => {
           const row = event.target.closest(".plan-expense-row");
           if (!row) return;
           const field = event.target.dataset.field;
@@ -10313,9 +11528,60 @@
             state.currentDueRows[index].amount = toNumber(event.target.value);
           }
 
+          if (
+            field === "cycleFirst" ||
+            field === "cycleSecond" ||
+            field === "cycleBoth"
+          ) {
+            const firstInput = row.querySelector('[data-field="cycleFirst"]');
+            const secondInput = row.querySelector('[data-field="cycleSecond"]');
+            const bothInput = row.querySelector('[data-field="cycleBoth"]');
+
+            if (field === "cycleBoth" && bothInput?.checked) {
+              if (firstInput) firstInput.checked = false;
+              if (secondInput) secondInput.checked = false;
+            }
+
+            if (field === "cycleFirst" && firstInput?.checked) {
+              if (secondInput) secondInput.checked = false;
+              if (bothInput) bothInput.checked = false;
+            }
+
+            if (field === "cycleSecond" && secondInput?.checked) {
+              if (firstInput) firstInput.checked = false;
+              if (bothInput) bothInput.checked = false;
+            }
+
+            const bothChecked = Boolean(bothInput?.checked);
+            const secondChecked = bothChecked
+              ? false
+              : Boolean(secondInput?.checked);
+            state.currentDueRows[index].cycle = bothChecked
+              ? "both"
+              : secondChecked
+                ? "second"
+                : "first";
+          }
+
+          if (field === "paymentManual") {
+            state.currentDueRows[index].paymentType = event.target.checked
+              ? "manual"
+              : "auto";
+          }
+
           syncCurrentDueRows();
           calculateLiquid();
-        });
+          if (
+            field === "cycleFirst" ||
+            field === "cycleSecond" ||
+            field === "cycleBoth" ||
+            field === "paymentManual"
+          ) {
+            renderCurrentDueRows();
+          }
+        };
+        $("currentDueList").addEventListener("input", handleCurrentDueEdit);
+        $("currentDueList").addEventListener("change", handleCurrentDueEdit);
         $("investChannelList").addEventListener("input", handleInvestChannelInput);
         $("investChannelCards")?.addEventListener("input", handleInvestChannelInput);
         $("planExpenseList").addEventListener("click", (event) => {
@@ -10345,8 +11611,12 @@
         $("investChannelCards")?.addEventListener("click", handleInvestChannelRemove);
         $("liquidationLogTable")?.addEventListener("click", handleDeploymentLogRemove);
         $("liquidationLogTable")?.addEventListener("click", handleDeploymentLogLock);
+        $("liquidationLogTable")?.addEventListener("change", handleDeploymentDebtToggle);
+        $("liquidationLogTable")?.addEventListener("change", handleDeploymentReserveToggle);
         $("liquidationLogTable")?.addEventListener("change", handleDeploymentChannelToggle);
         $("liquidationLogTable")?.addEventListener("change", handleDeploymentBufferToggle);
+        $("liquidationLogTable")?.addEventListener("change", handleDeploymentDebtDate);
+        $("liquidationLogTable")?.addEventListener("change", handleDeploymentReserveDate);
         $("liquidationLogTable")?.addEventListener("change", handleDeploymentChannelDate);
         $("liquidationLogTable")?.addEventListener("change", handleDeploymentBufferDate);
         $("wb-entry-form").addEventListener("submit", (event) => {
@@ -10392,6 +11662,9 @@
         $("manualDate").addEventListener("change", () => {
           updateFocusDateIndicators();
           seedActionDates();
+          renderCurrentDueRows();
+          calculateLiquid();
+          updateInvestTable();
           if (state.weeklyBudgetRows.length) {
             renderWeeklyBudgetTables(state.weeklyBudgetRows);
           }
