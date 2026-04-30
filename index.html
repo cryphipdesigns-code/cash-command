@@ -167,7 +167,7 @@
         min-height: 0;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: flex-start;
         gap: 18px;
         padding: 22px 18px;
         border-radius: var(--radius-xl);
@@ -178,7 +178,10 @@
         );
         border: 1px solid rgba(255, 255, 255, 0.64);
         box-shadow: var(--shadow-lg);
-        overflow: hidden;
+        overflow-y: auto;
+        overflow-x: hidden;
+        overscroll-behavior: contain;
+        scrollbar-gutter: stable;
       }
 
       #sidebar::before {
@@ -287,6 +290,49 @@
       .sidebar-footer {
         display: grid;
         gap: 14px;
+        margin-top: auto;
+      }
+
+      .sidebar-cycle-pill,
+      .page-cycle-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: fit-content;
+        max-width: 100%;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(37, 99, 235, 0.1);
+        background: linear-gradient(
+          180deg,
+          rgba(248, 250, 255, 0.98),
+          rgba(239, 246, 255, 0.95)
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.9),
+          0 8px 20px rgba(37, 99, 235, 0.05);
+      }
+
+      .sidebar-cycle-pill {
+        justify-self: start;
+      }
+
+      .sidebar-cycle-pill span,
+      .page-cycle-pill span {
+        color: var(--text-dim);
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .sidebar-cycle-pill strong,
+      .page-cycle-pill strong {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 0.98rem;
+        line-height: 1;
+        letter-spacing: -0.02em;
       }
 
       .date-box {
@@ -308,6 +354,56 @@
         color: var(--text-soft);
         font-size: 0.82rem;
         line-height: 1.55;
+      }
+
+      .sidebar-context-card {
+        display: grid;
+        gap: 10px;
+      }
+
+      .sidebar-context-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .sidebar-context-head label {
+        margin: 0;
+      }
+
+      .sidebar-context-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+        max-width: 100%;
+        padding: 7px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(37, 99, 235, 0.1);
+        background: linear-gradient(
+          180deg,
+          rgba(248, 250, 255, 0.98),
+          rgba(239, 246, 255, 0.95)
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.9),
+          0 8px 20px rgba(37, 99, 235, 0.05);
+      }
+
+      .sidebar-context-pill span {
+        color: var(--text-dim);
+        font-size: 0.62rem;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .sidebar-context-pill strong {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 0.9rem;
+        line-height: 1;
+        letter-spacing: -0.02em;
       }
 
       #mainContent {
@@ -391,6 +487,9 @@
       }
 
       .page-intro {
+        display: grid;
+        justify-items: center;
+        text-align: center;
         padding: 28px 30px;
       }
 
@@ -409,6 +508,11 @@
         color: var(--text-soft);
         font-size: 1rem;
         line-height: 1.75;
+      }
+
+      .page-cycle-pill {
+        justify-self: center;
+        margin-top: 18px;
       }
 
       .metric-strip {
@@ -1118,6 +1222,11 @@
         gap: 18px;
         width: min(100%, 1080px);
         margin: 0 auto;
+        align-items: stretch;
+      }
+
+      .dashboard-glance-strip {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
       .dashboard-focus-card {
@@ -1380,7 +1489,7 @@
 
       .current-readout-shell {
         display: grid;
-        gap: 20px;
+        gap: 16px;
         width: min(100%, 940px);
         max-width: 100%;
         margin: 0 auto;
@@ -1400,15 +1509,42 @@
         gap: 16px;
         padding: 16px 18px;
         border-radius: 22px;
-        border: 1px solid rgba(37, 99, 235, 0.08);
+        border: 1px solid rgba(37, 99, 235, 0.12);
         background: linear-gradient(
           180deg,
-          rgba(255, 255, 255, 0.98),
-          rgba(241, 246, 255, 0.96)
+          rgba(247, 250, 255, 0.99),
+          rgba(235, 244, 255, 0.96)
         );
         box-shadow:
           inset 0 1px 0 rgba(255, 255, 255, 0.9),
-          0 14px 28px rgba(15, 23, 42, 0.05);
+          0 16px 30px rgba(37, 99, 235, 0.08);
+      }
+
+      .current-checking-transfer-band.is-good {
+        border-color: rgba(34, 197, 94, 0.18);
+        background: linear-gradient(
+          180deg,
+          rgba(248, 255, 250, 0.99),
+          rgba(239, 253, 244, 0.96)
+        );
+      }
+
+      .current-checking-transfer-band.is-warning {
+        border-color: rgba(249, 115, 22, 0.18);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 251, 245, 0.99),
+          rgba(255, 247, 237, 0.96)
+        );
+      }
+
+      .current-checking-transfer-band.is-danger {
+        border-color: rgba(239, 68, 68, 0.18);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 248, 248, 0.99),
+          rgba(254, 242, 242, 0.96)
+        );
       }
 
       .current-checking-transfer-band > div {
@@ -1572,12 +1708,14 @@
       }
 
       .current-readout-state {
-        display: grid;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         gap: 8px;
-        width: 100%;
+        width: auto;
         margin-top: auto;
-        padding: 14px 16px 16px;
-        border-radius: 20px;
+        padding: 8px 12px;
+        border-radius: 999px;
         border: 1px solid rgba(148, 163, 184, 0.18);
         background: linear-gradient(
           180deg,
@@ -1586,7 +1724,7 @@
         );
         box-shadow:
           inset 0 1px 0 rgba(255, 255, 255, 0.92),
-          0 12px 24px rgba(15, 23, 42, 0.04);
+          0 8px 18px rgba(15, 23, 42, 0.04);
       }
 
       .current-readout-state.is-good {
@@ -1631,21 +1769,23 @@
       .current-readout-state strong {
         margin: 0;
         font-family: "Space Grotesk", sans-serif;
-        font-size: 1rem;
-        line-height: 1.12;
-        letter-spacing: -0.02em;
+        font-size: 0.84rem;
+        line-height: 1;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
       }
 
       .current-readout-state p {
-        margin: 0;
-        color: var(--text-soft);
-        font-size: 0.84rem;
-        line-height: 1.55;
+        display: none;
       }
 
       .money-map-source-panel {
         min-width: min(100%, 320px);
         max-width: min(100%, 380px);
+      }
+
+      .money-map-source-panel.panel {
+        padding: 16px 16px 14px;
       }
 
       .money-map-source-panel .panel-heading {
@@ -1659,7 +1799,7 @@
       }
 
       .money-map-source-panel .plan-input-row {
-        grid-template-columns: minmax(240px, 300px);
+        grid-template-columns: minmax(220px, 280px);
         justify-self: center;
       }
 
@@ -1674,6 +1814,48 @@
       .money-map-source-panel input[readonly] {
         text-align: center;
         font-weight: 800;
+      }
+
+      .money-map-source-readout {
+        display: grid;
+        gap: 10px;
+        width: min(100%, 300px);
+        justify-items: center;
+        margin: 4px auto 0;
+        padding: 18px 16px 16px;
+        border-radius: 18px;
+        border: 1px solid rgba(37, 99, 235, 0.08);
+        background: linear-gradient(
+          180deg,
+          rgba(248, 250, 255, 0.99),
+          rgba(240, 246, 255, 0.96)
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.92),
+          0 16px 28px rgba(15, 23, 42, 0.04);
+        text-align: center;
+      }
+
+      .money-map-source-kicker {
+        color: var(--text-dim);
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .money-map-source-readout strong {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(2rem, 4.2vw, 2.8rem);
+        line-height: 0.98;
+        letter-spacing: -0.05em;
+      }
+
+      .money-map-source-readout p {
+        margin: 0;
+        color: var(--text-soft);
+        font-size: 0.88rem;
+        line-height: 1.55;
       }
 
       .money-map-table-panel {
@@ -2090,7 +2272,33 @@
       }
 
       .mobile-visual-toggle {
-        display: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+        padding: 6px 10px;
+        min-height: 32px;
+        border-radius: 999px;
+        border: 1px solid rgba(37, 99, 235, 0.08);
+        background: rgba(248, 250, 255, 0.96);
+        color: var(--accent);
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        box-shadow: none;
+      }
+
+      .mobile-visual-panel .panel-heading {
+        align-items: center;
+      }
+
+      .mobile-visual-panel.is-collapsed > :not(.panel-heading) {
+        display: none !important;
+      }
+
+      .mobile-visual-panel.is-collapsed .panel-heading {
+        margin-bottom: 0;
       }
 
       .money-map-visual-panel {
@@ -2455,6 +2663,34 @@
         gap: 14px;
       }
 
+      .deployment-log-history {
+        display: grid;
+        gap: 14px;
+        padding: 14px 16px 16px;
+        border-radius: 22px;
+        border: 1px solid rgba(15, 23, 42, 0.06);
+        background: rgba(255, 255, 255, 0.82);
+      }
+
+      .deployment-log-history > summary {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        cursor: pointer;
+      }
+
+      .deployment-log-history > summary::-webkit-details-marker,
+      .deployment-log-history > summary::marker {
+        display: none;
+      }
+
+      .deployment-log-history-list {
+        display: grid;
+        gap: 12px;
+      }
+
       .deployment-log-card {
         display: grid;
         gap: 14px;
@@ -2627,6 +2863,78 @@
         color: var(--text-soft);
         font-size: 0.84rem;
         line-height: 1.5;
+      }
+
+      .execution-close-panel {
+        min-width: min(100%, 900px);
+        max-width: min(100%, 1120px);
+      }
+
+      .execution-close-summary {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+        width: min(100%, 920px);
+        margin: 0 auto;
+      }
+
+      .execution-close-actions {
+        display: grid;
+        gap: 14px;
+        justify-items: center;
+        width: min(100%, 760px);
+        margin: 16px auto 0;
+        text-align: center;
+      }
+
+      .cycle-archive-list {
+        display: grid;
+        gap: 12px;
+        padding-top: 18px;
+      }
+
+      .cycle-archive-card {
+        display: grid;
+        gap: 12px;
+        padding: 16px;
+        border-radius: 20px;
+        border: 1px solid rgba(15, 23, 42, 0.06);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.98),
+          rgba(245, 249, 255, 0.95)
+        );
+      }
+
+      .cycle-archive-card-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .cycle-archive-card-head h3,
+      .cycle-archive-card-head p {
+        margin: 0;
+      }
+
+      .cycle-archive-card-head h3 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.08rem;
+        line-height: 1.06;
+      }
+
+      .cycle-archive-card-note {
+        margin: 0;
+        color: var(--text-soft);
+        font-size: 0.84rem;
+        line-height: 1.5;
+      }
+
+      .cycle-archive-meta {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
       }
 
       .current-single-input-grid {
@@ -3286,6 +3594,14 @@
         text-align: center;
       }
 
+      .current-plan-bridge-note {
+        margin: 2px auto 0;
+        color: var(--text-soft);
+        font-size: 0.86rem;
+        line-height: 1.55;
+        text-align: center;
+      }
+
       .execution-top-row {
         align-items: start;
       }
@@ -3296,18 +3612,133 @@
         text-align: center;
       }
 
+      .execution-action-panel .info-cluster,
+      .execution-channel-panel .info-cluster {
+        width: 100%;
+        justify-content: center;
+      }
+
       .execution-action-panel .panel-heading p,
       .execution-channel-panel .panel-heading p {
         max-width: 40ch;
       }
 
+      .execution-action-panel .field-grid {
+        justify-content: center;
+      }
+
+      .execution-action-summary {
+        display: grid;
+        justify-items: center;
+        gap: 14px;
+        width: min(100%, 460px);
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .execution-action-hero {
+        display: grid;
+        gap: 8px;
+        width: min(100%, 320px);
+        padding: 18px 18px 20px;
+        border-radius: 22px;
+        border: 1px solid rgba(37, 99, 235, 0.1);
+        background: linear-gradient(
+          180deg,
+          rgba(248, 250, 255, 0.99),
+          rgba(238, 245, 255, 0.96)
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.94),
+          0 16px 32px rgba(37, 99, 235, 0.07);
+      }
+
+      .execution-action-hero span {
+        color: var(--text-dim);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .execution-action-hero strong {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(2rem, 4vw, 2.7rem);
+        line-height: 0.96;
+        letter-spacing: -0.05em;
+      }
+
       .execution-channel-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
         gap: 12px;
         width: min(100%, 860px);
         max-width: 100%;
         margin: 0 auto;
+      }
+
+      .execution-sequence-group {
+        display: grid;
+        gap: 10px;
+        padding: 14px 14px 12px;
+        border-radius: 20px;
+        border: 1px solid rgba(15, 23, 42, 0.06);
+        background: rgba(255, 255, 255, 0.78);
+      }
+
+      .execution-sequence-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .execution-sequence-head h3,
+      .execution-sequence-head p {
+        margin: 0;
+      }
+
+      .execution-sequence-head h3 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.06rem;
+        line-height: 1.04;
+      }
+
+      .execution-sequence-head p {
+        color: var(--text-soft);
+        font-size: 0.82rem;
+        line-height: 1.5;
+      }
+
+      .execution-sequence-index {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 28px;
+        height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        background: rgba(219, 234, 254, 0.9);
+        color: var(--accent);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .execution-sequence-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+      }
+
+      .execution-action-note {
+        margin: 14px auto 0;
+        width: min(100%, 420px);
+        color: var(--text-soft);
+        font-size: 0.9rem;
+        line-height: 1.6;
+        text-align: center;
       }
 
       .execution-channel-card {
@@ -4319,6 +4750,10 @@
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
+        .dashboard-glance-strip .metric-tile:last-child:nth-child(odd) {
+          grid-column: 1 / -1;
+        }
+
         .metric-strip,
         .plan-metric-strip {
           width: 100%;
@@ -4339,6 +4774,22 @@
         .panel-heading p {
           font-size: 0.82rem;
           line-height: 1.48;
+        }
+
+        .page-cycle-pill,
+        .sidebar-cycle-pill {
+          gap: 8px;
+          padding: 7px 10px;
+        }
+
+        .page-cycle-pill span,
+        .sidebar-cycle-pill span {
+          font-size: 0.62rem;
+        }
+
+        .page-cycle-pill strong,
+        .sidebar-cycle-pill strong {
+          font-size: 0.88rem;
         }
 
         .panel-heading {
@@ -4608,6 +5059,23 @@
           line-height: 1.45;
         }
 
+        .current-plan-bridge-note,
+        .execution-action-note,
+        .money-map-source-readout p {
+          font-size: 0.8rem;
+          line-height: 1.5;
+        }
+
+        .money-map-source-readout {
+          width: 100%;
+          padding: 14px 12px 13px;
+          gap: 8px;
+        }
+
+        .money-map-source-readout strong {
+          font-size: clamp(1.7rem, 7vw, 2.2rem);
+        }
+
         .money-map-bucket-grid {
           grid-template-columns: 1fr;
         }
@@ -4820,6 +5288,23 @@
 
         .execution-channel-grid {
           gap: 10px;
+        }
+
+        .execution-sequence-cards,
+        .execution-close-summary,
+        .cycle-archive-meta {
+          grid-template-columns: 1fr;
+        }
+
+        .execution-sequence-group,
+        .cycle-archive-card,
+        .deployment-log-history {
+          padding: 12px;
+          border-radius: 18px;
+        }
+
+        .execution-close-actions {
+          width: 100%;
         }
 
         .invest-channel-mobile-head {
@@ -5776,12 +6261,17 @@
         </div>
 
         <div class="sidebar-footer">
-          <div class="date-box">
-            <label for="manualDate">Anchor Date</label>
+          <div class="date-box sidebar-context-card">
+            <div class="sidebar-context-head">
+              <label for="manualDate">Anchor Date</label>
+              <div class="sidebar-context-pill">
+                <span>Cycle</span>
+                <strong id="globalCycleBadge">1st Paycheck</strong>
+              </div>
+            </div>
             <input type="date" id="manualDate" />
             <p>
-              Used to anchor today’s checkpoint, paycheck timing context, and
-              new log entries.
+              Sets paycheck timing and new log dates.
             </p>
           </div>
           <div class="sidebar-utility-row">
@@ -5804,14 +6294,14 @@
           <article class="panel page-intro plan-panel plan-panel-title">
             <p class="eyebrow">Command Center</p>
             <h1>Dashboard</h1>
-            <p>Simple read on cash, the plan target, and what can deploy now.</p>
+            <p>Today’s cash, the next paycheck target, and the next move.</p>
           </article>
 
           <div class="plan-summary-shell plan-panel plan-panel-wide">
             <div class="plan-summary-heading">
               <p class="eyebrow">At A Glance</p>
             </div>
-            <div class="metric-strip plan-metric-strip responsive-metric-strip">
+            <div class="metric-strip plan-metric-strip responsive-metric-strip dashboard-glance-strip">
               <article class="panel metric-tile">
                 <span>Current Capital To Deploy</span>
                 <strong id="dashboardCurrentSafeMetric">$0</strong>
@@ -5824,18 +6314,6 @@
                 <span>Protected Reserve Left</span>
                 <strong id="dashboardReserveMetric">$0</strong>
               </article>
-              <article class="panel metric-tile">
-                <span>Money Map Source</span>
-                <strong id="dashboardFlowReadyMetric">$0</strong>
-              </article>
-            </div>
-          </div>
-
-          <div class="plan-step-divider">
-            <div class="plan-step-divider-lines">
-              <span aria-hidden="true"></span>
-              <p class="eyebrow">What Matters</p>
-              <span aria-hidden="true"></span>
             </div>
           </div>
 
@@ -5857,10 +6335,6 @@
                     <span>Commitments</span>
                     <strong id="dashboardCommitmentsMetric">$0</strong>
                   </div>
-                  <div class="summary-card">
-                    <span>Anchor Date</span>
-                    <strong id="dashboardAnchorMetric">-</strong>
-                  </div>
                 </div>
                 <div class="dashboard-state-band">
                   <strong id="dashboardTimingHeadline">Current Position</strong>
@@ -5874,7 +6348,7 @@
                 <div class="panel-heading">
                   <div>
                     <p class="eyebrow">Next Paycheck</p>
-                    <h2>Plan Target</h2>
+                    <h2>Paycheck Plan</h2>
                   </div>
                 </div>
                 <div class="dashboard-compact-grid">
@@ -5891,43 +6365,39 @@
                     <strong id="dashboardFlexibleMetric">$0</strong>
                   </div>
                 </div>
+                <div class="dashboard-state-band">
+                  <strong id="dashboardVarianceHeadline">On Plan</strong>
+                  <p id="dashboardVarianceCopy">
+                    Current deployable cash matches the paycheck plan target.
+                  </p>
+                </div>
               </article>
 
               <article class="panel plan-panel dashboard-focus-card">
                 <div class="panel-heading">
                   <div>
-                    <p class="eyebrow">Deploy Next</p>
-                    <h2>Money Map</h2>
+                    <p class="eyebrow">Next Move</p>
+                    <h2>Deployment</h2>
                   </div>
                 </div>
                 <div class="dashboard-compact-grid">
                   <div class="summary-card">
-                    <span>Capital To Deploy</span>
-                    <strong id="dashboardCarryForwardMetric">$0</strong>
+                    <span>Checking Gap</span>
+                    <strong id="dashboardMoveCheckingMetric">$0</strong>
+                  </div>
+                  <div class="summary-card">
+                    <span>Pay Now</span>
+                    <strong id="dashboardPayNowMetric">$0</strong>
                   </div>
                   <div class="summary-card">
                     <span>Top Channel</span>
                     <strong id="dashboardTopChannelMetric">-</strong>
                   </div>
-                  <div class="summary-card">
-                    <span>Recent Deploy Log</span>
-                    <strong id="dashboardRecentFlowMetric">None yet</strong>
-                  </div>
-                </div>
-                <div class="dashboard-state-band">
-                  <strong id="dashboardVarianceHeadline">
-                    Plan vs. current
-                  </strong>
-                  <p id="dashboardVarianceCopy">
-                    This space will call out how today’s reality compares to
-                    the paycheck plan.
-                  </p>
                 </div>
                 <div class="dashboard-state-band">
                   <strong id="dashboardStatusNote">Capital is available to deploy.</strong>
                   <p id="dashboardHistoryNote">
-                    Recent checkpoint notes will appear here after they are
-                    logged.
+                    No deployment has been logged yet.
                   </p>
                 </div>
               </article>
@@ -5939,11 +6409,11 @@
           <article class="panel page-intro plan-panel plan-panel-title">
             <p class="eyebrow">Present-State Liquidity</p>
             <h1>Current Cash</h1>
-            <p>
-              A through-next-paycheck liquidity check: current balances,
-              protected reserve, scheduled reserves, and the capital left
-              available to deploy after this cycle is fully accounted for.
-            </p>
+            <p>What is safe to move right now, and what still needs protecting.</p>
+            <div class="page-cycle-pill">
+              <span>Paycheck Cycle</span>
+              <strong id="currentCycleBadge">1st Paycheck</strong>
+            </div>
           </article>
 
           <div class="plan-summary-shell plan-panel plan-panel-wide">
@@ -5976,7 +6446,6 @@
               <p class="eyebrow">Check The Current View</p>
               <span aria-hidden="true"></span>
             </div>
-            <p>Start with actual balances, map what is already spoken for before payday, and protect the reserve you do not want to touch.</p>
           </div>
 
           <div class="flow-stack plan-flow-stack">
@@ -6059,14 +6528,14 @@
                     <p class="eyebrow">Step 3</p>
                     <h2>Scheduled Reserves</h2>
                   </div>
-                  <span
-                    class="info-tip"
-                    tabindex="0"
-                    data-tip="Enter the full reserve amount for each monthly item. Tag it to 1st, 2nd, or Every. The active paycheck window counts that item at 100%, while the opposite window holds 50% until its turn arrives. For Groceries, enter one week's spend and the app will hold two weekends of reserve after the 1st or 15th paycheck, one weekend after the first Sunday, then $0 after the following Sunday. Mark manual payments so they show up in Deployment."
-                    aria-label="Scheduled reserves help"
-                  >
-                    ?
-                  </span>
+                    <span
+                      class="info-tip"
+                      tabindex="0"
+                      data-tip="Enter the full monthly reserve target for each item. Tag 1st or 2nd to show which half of the month needs the full amount; the opposite half still holds 50% until its turn arrives. Weekly items hold two weekends of spend right after payday, then one, then zero. Mark manual payments so they flow into Deployment."
+                      aria-label="Scheduled reserves help"
+                    >
+                      ?
+                    </span>
                 </div>
               </div>
               <div class="plan-expense-shell current-due-shell">
@@ -6139,9 +6608,6 @@
                       <strong id="currentBufferAvailable">$0</strong>
                       <div id="currentBufferStage" class="current-readout-state is-good">
                         <strong id="currentBufferStageTitle">Fully Available</strong>
-                        <p id="currentBufferStageText">
-                          Buffer is still intact and ready to transfer if needed.
-                        </p>
                       </div>
                     </article>
 
@@ -6161,9 +6627,6 @@
                       <div id="liquidOutput" class="liquid-output neutral">$0.00</div>
                       <div id="currentDeployStage" class="current-readout-state is-good">
                         <strong id="currentDeployStageTitle">On Plan</strong>
-                        <p id="currentDeployStageText">
-                          Capital to deploy is still tracking the paycheck plan.
-                        </p>
                       </div>
                     </article>
 
@@ -6183,21 +6646,12 @@
                       <strong id="currentReserveReadout">$4,000</strong>
                       <div id="currentReserveStage" class="current-readout-state is-good">
                         <strong id="currentReserveStageTitle">Protected</strong>
-                        <p id="currentReserveStageText">
-                          The protected floor reserve has not been touched.
-                        </p>
                       </div>
                     </article>
                   </div>
-                  <article class="current-checking-transfer-band">
-                    <div>
-                      <span class="current-checking-transfer-kicker">Checking Transfer</span>
-                      <strong id="currentCheckingTransferNeed">$0</strong>
-                    </div>
-                    <p id="currentCheckingTransferNote">
-                      Checking already covers debt, buffer transfer, and deployable cash.
-                    </p>
-                  </article>
+                  <p id="currentPlanBridgeNote" class="current-plan-bridge-note">
+                    Paycheck plan target and live capital context will appear here.
+                  </p>
                 </div>
               </article>
             </div>
@@ -6463,11 +6917,11 @@
           <article class="panel page-intro plan-panel plan-panel-title">
             <p class="eyebrow">Forward Planning</p>
             <h1>Paycheck Plan</h1>
-            <p>
-              Define what the next paycheck is supposed to do: incoming cash,
-              planned expenses, the misc. budget, and the leftover amount
-              intended to deploy.
-            </p>
+            <p>What the next paycheck should cover and what it should leave free.</p>
+            <div class="page-cycle-pill">
+              <span>Planning For</span>
+              <strong id="planCycleBadge">1st Paycheck</strong>
+            </div>
           </article>
 
           <div class="plan-summary-shell plan-panel plan-panel-wide">
@@ -6500,7 +6954,6 @@
               <p class="eyebrow">Build The Plan</p>
               <span aria-hidden="true"></span>
             </div>
-            <p>Adjust the plan inputs here and use the snapshot below to confirm the split feels right.</p>
           </div>
 
           <div class="flow-stack plan-flow-stack">
@@ -6623,9 +7076,6 @@
                       <strong id="overviewBudgetTotal">$0</strong>
                     </div>
                   </div>
-                  <p id="overviewBudgetStateNote" class="panel-note">
-                    Set the daily misc. budget and the paycheck total will roll up automatically.
-                  </p>
                 </div>
               </article>
 
@@ -6648,23 +7098,10 @@
                 </div>
                 <div class="output-stack">
                   <div class="output-hero">
-                    <span class="info-cluster">
-                      <span>Deployable Cash</span>
-                      <span
-                        class="info-tip"
-                        tabindex="0"
-                        data-tip="The amount this paycheck plan expects to leave available after expenses and the misc. budget."
-                        aria-label="Planned deployable cash help"
-                      >
-                        ?
-                      </span>
-                    </span>
+                    <span>Deployable Cash</span>
                     <strong id="overviewLiquidation">$0</strong>
                     <p class="output-percent">
                       <strong id="overviewLiquidPercentage">0%</strong> of paycheck
-                    </p>
-                    <p id="overviewDeployStateNote" class="panel-note">
-                      This is what the paycheck leaves available to deploy after the plan is covered.
                     </p>
                   </div>
                 </div>
@@ -6719,7 +7156,11 @@
           <article class="panel page-intro plan-panel plan-panel-title">
             <p class="eyebrow">Capital Deployment</p>
             <h1>Money Map</h1>
-            <p>Set the future routing plan for deployable cash across the channels you actually use.</p>
+            <p>Set the routing plan for deployable cash before you actually move it.</p>
+            <div class="page-cycle-pill">
+              <span>Routing For</span>
+              <strong id="flowCycleBadge">1st Paycheck</strong>
+            </div>
           </article>
 
           <div class="plan-step-divider">
@@ -6728,21 +7169,20 @@
               <p class="eyebrow">Route The Capital</p>
               <span aria-hidden="true"></span>
             </div>
-            <p>Pull in live capital from Current Cash, set the channel mix, and watch it pour into each bucket.</p>
           </div>
 
           <div class="flow-stack plan-flow-stack">
             <div class="plan-row">
             <article class="panel tooltip-panel plan-panel plan-panel-paycheck money-map-source-panel">
-              <div class="panel-heading">
-                <div class="info-cluster">
-                  <div>
-                    <p class="eyebrow">Step 1</p>
-                    <h2>Capital To Deploy</h2>
-                  </div>
-                  <span
-                    class="info-tip"
-                    tabindex="0"
+                <div class="panel-heading">
+                  <div class="info-cluster">
+                    <div>
+                      <p class="eyebrow">Step 1</p>
+                      <h2>Source</h2>
+                    </div>
+                    <span
+                      class="info-tip"
+                      tabindex="0"
                     data-tip="This value is pulled directly from Current Cash and updates live as that view changes."
                     aria-label="Capital to deploy source help"
                   >
@@ -6753,19 +7193,13 @@
               <input type="hidden" id="investChannelsData" />
               <input type="hidden" id="investChannelsLocked" value="true" />
               <input type="hidden" id="moneyMapDeploymentLogData" />
-              <div class="flow-row two plan-input-row">
-                <div class="field">
-                  <label for="investLiquidAmount">Current Capital To Deploy</label>
-                  <div class="input-shell">
-                    <span>$</span>
-                    <input
-                      type="number"
-                      id="investLiquidAmount"
-                      placeholder="0"
-                      readonly
-                    />
-                  </div>
-                </div>
+              <input type="hidden" id="investLiquidAmount" readonly />
+              <div class="money-map-source-readout">
+                <span class="money-map-source-kicker">Live Capital From Current Cash</span>
+                <strong id="moneyMapSourceReadout">$0</strong>
+                <p id="moneyMapSourceStatus">
+                  Paycheck plan target and live routing context will appear here.
+                </p>
               </div>
             </article>
 
@@ -6860,7 +7294,11 @@
           <article class="panel page-intro plan-panel plan-panel-title">
             <p class="eyebrow">Live Deployment</p>
             <h1>Deployment</h1>
-            <p>Use the live numbers from Current Cash and the future routing plan from Money Map to make the real transfers and log what actually cleared.</p>
+            <p>Move the money, then log what actually cleared.</p>
+            <div class="page-cycle-pill">
+              <span>Running</span>
+              <strong id="executionHeroCycleBadge">1st Paycheck</strong>
+            </div>
           </article>
 
           <div class="metric-strip plan-metric-strip responsive-metric-strip">
@@ -6884,31 +7322,56 @@
 
           <div class="flow-stack plan-flow-stack">
             <div class="plan-row execution-top-row">
-              <article class="panel plan-panel plan-panel-compact execution-action-panel">
+              <article class="panel tooltip-panel plan-panel plan-panel-compact execution-action-panel">
                 <div class="panel-heading">
-                  <div>
-                    <p class="eyebrow">Step 1</p>
-                    <h2>Move Cash Into Place</h2>
+                  <div class="info-cluster">
+                    <div>
+                      <p class="eyebrow">Step 1</p>
+                      <h2>Move Cash Into Place</h2>
+                    </div>
+                    <span
+                      class="info-tip"
+                      tabindex="0"
+                      data-tip="This gives the first instruction: how much needs to move into Checking before debt payments, manual reserve payments, buffer movement, and channel transfers begin."
+                      aria-label="Move cash into place help"
+                    >
+                      ?
+                    </span>
                   </div>
-                  <p id="executionActionNote">
-                    Check how much needs to move into Checking before the transfer and deployment steps begin.
-                  </p>
                 </div>
                 <div class="field-grid">
-                  <div class="budget-pill">
-                    Protected Floor Left
-                    <strong id="executionReserveMetric">$0</strong>
+                  <div class="execution-action-summary">
+                    <div class="execution-action-hero">
+                      <span>Move To Checking</span>
+                      <strong id="executionCheckingHero">$0</strong>
+                    </div>
+                    <div class="budget-pill">
+                      Protected Floor Left
+                      <strong id="executionReserveMetric">$0</strong>
+                    </div>
                   </div>
                 </div>
+                <p id="executionActionNote" class="execution-action-note">
+                  Move cash into Checking first, then clear the rest in order.
+                </p>
               </article>
 
-              <article class="panel plan-panel plan-panel-wide execution-channel-panel">
+              <article class="panel tooltip-panel plan-panel plan-panel-wide execution-channel-panel">
                 <div class="panel-heading">
-                  <div>
-                    <p class="eyebrow">Step 2</p>
-                    <h2>Today's Money Moves</h2>
+                  <div class="info-cluster">
+                    <div>
+                      <p class="eyebrow">Step 2</p>
+                      <h2>Today's Money Moves</h2>
+                    </div>
+                    <span
+                      class="info-tip"
+                      tabindex="0"
+                      data-tip="This list turns the live cash picture into an order of operations: pay what must clear now, move the buffer if needed, then deploy the remaining capital."
+                      aria-label="Today's money moves help"
+                    >
+                      ?
+                    </span>
                   </div>
-                  <p>Debt, manual reserve payments, buffer movement, and channel deployments all gather here from the live cash picture. Auto-pay reserves still count in checking, but only manual items show up here.</p>
                 </div>
                 <div id="executionChannelList" class="execution-channel-grid"></div>
               </article>
@@ -6923,9 +7386,6 @@
                 <span class="money-map-log-pill">Live</span>
               </summary>
               <div class="money-map-log-content">
-                <p class="panel-note">
-                  Start one deployment here, then come back later to mark debt payments, manual reserve payments, buffer transfer, and each channel on their actual completion dates.
-                </p>
                 <div class="table-form four-up">
                   <div class="field">
                     <label for="logDate">Date</label>
@@ -6960,6 +7420,67 @@
                 </div>
                 <div id="liquidationLogTable" class="deployment-log-list"></div>
               </div>
+            </details>
+
+            <input type="hidden" id="cycleCloseRowsData" />
+            <article class="panel tooltip-panel plan-panel plan-panel-wide execution-close-panel">
+              <div class="panel-heading">
+                <div class="info-cluster">
+                  <div>
+                    <p class="eyebrow">Step 4</p>
+                    <h2>Close This Cycle</h2>
+                  </div>
+                  <span
+                    class="info-tip"
+                    tabindex="0"
+                    data-tip="Freeze a paycheck-cycle snapshot after the moves are done so you can compare the plan, the routed amount, and what actually cleared."
+                    aria-label="Close cycle help"
+                  >
+                    ?
+                  </span>
+                </div>
+              </div>
+              <div class="execution-close-summary">
+                <div class="deployment-log-stat">
+                  <span>Plan Target</span>
+                  <strong id="cycleClosePlanTarget">$0</strong>
+                </div>
+                <div class="deployment-log-stat">
+                  <span>Routed Now</span>
+                  <strong id="cycleCloseRoutedTarget">$0</strong>
+                </div>
+                <div class="deployment-log-stat">
+                  <span>Logged Deploy</span>
+                  <strong id="cycleCloseLoggedDeploy">$0</strong>
+                </div>
+                <div class="deployment-log-stat">
+                  <span>Pay + Buffer Done</span>
+                  <strong id="cycleCloseLoggedSupport">$0</strong>
+                </div>
+                <div class="deployment-log-stat">
+                  <span>Reserve Left</span>
+                  <strong id="cycleCloseReserveLeft">$0</strong>
+                </div>
+              </div>
+              <div class="execution-close-actions">
+                <p id="cycleCloseNote" class="deployment-log-summary-copy">
+                  Finish the moves for this paycheck cycle, then close it into a snapshot.
+                </p>
+                <button id="closeCycleBtn" class="accent-button" type="button">
+                  Close Current Cycle
+                </button>
+              </div>
+            </article>
+
+            <details class="panel plan-panel plan-panel-table execution-archive-panel">
+              <summary class="money-map-log-summary">
+                <div>
+                  <p class="eyebrow">Archive</p>
+                  <h2>Closed Cycles</h2>
+                </div>
+                <span class="money-map-log-pill" id="cycleArchiveCount">0 Saved</span>
+              </summary>
+              <div id="cycleArchiveList" class="cycle-archive-list"></div>
             </details>
           </div>
         </section>
@@ -7042,6 +7563,8 @@
         budgetCheckRows: [],
         latestLiquidationLog: null,
         liquidationLogRows: [],
+        latestCycleClose: null,
+        cycleCloseRows: [],
         currentDueRows: [],
         planExpenseRows: [],
         investChannels: [],
@@ -7242,16 +7765,26 @@
         return baseDate.getDate() < 15 ? "first" : "second";
       }
 
+      function getCurrentReserveWindow(baseDate = getFocusDate()) {
+        return baseDate.getDate() <= 15 ? "first" : "second";
+      }
+
       function formatPayCycleLabel(cycle) {
         if (cycle === "first") return "1st Paycheck";
         if (cycle === "second") return "2nd Paycheck";
         return "Every Paycheck";
       }
 
+      function formatReserveWindowLabel(cycle) {
+        if (cycle === "first") return "1st Due Window";
+        if (cycle === "second") return "2nd Due Window";
+        return "Every Window";
+      }
+
       function normalizeDueCycle(value) {
         return ["first", "second", "both"].includes(String(value))
           ? String(value)
-          : getCurrentPayCycle();
+          : getCurrentReserveWindow();
       }
 
       function normalizeDuePaymentType(value) {
@@ -7260,8 +7793,10 @@
           : "auto";
       }
 
-      function isGroceriesReserve(label) {
-        return /grocer(y|ies)/i.test(String(label || ""));
+      function normalizeDueReserveMode(value, label = "") {
+        if (String(value) === "weekly") return "weekly";
+        if (/grocer(y|ies)/i.test(String(label || ""))) return "weekly";
+        return "standard";
       }
 
       function startOfDay(value) {
@@ -7281,6 +7816,28 @@
         );
         payday.setHours(0, 0, 0, 0);
         return payday;
+      }
+
+      function getCurrentPayCycleWindow(baseDate = getFocusDate()) {
+        const anchorDate = startOfDay(baseDate) || startOfDay(getFocusDate()) || new Date();
+        const isFirst = anchorDate.getDate() < 15;
+        const start = new Date(
+          anchorDate.getFullYear(),
+          anchorDate.getMonth(),
+          isFirst ? 1 : 15,
+        );
+        const end = new Date(
+          anchorDate.getFullYear(),
+          anchorDate.getMonth() + (isFirst ? 0 : 1),
+          isFirst ? 14 : 0,
+        );
+        start.setHours(0, 0, 0, 0);
+        end.setHours(23, 59, 59, 999);
+        return {
+          cycle: isFirst ? "first" : "second",
+          start,
+          end,
+        };
       }
 
       function getNextWeekday(baseDate, weekday) {
@@ -7355,7 +7912,19 @@
           "weeklyBudgetRange",
           `${formatMonthDay(monday)} - ${formatMonthDay(sunday)}`,
         );
+        updateCycleContextDisplays();
         updateDashboard();
+      }
+
+      function updateCycleContextDisplays() {
+        const payCycleLabel = formatPayCycleLabel(getCurrentPayCycle());
+        [
+          "globalCycleBadge",
+          "planCycleBadge",
+          "currentCycleBadge",
+          "flowCycleBadge",
+          "executionHeroCycleBadge",
+        ].forEach((id) => setText(id, payCycleLabel));
       }
 
       function seedManualDate() {
@@ -7477,6 +8046,7 @@
           planExpenseRows: cloneValue(state.planExpenseRows),
           investChannels: cloneValue(state.investChannels),
           investChannelsLocked: state.investChannelsLocked,
+          cycleCloseRows: cloneValue(state.cycleCloseRows),
           weeklyBudgetRows: cloneValue(state.weeklyBudgetRows),
           budgetCheckRows: cloneValue(state.budgetCheckRows),
           latestBudgetCheck: cloneValue(state.latestBudgetCheck),
@@ -7512,6 +8082,7 @@
             logBufferTransfer: "140",
             logLiquidationTransfer: "Demo routing sweep",
             moneyMapDeploymentLogData: "",
+            cycleCloseRowsData: "",
           },
           planExpenseRows: [
             { label: "Rent", amount: 250 },
@@ -7526,14 +8097,29 @@
             { label: "Rent Hold", amount: 220, cycle: "first", paymentType: "manual" },
             { label: "Utilities Hold", amount: 70, cycle: "both", paymentType: "auto" },
             { label: "Insurance Hold", amount: 60, cycle: "second", paymentType: "manual" },
+            { label: "Groceries", amount: 150, cycle: "both", paymentType: "auto", reserveMode: "weekly" },
           ],
           investChannels: [
-            { label: "Planned Buffer", percent: 30, role: "Future obligation" },
+            { label: "External Savings", percent: 30, role: "Cash reserve" },
             { label: "Index Funds", percent: 40, role: "Long-term growth" },
             { label: "House Goal", percent: 20, role: "Future goal" },
             { label: "Giving", percent: 10, role: "Optional" },
           ],
           investChannelsLocked: true,
+          cycleCloseRows: [
+            {
+              id: "closed-cycle-1",
+              label: "1st Paycheck",
+              date: offsetInputValue(-14),
+              cycle: "first",
+              planTarget: 420,
+              routedTarget: 620,
+              loggedDeploy: 506,
+              loggedSupport: 140,
+              reserveLeft: 2000,
+              note: "One channel was finished a day later, but the cycle still closed above the reserve floor.",
+            },
+          ],
           budgetCheckRows: [
             {
               Date: anchorDate,
@@ -7553,11 +8139,12 @@
               id: "demo-log-1",
               label: "Deployment 1",
               date: offsetInputValue(-14),
+              locked: true,
               bufferTransfer: 140,
               totalDeployed: 620,
               note: "Treasury + brokerage sweep",
               channels: [
-                { id: "demo-1-a", label: "Planned Buffer", amount: 186, percent: 30, completed: true, completedDate: offsetInputValue(-14) },
+                { id: "demo-1-a", label: "External Savings", amount: 186, percent: 30, completed: true, completedDate: offsetInputValue(-14) },
                 { id: "demo-1-b", label: "Index Funds", amount: 248, percent: 40, completed: true, completedDate: offsetInputValue(-13) },
                 { id: "demo-1-c", label: "House Goal", amount: 124, percent: 20, completed: false, completedDate: "" },
                 { id: "demo-1-d", label: "Giving", amount: 62, percent: 10, completed: false, completedDate: "" },
@@ -7567,11 +8154,12 @@
               id: "demo-log-2",
               label: "Deployment 2",
               date: offsetInputValue(-28),
+              locked: true,
               bufferTransfer: 120,
               totalDeployed: 590,
               note: "Quarter-end demo deploy",
               channels: [
-                { id: "demo-2-a", label: "Planned Buffer", amount: 177, percent: 30, completed: true, completedDate: offsetInputValue(-28) },
+                { id: "demo-2-a", label: "External Savings", amount: 177, percent: 30, completed: true, completedDate: offsetInputValue(-28) },
                 { id: "demo-2-b", label: "Index Funds", amount: 236, percent: 40, completed: true, completedDate: offsetInputValue(-28) },
                 { id: "demo-2-c", label: "House Goal", amount: 118, percent: 20, completed: true, completedDate: offsetInputValue(-27) },
                 { id: "demo-2-d", label: "Giving", amount: 59, percent: 10, completed: true, completedDate: offsetInputValue(-26) },
@@ -7620,6 +8208,11 @@
           snapshot.investChannelsLocked === undefined
             ? true
             : Boolean(snapshot.investChannelsLocked);
+        state.cycleCloseRows = sanitizeCycleCloseRows(snapshot.cycleCloseRows);
+        state.latestCycleClose =
+          cloneValue(snapshot.latestCycleClose) ||
+          cloneValue(state.cycleCloseRows[0]) ||
+          null;
         state.weeklyBudgetRows = Array.isArray(snapshot.weeklyBudgetRows)
           ? cloneValue(snapshot.weeklyBudgetRows)
           : [];
@@ -7641,9 +8234,11 @@
         renderCurrentDueRows();
         renderPlanExpenseRows();
         renderInvestChannels();
+        syncCycleCloseRows(false);
         syncDeploymentLogRows(false);
         renderWeeklyBudgetTables(state.weeklyBudgetRows);
         renderBudgetCheckTable(state.budgetCheckRows);
+        renderCycleCloseRows(state.cycleCloseRows);
         renderLiquidationLogTable(state.liquidationLogRows);
         seedActionDates();
         updateFocusDateIndicators();
@@ -7921,7 +8516,7 @@
         const deployStage = $("currentDeployStage");
         const reserveStage = $("currentReserveStage");
         let bufferStageTitle =
-          bufferTarget > 0 ? "Fully Available" : "No Buffer Planned";
+          bufferTarget > 0 ? "Ready" : "No Buffer";
         let bufferStageText =
           bufferTarget > 0
             ? "Buffer is still intact and ready to transfer if needed."
@@ -7929,7 +8524,7 @@
         let bufferStageTone = "is-good";
         let bufferCardTone = "is-good";
         let deployStageTitle =
-          displayCapital > 0 ? "On Plan" : "Fully Spoken For";
+          displayCapital > 0 ? "On Plan" : "At $0";
         let deployStageText =
           displayCapital > 0
             ? "Capital to deploy is still tracking the paycheck plan."
@@ -7947,7 +8542,7 @@
           bufferStageText = "The buffer fund has been fully used.";
           bufferStageTone = "is-danger";
           bufferCardTone = "is-danger";
-          deployStageTitle = "Drained";
+          deployStageTitle = "At $0";
           deployStageText = "Capital to deploy is now at $0.";
           deployStageTone = "is-danger";
           deployCardTone = "is-danger";
@@ -7963,11 +8558,11 @@
           bufferStageText = "The buffer fund has been fully used.";
           bufferStageTone = "is-danger";
           bufferCardTone = "is-danger";
-          deployStageTitle = "Drained";
+          deployStageTitle = "At $0";
           deployStageText = "Capital to deploy is now at $0.";
           deployStageTone = "is-danger";
           deployCardTone = "is-danger";
-          reserveStageTitle = "Being Tapped";
+          reserveStageTitle = `${formatCurrency(reserveDip, 0)} Used`;
           reserveStageText = `${formatCurrency(
             reserveDip,
             0,
@@ -7982,7 +8577,10 @@
           bufferStageText = "The buffer fund has already been fully used.";
           bufferStageTone = "is-danger";
           bufferCardTone = "is-danger";
-          deployStageTitle = displayCapital > 0 ? "Reduced" : "Drained";
+          deployStageTitle =
+            displayCapital > 0
+              ? `${formatCurrency(deployGap, 0)} Reduced`
+              : "At $0";
           deployStageText =
             displayCapital > 0
               ? `${formatCurrency(
@@ -7993,7 +8591,7 @@
           deployStageTone = displayCapital > 0 ? "is-warning" : "is-danger";
           deployCardTone = deployStageTone;
         } else if (absorbed > 0) {
-          bufferStageTitle = "Compressing";
+          bufferStageTitle = `${formatCurrency(absorbed, 0)} Used`;
           bufferStageText = `${formatCurrency(
             absorbed,
             0,
@@ -8010,7 +8608,7 @@
           )} can still be deployed on plan.`;
           deployStageTone = "is-good";
         } else if (displayCapital <= 0) {
-          deployStageTitle = "Fully Spoken For";
+          deployStageTitle = "At $0";
           deployStageText = "Current cash is fully spoken for before anything can deploy.";
           deployStageTone = "is-warning";
           deployCardTone = "is-warning";
@@ -8045,8 +8643,9 @@
         ].map(([label, id]) => ({
           label,
           amount: toNumber($(id)?.value),
-          cycle: getCurrentPayCycle(),
+          cycle: getCurrentReserveWindow(),
           paymentType: "auto",
+          reserveMode: normalizeDueReserveMode("", label),
         }));
       }
 
@@ -8057,6 +8656,7 @@
             amount: toNumber(row?.amount),
             cycle: normalizeDueCycle(row?.cycle),
             paymentType: normalizeDuePaymentType(row?.paymentType),
+            reserveMode: normalizeDueReserveMode(row?.reserveMode, row?.label),
           }))
           .filter((row) => row.label);
       }
@@ -8066,16 +8666,16 @@
       }
 
       function getCurrentDueReserveRows() {
-        const activeCycle = getCurrentPayCycle();
+        const activeCycle = getCurrentReserveWindow();
         return getCurrentDueRows().map((row) => {
-          if (isGroceriesReserve(row.label)) {
+          if (row.reserveMode === "weekly") {
             const groceriesReserve = getGroceriesReserveAmounts(row.amount);
             return {
               ...row,
               isFullThisCycle: true,
               holdAmount: groceriesReserve.holdAmount,
               dueNowAmount: groceriesReserve.dueNowAmount,
-              reserveMode: "groceries",
+              reserveMode: "weekly",
               groceriesStage: groceriesReserve.groceriesStage,
             };
           }
@@ -8134,16 +8734,14 @@
       }
 
       function updateCurrentDueCycleCopy() {
-        const activeCycle = getCurrentPayCycle();
-        const activeLabel = formatPayCycleLabel(activeCycle);
+        const activeCycle = getCurrentReserveWindow();
+        const activeLabel = formatReserveWindowLabel(activeCycle);
         const reserveRows = getCurrentDueReserveRows();
-        const oppositeLabel =
-          activeCycle === "first" ? "2nd Paycheck" : "1st Paycheck";
         const standardRows = reserveRows.filter(
-          (row) => row.reserveMode !== "groceries",
+          (row) => row.reserveMode !== "weekly",
         );
         const groceriesRows = reserveRows.filter(
-          (row) => row.reserveMode === "groceries",
+          (row) => row.reserveMode === "weekly",
         );
         const fullCount = standardRows.filter((row) => row.isFullThisCycle).length;
         const halfCount = standardRows.filter(
@@ -8156,24 +8754,15 @@
           0,
         );
         const standardSummary = standardRows.length
-          ? `${fullCount} item${fullCount === 1 ? "" : "s"} count at 100% now. ${
-              halfCount
-                ? `${halfCount} ${oppositeLabel.toLowerCase()} item${
-                    halfCount === 1 ? "" : "s"
-                  } count at 50% until that window arrives.`
-                : "Nothing is currently being half-held for the opposite paycheck window."
-            }`
-          : "No monthly reserve items are being split across the paycheck windows right now.";
+          ? `${fullCount} full · ${halfCount} half-held`
+          : "No reserves set";
         setText("currentDueTotalLabel", `Held · ${activeLabel}`);
         setText(
           "currentDueCycleNote",
           reserveRows.length
             ? `${standardSummary}${
                 groceriesRows.length
-                  ? ` Groceries are holding ${formatCurrency(
-                      groceriesHeld,
-                      0,
-                    )} right now and auto-roll from two weekends of reserve to one weekend, then to $0 before the next paycheck.`
+                  ? ` · Weekly holds ${formatCurrency(groceriesHeld, 0)}`
                   : ""
               }`
             : "No scheduled reserves are set yet.",
@@ -8200,8 +8789,9 @@
           rows = [{
             label: "Reserved Item",
             amount: 0,
-            cycle: getCurrentPayCycle(),
+            cycle: getCurrentReserveWindow(),
             paymentType: "auto",
+            reserveMode: "standard",
           }];
         }
 
@@ -8217,8 +8807,9 @@
           state.currentDueRows = [{
             label: "Reserved Item",
             amount: 0,
-            cycle: getCurrentPayCycle(),
+            cycle: getCurrentReserveWindow(),
             paymentType: "auto",
+            reserveMode: "standard",
           }];
         }
 
@@ -8226,7 +8817,7 @@
         list.innerHTML = state.currentDueRows
           .map(
             (row, index) => `
-              <div class="plan-expense-row current-due-row${reserveRows[index] && !reserveRows[index].isFullThisCycle && row.cycle !== "both" ? " is-inactive-cycle" : ""}" data-index="${index}">
+              <div class="plan-expense-row current-due-row${reserveRows[index] && reserveRows[index].reserveMode !== "weekly" && !reserveRows[index].isFullThisCycle && row.cycle !== "both" ? " is-inactive-cycle" : ""}" data-index="${index}">
                 <div class="field current-due-label-field">
                   <label>Reserve</label>
                   <input
@@ -8260,7 +8851,7 @@
                       type="checkbox"
                       data-field="cycleFirst"
                       ${row.cycle === "first" ? "checked" : ""}
-                      ${row.cycle === "both" ? "disabled" : ""}
+                      ${row.cycle === "both" || row.reserveMode === "weekly" ? "disabled" : ""}
                     />
                     1st
                   </label>
@@ -8269,7 +8860,7 @@
                       type="checkbox"
                       data-field="cycleSecond"
                       ${row.cycle === "second" ? "checked" : ""}
-                      ${row.cycle === "both" ? "disabled" : ""}
+                      ${row.cycle === "both" || row.reserveMode === "weekly" ? "disabled" : ""}
                     />
                     2nd
                   </label>
@@ -8278,8 +8869,17 @@
                       type="checkbox"
                       data-field="cycleBoth"
                       ${row.cycle === "both" ? "checked" : ""}
+                      ${row.reserveMode === "weekly" ? "disabled" : ""}
                     />
                     Every
+                  </label>
+                  <label class="compact-check">
+                    <input
+                      type="checkbox"
+                      data-field="reserveWeekly"
+                      ${row.reserveMode === "weekly" ? "checked" : ""}
+                    />
+                    Weekly
                   </label>
                   <label class="compact-check">
                     <input
@@ -8463,13 +9063,13 @@
       function getLegacyInvestChannels() {
         return [
           {
-            label: "Planned Buffer",
-            percent: 70,
-            role: "Future obligation",
+            label: "External Savings",
+            percent: 60,
+            role: "Cash reserve",
           },
           {
-            label: "Investing",
-            percent: 30,
+            label: "Index Funds",
+            percent: 40,
             role: "Long-term growth",
           },
         ];
@@ -8664,6 +9264,30 @@
           );
       }
 
+      function sanitizeCycleCloseRows(rows) {
+        return (Array.isArray(rows) ? rows : [])
+          .map((row, index) => ({
+            id: String(row?.id ?? "").trim() || `cycle-close-${index}`,
+            label:
+              String(row?.label ?? "").trim() ||
+              formatPayCycleLabel(row?.cycle || "first"),
+            date: normalizeDateValue(row?.date || row?.Date || ""),
+            cycle:
+              row?.cycle === "second"
+                ? "second"
+                : row?.cycle === "first"
+                  ? "first"
+                  : "first",
+            planTarget: toNumber(row?.planTarget),
+            routedTarget: toNumber(row?.routedTarget),
+            loggedDeploy: toNumber(row?.loggedDeploy),
+            loggedSupport: toNumber(row?.loggedSupport),
+            reserveLeft: toNumber(row?.reserveLeft),
+            note: String(row?.note ?? "").trim(),
+          }))
+          .filter((row) => row.date || row.planTarget || row.routedTarget || row.loggedDeploy || row.loggedSupport || row.reserveLeft || row.note);
+      }
+
       function getDeploymentProgress(row) {
         const debts = Array.isArray(row?.debts) ? row.debts : [];
         const manualReserves = Array.isArray(row?.manualReserves)
@@ -8716,7 +9340,87 @@
       }
 
       function nextDeploymentLabel() {
-        return `Deployment ${state.liquidationLogRows.length + 1}`;
+        return `${formatPayCycleLabel(getCurrentPayCycle())} Deployment ${state.liquidationLogRows.length + 1}`;
+      }
+
+      function getCurrentCycleDeploymentRows(baseDate = getFocusDate()) {
+        const { start, end } = getCurrentPayCycleWindow(baseDate);
+        return sanitizeDeploymentLogRows(state.liquidationLogRows).filter((row) => {
+          const rowDate = parseDate(row.date);
+          return rowDate && rowDate >= start && rowDate <= end;
+        });
+      }
+
+      function getCycleCloseSnapshot() {
+        const plan = getPlanSummary();
+        const checking = toNumber($("checking")?.value);
+        const savings = toNumber($("savings")?.value);
+        const debt = toNumber($("card1")?.value) + toNumber($("card2")?.value);
+        const reserveTarget = Math.max(toNumber($("minBalance")?.value), 0);
+        const dueTotal = getCurrentDueTotal();
+        const currentState = resolveCurrentCashState({
+          cash: checking + savings,
+          debt,
+          dueTotal,
+          reserveTarget,
+          bufferTarget: Math.max(plan.miscBudget, 0),
+          deployTarget: Math.max(plan.liquid, 0),
+        });
+        const currentCycleRows = getCurrentCycleDeploymentRows();
+        const loggedDeploy = currentCycleRows.reduce(
+          (sum, row) =>
+            sum +
+            (row.channels || [])
+              .filter((channel) => channel.completed)
+              .reduce((inner, channel) => inner + toNumber(channel.amount), 0),
+          0,
+        );
+        const loggedSupport = currentCycleRows.reduce((sum, row) => {
+          const rowDebt = (row.debts || [])
+            .filter((item) => item.completed)
+            .reduce((inner, item) => inner + toNumber(item.amount), 0);
+          const rowReserve = (row.manualReserves || [])
+            .filter((item) => item.completed)
+            .reduce((inner, item) => inner + toNumber(item.amount), 0);
+          const rowBuffer =
+            row.bufferTransfer > 0 && row.bufferCompleted
+              ? toNumber(row.bufferTransfer)
+              : 0;
+          return sum + rowDebt + rowReserve + rowBuffer;
+        }, 0);
+        const routedTarget = Math.max(toNumber($("investLiquidAmount")?.value), 0);
+        const cycleWindow = getCurrentPayCycleWindow();
+        const cycleLabel = formatPayCycleLabel(cycleWindow.cycle);
+
+        let note = "Cycle closed with the current routing and transfer log frozen in place.";
+        if (currentState.reserveActual < reserveTarget) {
+          note = `Cycle closed with reserve below floor by ${formatCurrency(
+            reserveTarget - currentState.reserveActual,
+            0,
+          )}.`;
+        } else if (loggedDeploy < routedTarget) {
+          note = `${formatCurrency(
+            routedTarget - loggedDeploy,
+            0,
+          )} of routed capital is still not logged as deployed.`;
+        } else if (!currentCycleRows.length) {
+          note = "Cycle closed without a logged deployment run.";
+        }
+
+        return {
+          id: `cycle-close-${Date.now()}`,
+          label: `${cycleLabel} · ${formatMonthDay(cycleWindow.start)} - ${formatMonthDay(
+            cycleWindow.end,
+          )}`,
+          date: todayInputValue(),
+          cycle: cycleWindow.cycle,
+          planTarget: Math.max(plan.liquid, 0),
+          routedTarget,
+          loggedDeploy,
+          loggedSupport,
+          reserveLeft: currentState.reserveActual,
+          note,
+        };
       }
 
       function initializeDeploymentLogRows() {
@@ -8736,6 +9440,23 @@
         renderLiquidationLogTable(rows);
       }
 
+      function initializeCycleCloseRows() {
+        const raw = $("cycleCloseRowsData")?.value || "";
+        let rows = [];
+
+        if (raw) {
+          try {
+            rows = sanitizeCycleCloseRows(JSON.parse(raw));
+          } catch (error) {
+            console.error("Error parsing saved cycle snapshots:", error);
+          }
+        }
+
+        state.cycleCloseRows = rows;
+        state.latestCycleClose = rows[0] || null;
+        renderCycleCloseRows(rows);
+      }
+
       function syncDeploymentLogRows(shouldSave = true) {
         const serialized = $("moneyMapDeploymentLogData");
         if (serialized) {
@@ -8747,12 +9468,126 @@
         }
       }
 
+      function syncCycleCloseRows(shouldSave = true) {
+        const serialized = $("cycleCloseRowsData");
+        if (serialized) {
+          serialized.value = JSON.stringify(state.cycleCloseRows);
+        }
+        state.latestCycleClose = state.cycleCloseRows[0] || null;
+        if (shouldSave) {
+          scheduleFieldSave(["cycleCloseRowsData"]);
+        }
+      }
+
       function updateDeploymentLogEntry(logId, updater) {
         const row = state.liquidationLogRows.find((entry) => entry.id === logId);
         if (!row) return;
         updater(row);
         syncDeploymentLogRows();
         renderLiquidationLogTable(state.liquidationLogRows);
+      }
+
+      function renderCycleCloseRows(rows) {
+        const container = $("cycleArchiveList");
+        const count = Array.isArray(rows) ? rows.length : 0;
+        setText("cycleArchiveCount", `${count} Saved`);
+        if (!container) return;
+
+        const sorted = sanitizeCycleCloseRows(rows).sort(
+          (a, b) =>
+            (parseDate(b.date)?.getTime() || 0) -
+            (parseDate(a.date)?.getTime() || 0),
+        );
+        state.cycleCloseRows = sorted;
+        state.latestCycleClose = sorted[0] || null;
+
+        if (!sorted.length) {
+          container.innerHTML = `
+            <div class="deployment-log-empty">
+              No paycheck cycles have been closed yet.
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = sorted
+          .map(
+            (row) => `
+              <article class="cycle-archive-card">
+                <div class="cycle-archive-card-head">
+                  <div>
+                    <p class="eyebrow">${escapeHtml(formatPayCycleLabel(row.cycle))}</p>
+                    <h3>${escapeHtml(row.label)}</h3>
+                  </div>
+                  <span class="money-map-log-pill">${escapeHtml(
+                    formatMonthDay(row.date),
+                  )}</span>
+                </div>
+                <div class="cycle-archive-meta">
+                  <div class="deployment-log-stat">
+                    <span>Plan Target</span>
+                    <strong>${formatCurrency(row.planTarget, 0)}</strong>
+                  </div>
+                  <div class="deployment-log-stat">
+                    <span>Routed</span>
+                    <strong>${formatCurrency(row.routedTarget, 0)}</strong>
+                  </div>
+                  <div class="deployment-log-stat">
+                    <span>Logged Deploy</span>
+                    <strong>${formatCurrency(row.loggedDeploy, 0)}</strong>
+                  </div>
+                  <div class="deployment-log-stat">
+                    <span>Reserve Left</span>
+                    <strong>${formatCurrency(row.reserveLeft, 0)}</strong>
+                  </div>
+                </div>
+                <p class="cycle-archive-card-note">${escapeHtml(row.note)}</p>
+              </article>
+            `,
+          )
+          .join("");
+      }
+
+      function updateCycleCloseSummary() {
+        const snapshot = getCycleCloseSnapshot();
+        setText("cycleClosePlanTarget", formatCurrency(snapshot.planTarget, 0));
+        setText("cycleCloseRoutedTarget", formatCurrency(snapshot.routedTarget, 0));
+        setText("cycleCloseLoggedDeploy", formatCurrency(snapshot.loggedDeploy, 0));
+        setText("cycleCloseLoggedSupport", formatCurrency(snapshot.loggedSupport, 0));
+        setText("cycleCloseReserveLeft", formatCurrency(snapshot.reserveLeft, 0));
+        setText("cycleCloseNote", snapshot.note);
+        setText(
+          "closeCycleBtn",
+          `Close ${formatPayCycleLabel(snapshot.cycle)}`,
+        );
+      }
+
+      function closeCurrentCycle() {
+        const snapshot = getCycleCloseSnapshot();
+        const { start, end } = getCurrentPayCycleWindow();
+
+        state.cycleCloseRows = [
+          snapshot,
+          ...state.cycleCloseRows.filter(
+            (row) =>
+              !(
+                row.cycle === snapshot.cycle &&
+                normalizeDateValue(row.date) === normalizeDateValue(snapshot.date)
+              ),
+          ),
+        ];
+        state.liquidationLogRows = state.liquidationLogRows.map((row) => {
+          const rowDate = parseDate(row.date);
+          if (rowDate && rowDate >= start && rowDate <= end) {
+            return { ...row, locked: true };
+          }
+          return row;
+        });
+        syncCycleCloseRows();
+        syncDeploymentLogRows();
+        renderCycleCloseRows(state.cycleCloseRows);
+        renderLiquidationLogTable(state.liquidationLogRows);
+        updateCycleCloseSummary();
       }
 
       function buildCurrentDeploymentSnapshot() {
@@ -9110,7 +9945,14 @@
 
       function getChannelTone(label, role) {
         const haystack = `${label} ${role}`.toLowerCase();
-        if (haystack.includes("buffer")) return "buffer";
+        if (
+          haystack.includes("buffer") ||
+          haystack.includes("savings") ||
+          haystack.includes("cash reserve") ||
+          haystack.includes("emergency")
+        ) {
+          return "buffer";
+        }
         if (haystack.includes("reserve")) return "reserve";
         if (
           haystack.includes("invest") ||
@@ -9152,13 +9994,13 @@
         const sourceAmount = Math.max(liquid, 0);
         const activeSections = sections.filter((section) => section.amount > 0);
         const difference = sourceAmount - totalAmount;
-        const moveCards = [
+        const payNowCards = [
           ...debtRows.map(
             (row) => `
               <article class="execution-channel-card" data-tone="debt">
                 <span>${escapeHtml(row.label)}</span>
                 <strong>${formatCurrency(row.amount, 0)}</strong>
-                <p>Debt payment that needs checking cash available now.</p>
+                <p>Pay from Checking</p>
               </article>
             `,
           ),
@@ -9167,40 +10009,46 @@
               <article class="execution-channel-card" data-tone="expense">
                 <span>${escapeHtml(row.label)}</span>
                 <strong>${formatCurrency(row.dueNowAmount, 0)}</strong>
-                <p>Manual reserve payment due in this paycheck window.</p>
+                <p>Manual reserve due now</p>
               </article>
             `,
           ),
-          ...(bufferHeld > 0
+        ];
+        const bufferCards =
+          bufferHeld > 0
             ? [
                 `
                   <article class="execution-channel-card" data-tone="buffer">
                     <span>Buffer Transfer</span>
                     <strong>${formatCurrency(bufferHeld, 0)}</strong>
-                    <p>Optional buffer move if you want it transferred fully out.</p>
+                    <p>Move this if you are sending the buffer out this cycle.</p>
                   </article>
                 `,
               ]
-            : []),
-          ...activeSections.map(
-            (section) => `
-              <article class="execution-channel-card" data-tone="${escapeHtml(
-                getChannelTone(section.label, section.role),
-              )}">
-                <span>${escapeHtml(section.label)}</span>
-                <strong>${formatCurrency(section.amount, 0)}</strong>
-                <p>${escapeHtml(section.role)}</p>
-              </article>
-            `,
-          ),
-        ];
+            : [];
+        const deployCards = activeSections.map(
+          (section) => `
+            <article class="execution-channel-card" data-tone="${escapeHtml(
+              getChannelTone(section.label, section.role),
+            )}">
+              <span>${escapeHtml(section.label)}</span>
+              <strong>${formatCurrency(section.amount, 0)}</strong>
+              <p>${escapeHtml(section.role)}</p>
+            </article>
+          `,
+        );
 
-        if (!moveCards.length && Math.abs(difference) < 0.01) {
+        if (
+          !payNowCards.length &&
+          !bufferCards.length &&
+          !deployCards.length &&
+          Math.abs(difference) < 0.01
+        ) {
           container.innerHTML = `
             <article class="execution-channel-card">
               <span>No live moves yet</span>
               <strong>${formatCurrency(sourceAmount, 0)}</strong>
-              <p>Set channel percentages in Money Map and tag manual reserve items when you want them to flow into Deployment.</p>
+              <p>Nothing is queued yet.</p>
             </article>
           `;
           return;
@@ -9217,13 +10065,65 @@
                   <strong>${formatCurrency(Math.abs(difference), 0)}</strong>
                   <p>${
                     difference >= 0
-                      ? "Cash still sitting in the source pool."
-                      : "Channels are routing more than the live capital available."
+                      ? "Not yet routed."
+                      : "Routing exceeds live capital."
                   }</p>
                 </article>
               `;
+        const groups = [
+          payNowCards.length
+            ? `
+              <section class="execution-sequence-group">
+                <div class="execution-sequence-head">
+                  <div>
+                    <h3>1. Pay From Checking</h3>
+                    <p>Clear debt and the manual reserve payments due in this half of the month.</p>
+                  </div>
+                  <span class="execution-sequence-index">1</span>
+                </div>
+                <div class="execution-sequence-cards">${payNowCards.join("")}</div>
+              </section>
+            `
+            : "",
+          bufferCards.length
+            ? `
+              <section class="execution-sequence-group">
+                <div class="execution-sequence-head">
+                  <div>
+                    <h3>2. Move The Buffer</h3>
+                    <p>If the buffer is still intact, move it out before the rest of the deployment begins.</p>
+                  </div>
+                  <span class="execution-sequence-index">2</span>
+                </div>
+                <div class="execution-sequence-cards">${bufferCards.join("")}</div>
+              </section>
+            `
+            : "",
+          deployCards.length || varianceCard
+            ? `
+              <section class="execution-sequence-group">
+                <div class="execution-sequence-head">
+                  <div>
+                    <h3>${bufferCards.length || payNowCards.length ? "3. Deploy The Capital" : "1. Deploy The Capital"}</h3>
+                    <p>These are the destination transfers that turn live capital into actual movement.</p>
+                  </div>
+                  <span class="execution-sequence-index">${
+                    bufferCards.length
+                      ? "3"
+                      : payNowCards.length
+                        ? "2"
+                        : "1"
+                  }</span>
+                </div>
+                <div class="execution-sequence-cards">${deployCards.join("")}${varianceCard}</div>
+              </section>
+            `
+            : "",
+        ]
+          .filter(Boolean)
+          .join("");
 
-        container.innerHTML = moveCards.join("") + varianceCard;
+        container.innerHTML = groups;
       }
 
       function updateExecutionSummary({
@@ -9248,6 +10148,10 @@
           formatCurrency(checkingTransferNeed, 0),
         );
         setText(
+          "executionCheckingHero",
+          formatCurrency(checkingTransferNeed, 0),
+        );
+        setText(
           "executionBufferMetric",
           formatCurrency(debtTotal + reserveDueNowTotal, 0),
         );
@@ -9260,18 +10164,24 @@
             ? `${formatCurrency(
                 maxTransferFromSavings,
                 0,
-              )} can still move from Savings before it hits its ${formatCurrency(
+              )} can move from Savings before it hits its ${formatCurrency(
                 perAccountFloor,
                 0,
-              )} protected floor, but ${formatCurrency(
+              )} per-account floor, but ${formatCurrency(
                 transferShortfall,
                 0,
-              )} would still be uncovered.`
+              )} would still be uncovered after that.`
             : checkingTransferNeed > 0
             ? `Move ${formatCurrency(
                 checkingTransferNeed,
                 0,
-              )} into Checking first so debt, due-now reserve payments, buffer transfer, and channel deployments can clear cleanly.`
+              )} from Savings into Checking first, then pay ${formatCurrency(
+                debtTotal + reserveDueNowTotal,
+                0,
+              )} from Checking and deploy ${formatCurrency(
+                displayCapital,
+                0,
+              )}.`
             : reserveDip > 0
               ? `Current cash is already leaning on ${formatCurrency(
                   reserveDip,
@@ -9280,17 +10190,17 @@
                   reserveActual,
                   0,
                 )} against the ${formatCurrency(reserveTarget, 0)} target.`
-              : displayCapital > 0 || bufferHeld > 0 || debtTotal > 0 || reserveDueNowTotal > 0
-                ? `Checking is already in position for ${formatCurrency(
+            : displayCapital > 0 || bufferHeld > 0 || debtTotal > 0 || reserveDueNowTotal > 0
+                ? `Checking is already in place. Pay ${formatCurrency(
                     debtTotal + reserveDueNowTotal,
                     0,
-                  )} of due-now payments, ${formatCurrency(
+                  )} now, move ${formatCurrency(
                     bufferHeld,
                     0,
-                  )} of buffer movement, and ${formatCurrency(
+                  )} of buffer if needed, then deploy ${formatCurrency(
                     displayCapital,
                     0,
-                  )} of deployment.`
+                  )}.`
                 : "Nothing needs to move into Checking right now.",
         );
       }
@@ -9403,6 +10313,10 @@
           (sum, row) => sum + row.holdAmount,
           0,
         );
+        const reserveDueNowTotal = dueRows.reduce(
+          (sum, row) => sum + row.dueNowAmount,
+          0,
+        );
         const cash = checking + savings;
         const shortTermPulls = card1 + card2;
         const currentState = resolveCurrentCashState({
@@ -9434,11 +10348,24 @@
           .sort((a, b) => b.amount - a.amount)[0];
         const variance = currentSafe - plannedDeploy;
         const budgetVariance = totalBudget - plan.miscBudget;
+        const perAccountFloor = reserveFloor / 2;
+        const checkingTransferNeed = Math.max(
+          shortTermPulls + reserveDueNowTotal + totalBudget + currentSafe + perAccountFloor - checking,
+          0,
+        );
 
         setText("dashboardCurrentSafeMetric", formatCurrency(currentSafe, 0));
         setText("dashboardPlanLeftMetric", formatCurrency(plannedDeploy, 0));
         setText("dashboardReserveMetric", formatCurrency(reserveActual, 0));
         setText("dashboardFlowReadyMetric", formatCurrency(flowCarry, 0));
+        setText(
+          "dashboardMoveCheckingMetric",
+          formatCurrency(checkingTransferNeed, 0),
+        );
+        setText(
+          "dashboardPayNowMetric",
+          formatCurrency(shortTermPulls + reserveDueNowTotal, 0),
+        );
         $("dashboardReserveMetric")?.classList.toggle(
           "negative",
           reserveActual < reserveFloor,
@@ -9488,11 +10415,11 @@
         setText(
           "dashboardTimingHeadline",
           currentReserveDip > 0
-            ? "Reserve Being Tapped"
+            ? "Reserve In Use"
             : totalBudget > 0
-            ? "Buffer Still Intact"
+            ? "Buffer Ready"
             : bufferTarget > 0
-              ? "Buffer Fully Used"
+              ? "Buffer Used"
               : "No Buffer Planned",
         );
         setText(
@@ -9502,20 +10429,24 @@
             : currentReserveDip > 0
               ? `${formatCurrency(currentReserveDip, 0)} is coming from reserve.`
             : budgetVariance === 0
-              ? `${formatCurrency(totalBudget, 0)} of buffer is still intact.`
+              ? `${formatCurrency(totalBudget, 0)} still held.`
               : totalBudget < bufferTarget
-                ? `${formatCurrency(bufferTarget - totalBudget, 0)} used, ${formatCurrency(totalBudget, 0)} left.`
-                : `${formatCurrency(totalBudget, 0)} held, ${formatCurrency(Math.abs(budgetVariance), 0)} above plan.`,
+                ? `${formatCurrency(bufferTarget - totalBudget, 0)} used · ${formatCurrency(totalBudget, 0)} left.`
+                : `${formatCurrency(totalBudget, 0)} held · ${formatCurrency(Math.abs(budgetVariance), 0)} above plan.`,
         );
         setText(
           "dashboardVarianceHeadline",
-          variance === 0 ? "On Plan" : variance > 0 ? "Above Plan" : "Below Plan",
+          variance === 0
+            ? "On Plan"
+            : variance > 0
+              ? `${formatCurrency(Math.abs(variance), 0)} Above Plan`
+              : `${formatCurrency(Math.abs(variance), 0)} Below Plan`,
         );
         setText(
           "dashboardVarianceCopy",
           variance === 0
-            ? "Current deployable cash matches the paycheck plan."
-            : `${formatCurrency(Math.abs(variance), 0)} ${variance > 0 ? "above" : "below"} the paycheck plan target.`,
+            ? `${formatCurrency(plannedDeploy, 0)} target matches current deployable cash.`
+            : `Current deployable cash is ${variance > 0 ? "running ahead of" : "under"} the paycheck plan target.`,
         );
 
         setText("dashboardCarryForwardMetric", formatCurrency(flowCarry, 0));
@@ -9536,20 +10467,16 @@
         );
         setText(
           "dashboardHistoryNote",
-          "No checkpoint logged yet.",
+          topChannel
+            ? `Top route ${topChannel.label} at ${formatPercent(topChannel.percent, 0)}.`
+            : "No deployment channels are set yet.",
         );
         setText("dashboardRecentFlowMetric", "None yet");
 
         if (state.latestBudgetCheck) {
           setText(
             "dashboardHistoryNote",
-            `${formatLongDate(state.latestBudgetCheck.Date)} checkpoint: ${formatCurrency(
-              toNumber(state.latestBudgetCheck.Spent),
-              0,
-            )} spent of ${formatCurrency(
-              toNumber(state.latestBudgetCheck.Budget),
-              0,
-            )}.`,
+            `${formatLongDate(state.latestBudgetCheck.Date)} checkpoint logged.`,
           );
         }
 
@@ -9565,16 +10492,26 @@
         setText(
           "dashboardStatusNote",
           reserveActual < reserveFloor
-            ? `Protected reserve is below its ${formatCurrency(
-                reserveFloor,
-                0,
-              )} floor.`
+            ? "Reserve is below floor."
             : currentReserveDip > 0
-              ? "Reserve is being used to stay current."
-              : currentSafe > 0
-                ? "Capital is available to deploy."
-                : "Nothing is currently free to deploy.",
+                ? "Reserve is being used."
+                : checkingTransferNeed > 0
+                  ? `Checking is short by ${formatCurrency(
+                      checkingTransferNeed,
+                      0,
+                    )}.`
+                : currentSafe > 0
+                  ? "Capital is ready for deployment."
+                  : "Nothing is free to deploy.",
         );
+        if (state.latestLiquidationLog) {
+          setText(
+            "dashboardHistoryNote",
+            `Last deployment ${formatLongDate(
+              state.latestLiquidationLog.date || state.latestLiquidationLog.Date,
+            )}.`,
+          );
+        }
       }
 
       function renderCurrentFlowMap(data) {
@@ -9955,41 +10892,6 @@
           checkingTransferNeed - maxTransferFromSavings,
           0,
         );
-        setText(
-          "currentCheckingTransferNeed",
-          formatCurrency(checkingTransferNeed, 0),
-        );
-        setText(
-          "currentCheckingTransferNote",
-          transferShortfall > 0
-            ? `${formatCurrency(
-                checkingTransferNeed,
-                0,
-              )} is needed in Checking, but Savings can only spare ${formatCurrency(
-                maxTransferFromSavings,
-                0,
-              )} before hitting its ${formatCurrency(
-                perAccountFloor,
-                0,
-              )} floor. ${formatCurrency(
-                transferShortfall,
-                0,
-              )} would still be uncovered.`
-            : checkingTransferNeed > 0
-            ? `${formatCurrency(
-                checkingTransferNeed,
-                0,
-              )} needs to move into Checking so debt, due-now reserve payments, buffer transfer, and deployable cash can clear while both Checking and Savings stay above ${formatCurrency(
-                perAccountFloor,
-                0,
-              )}.`
-            : debt + reserveDueNowTotal + bufferHeld + displayCapital > 0
-              ? `Checking already covers debt, due-now reserve payments, buffer transfer, and deployable cash while both accounts stay above ${formatCurrency(
-                perAccountFloor,
-                0,
-              )}.`
-              : "No extra checking transfer is needed right now.",
-        );
         updateExecutionSummary({
           checkingTransferNeed,
           transferShortfall,
@@ -10017,7 +10919,55 @@
         );
 
         setInputValue("investLiquidAmount", compactNumber(displayCapital));
+        setText("moneyMapSourceReadout", formatCurrency(displayCapital, 0));
         setText("logDeployPreview", formatCurrency(displayCapital, 2));
+        const deployVariance = displayCapital - deployTarget;
+        setText(
+          "currentPlanBridgeNote",
+          deployVariance === 0
+            ? `Live capital matches the paycheck-plan target at ${formatCurrency(
+                deployTarget,
+                0,
+              )}.`
+            : deployVariance > 0
+              ? `${formatCurrency(
+                  displayCapital,
+                  0,
+                )} is ${formatCurrency(
+                  deployVariance,
+                  0,
+                )} above the paycheck-plan target of ${formatCurrency(
+                  deployTarget,
+                  0,
+                )}.`
+              : `${formatCurrency(
+                  displayCapital,
+                  0,
+                )} is ${formatCurrency(
+                  Math.abs(deployVariance),
+                  0,
+                )} below the paycheck-plan target of ${formatCurrency(
+                  deployTarget,
+                  0,
+                )}.`,
+        );
+        setText(
+          "moneyMapSourceStatus",
+          deployVariance === 0
+            ? `On target with the paycheck plan at ${formatCurrency(
+                deployTarget,
+                0,
+              )}.`
+            : deployVariance > 0
+              ? `${formatCurrency(
+                  deployVariance,
+                  0,
+                )} above the paycheck-plan target. Route the excess intentionally.`
+              : `${formatCurrency(
+                  Math.abs(deployVariance),
+                  0,
+                )} below the paycheck-plan target. Money Map should follow the live amount.`
+        );
 
         updateWeeklyCheckCharts({
           cash,
@@ -10053,6 +11003,7 @@
           reserveTarget,
         });
         updateInvestTable();
+        updateCycleCloseSummary();
 
         return displayCapital;
       }
@@ -10620,8 +11571,33 @@
             `;
           })
           .join("");
+        if (sorted.length > 1) {
+          const cards = Array.from(container.children);
+          const [currentCard, ...historyCards] = cards;
+          if (currentCard && historyCards.length) {
+            container.innerHTML = "";
+            container.appendChild(currentCard);
+            const history = document.createElement("details");
+            history.className = "deployment-log-history";
+            const summary = document.createElement("summary");
+            summary.innerHTML = `
+              <div>
+                <p class="eyebrow">History</p>
+                <h3>Older Deployments</h3>
+              </div>
+              <span class="money-map-log-pill">${historyCards.length} saved</span>
+            `;
+            const list = document.createElement("div");
+            list.className = "deployment-log-history-list";
+            historyCards.forEach((card) => list.appendChild(card));
+            history.appendChild(summary);
+            history.appendChild(list);
+            container.appendChild(history);
+          }
+        }
         syncDeploymentLogRows(false);
         updateDashboard();
+        updateCycleCloseSummary();
       }
 
       async function safeFetchJson(url) {
@@ -10654,6 +11630,7 @@
           initializeCurrentDueRows();
           initializePlanExpenses();
           initializeInvestChannels();
+          initializeCycleCloseRows();
           initializeDeploymentLogRows();
           seedManualDate();
           seedActionDates();
@@ -11244,24 +12221,20 @@
             const button = document.createElement("button");
             button.type = "button";
             button.className = "mobile-visual-toggle";
-            button.setAttribute("aria-expanded", "true");
-            button.textContent = "Hide";
+            button.setAttribute("aria-expanded", "false");
+            button.textContent = "Show";
             heading.appendChild(button);
           },
         );
       }
 
       function syncMobileVisualPanels(forceCollapse = false) {
-        const isMobile = window.matchMedia("(max-width: 760px)").matches;
         document.querySelectorAll(".mobile-visual-panel").forEach((panel) => {
           if (!(panel instanceof HTMLElement)) return;
           const toggle = panel.querySelector(".mobile-visual-toggle");
           if (!(toggle instanceof HTMLButtonElement)) return;
 
-          if (!isMobile) {
-            panel.classList.remove("is-collapsed");
-            delete panel.dataset.mobileVisualReady;
-          } else if (forceCollapse || !panel.dataset.mobileVisualReady) {
+          if (forceCollapse || !panel.dataset.mobileVisualReady) {
             panel.classList.add("is-collapsed");
             panel.dataset.mobileVisualReady = "true";
           }
@@ -11462,6 +12435,7 @@
           addBudgetCheckEntry,
         );
         $("addLiquidationLogBtn").addEventListener("click", addLiquidationLog);
+        $("closeCycleBtn")?.addEventListener("click", closeCurrentCycle);
         $("addPlanExpenseBtn").addEventListener("click", () => {
           state.planExpenseRows.push({ label: "Expense", amount: 0 });
           renderPlanExpenseRows();
@@ -11472,8 +12446,9 @@
           state.currentDueRows.push({
             label: "Reserved Item",
             amount: 0,
-            cycle: getCurrentPayCycle(),
+            cycle: getCurrentReserveWindow(),
             paymentType: "auto",
+            reserveMode: "standard",
           });
           renderCurrentDueRows();
           calculateLiquid();
@@ -11531,11 +12506,25 @@
           if (
             field === "cycleFirst" ||
             field === "cycleSecond" ||
-            field === "cycleBoth"
+            field === "cycleBoth" ||
+            field === "reserveWeekly"
           ) {
             const firstInput = row.querySelector('[data-field="cycleFirst"]');
             const secondInput = row.querySelector('[data-field="cycleSecond"]');
             const bothInput = row.querySelector('[data-field="cycleBoth"]');
+            const weeklyInput = row.querySelector('[data-field="reserveWeekly"]');
+
+            if (field === "reserveWeekly") {
+              state.currentDueRows[index].reserveMode = weeklyInput?.checked
+                ? "weekly"
+                : "standard";
+            }
+
+            if (weeklyInput?.checked) {
+              if (bothInput) bothInput.checked = true;
+              if (firstInput) firstInput.checked = false;
+              if (secondInput) secondInput.checked = false;
+            }
 
             if (field === "cycleBoth" && bothInput?.checked) {
               if (firstInput) firstInput.checked = false;
@@ -11575,6 +12564,7 @@
             field === "cycleFirst" ||
             field === "cycleSecond" ||
             field === "cycleBoth" ||
+            field === "reserveWeekly" ||
             field === "paymentManual"
           ) {
             renderCurrentDueRows();
@@ -11712,6 +12702,7 @@
         initializeCurrentDueRows();
         initializePlanExpenses();
         initializeInvestChannels();
+        initializeCycleCloseRows();
         initializeDeploymentLogRows();
         state.initialLiveSnapshot = captureDemoSnapshot();
         state.demoMode = true;
@@ -11720,7 +12711,7 @@
         bindEvents();
         showSection(
           localStorage.getItem("moneySiteActiveSection") ||
-            "dashboardSection",
+            "planSection",
         );
         hydratePresentationState(getDemoDataset());
         ensureMobileVisualToggles();
