@@ -3510,7 +3510,7 @@
       }
 
       .current-due-row {
-        grid-template-columns: minmax(136px, 1fr) minmax(92px, 110px) minmax(70px, 84px);
+        grid-template-columns: minmax(136px, 1fr) minmax(104px, 126px) minmax(84px, 108px);
         grid-template-areas:
           "label target held"
           "flags flags flags";
@@ -3543,21 +3543,83 @@
       .current-due-held-field .field-readout {
         justify-content: center;
         min-height: 42px;
-        padding: 8px 8px;
+        padding: 8px 10px;
+        white-space: nowrap;
+      }
+
+      .current-due-held-field .field-readout-compact {
+        justify-content: center;
+        font-size: 1rem;
+        letter-spacing: -0.02em;
       }
 
       .current-due-flags {
         grid-area: flags;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px 12px;
-        align-items: center;
+        display: grid;
+        gap: 8px;
         padding-top: 2px;
+      }
+
+      .current-due-flags-summary,
+      .current-due-flags-editor {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .current-due-flags-summary {
+        padding-top: 1px;
+      }
+
+      .current-due-flags-summary-text {
+        min-width: 0;
+        color: var(--text-soft);
+        font-size: 0.74rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .current-due-flags-editor {
+        flex-wrap: wrap;
+      }
+
+      .current-due-flags-editor[hidden],
+      .current-due-flags-summary[hidden] {
+        display: none;
+      }
+
+      .current-due-flags-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: auto;
+        flex: 0 0 auto;
+      }
+
+      .current-due-flags-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: var(--accent);
+        font-size: 0.74rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
       }
 
       .current-due-flags .icon-button {
         position: static;
-        margin-left: auto;
+        margin-left: 0;
         width: 14px;
         min-width: 14px;
         padding: 0;
@@ -6082,6 +6144,19 @@
           letter-spacing: 0.095em;
         }
 
+        .current-due-flags-summary,
+        .current-due-flags-editor {
+          gap: 8px;
+        }
+
+        .current-due-flags-editor {
+          align-items: flex-start;
+        }
+
+        .current-due-flags-summary-text {
+          font-size: 0.7rem;
+        }
+
         .current-top-row {
           grid-template-columns: 1fr;
         }
@@ -7566,6 +7641,7 @@
         latestCycleClose: null,
         cycleCloseRows: [],
         currentDueRows: [],
+        currentDueFlagEditors: new Set(),
         planExpenseRows: [],
         investChannels: [],
         investChannelsLocked: true,
@@ -7715,6 +7791,21 @@
         return new Date().toLocaleDateString("en-CA");
       }
 
+      function isLastDayOfMonth(baseDate = getFocusDate()) {
+        const date = startOfDay(baseDate) || new Date();
+        const lastDay = new Date(
+          date.getFullYear(),
+          date.getMonth() + 1,
+          0,
+        ).getDate();
+        return date.getDate() === lastDay;
+      }
+
+      function isFirstCycleDate(baseDate = getFocusDate()) {
+        const date = startOfDay(baseDate) || new Date();
+        return date.getDate() < 15 || isLastDayOfMonth(date);
+      }
+
       function offsetInputValue(days) {
         const date = new Date();
         date.setDate(date.getDate() + days);
@@ -7762,11 +7853,11 @@
       }
 
       function getCurrentPayCycle(baseDate = getFocusDate()) {
-        return baseDate.getDate() < 15 ? "first" : "second";
+        return isFirstCycleDate(baseDate) ? "first" : "second";
       }
 
       function getCurrentReserveWindow(baseDate = getFocusDate()) {
-        return baseDate.getDate() <= 15 ? "first" : "second";
+        return isFirstCycleDate(baseDate) ? "first" : "second";
       }
 
       function formatPayCycleLabel(cycle) {
@@ -7808,29 +7899,33 @@
 
       function getCyclePayday(baseDate = getFocusDate()) {
         const anchorDate = startOfDay(baseDate) || startOfDay(getFocusDate()) || new Date();
-        const paydayDay = anchorDate.getDate() < 15 ? 1 : 15;
-        const payday = new Date(
-          anchorDate.getFullYear(),
-          anchorDate.getMonth(),
-          paydayDay,
-        );
+        const payday = isFirstCycleDate(anchorDate)
+          ? isLastDayOfMonth(anchorDate)
+            ? new Date(anchorDate.getFullYear(), anchorDate.getMonth() + 1, 1)
+            : new Date(anchorDate.getFullYear(), anchorDate.getMonth(), 1)
+          : new Date(anchorDate.getFullYear(), anchorDate.getMonth(), 15);
         payday.setHours(0, 0, 0, 0);
         return payday;
       }
 
       function getCurrentPayCycleWindow(baseDate = getFocusDate()) {
         const anchorDate = startOfDay(baseDate) || startOfDay(getFocusDate()) || new Date();
-        const isFirst = anchorDate.getDate() < 15;
-        const start = new Date(
-          anchorDate.getFullYear(),
-          anchorDate.getMonth(),
-          isFirst ? 1 : 15,
-        );
-        const end = new Date(
-          anchorDate.getFullYear(),
-          anchorDate.getMonth() + (isFirst ? 0 : 1),
-          isFirst ? 14 : 0,
-        );
+        const isFirst = isFirstCycleDate(anchorDate);
+        const start = isFirst
+          ? anchorDate.getDate() < 15
+            ? new Date(anchorDate.getFullYear(), anchorDate.getMonth(), 0)
+            : new Date(anchorDate.getFullYear(), anchorDate.getMonth(), anchorDate.getDate())
+          : new Date(anchorDate.getFullYear(), anchorDate.getMonth(), 15);
+        const end = isFirst
+          ? new Date(
+              anchorDate.getFullYear(),
+              anchorDate.getMonth() + (anchorDate.getDate() < 15 ? 0 : 1),
+              14,
+            )
+          : new Date(anchorDate.getFullYear(), anchorDate.getMonth() + 1, 0);
+        if (!isFirst) {
+          end.setDate(end.getDate() - 1);
+        }
         start.setHours(0, 0, 0, 0);
         end.setHours(23, 59, 59, 999);
         return {
@@ -7928,9 +8023,7 @@
       }
 
       function seedManualDate() {
-        if (!$("manualDate").value) {
-          $("manualDate").value = todayInputValue();
-        }
+        $("manualDate").value = todayInputValue();
         updateFocusDateIndicators();
       }
 
@@ -8713,7 +8806,7 @@
             if (!reserveRow) return;
             rowElement.classList.toggle(
               "is-inactive-cycle",
-              reserveRow.reserveMode !== "groceries" &&
+              reserveRow.reserveMode !== "weekly" &&
                 !reserveRow.isFullThisCycle &&
                 reserveRow.cycle !== "both",
             );
@@ -8769,6 +8862,23 @@
         );
       }
 
+      function formatCurrentDueFlagSummary(row) {
+        const parts = [];
+        if (row.reserveMode === "weekly") {
+          parts.push("Weekly");
+        } else if (row.cycle === "both") {
+          parts.push("Every");
+        } else if (row.cycle === "second") {
+          parts.push("2nd");
+        } else {
+          parts.push("1st");
+        }
+        if (row.paymentType === "manual") {
+          parts.push("Manual");
+        }
+        return parts.join(" · ");
+      }
+
       function initializeCurrentDueRows() {
         const raw = $("currentDueRowsData")?.value || "";
         let rows = [];
@@ -8796,6 +8906,7 @@
         }
 
         state.currentDueRows = rows;
+        state.currentDueFlagEditors = new Set();
         renderCurrentDueRows();
       }
 
@@ -8816,7 +8927,9 @@
         const reserveRows = getCurrentDueReserveRows();
         list.innerHTML = state.currentDueRows
           .map(
-            (row, index) => `
+            (row, index) => {
+              const flagsExpanded = state.currentDueFlagEditors.has(index);
+              return `
               <div class="plan-expense-row current-due-row${reserveRows[index] && reserveRows[index].reserveMode !== "weekly" && !reserveRows[index].isFullThisCycle && row.cycle !== "both" ? " is-inactive-cycle" : ""}" data-index="${index}">
                 <div class="field current-due-label-field">
                   <label>Reserve</label>
@@ -8846,61 +8959,96 @@
                   </div>
                 </div>
                 <div class="current-due-flags">
-                  <label class="compact-check">
-                    <input
-                      type="checkbox"
-                      data-field="cycleFirst"
-                      ${row.cycle === "first" ? "checked" : ""}
-                      ${row.cycle === "both" || row.reserveMode === "weekly" ? "disabled" : ""}
-                    />
-                    1st
-                  </label>
-                  <label class="compact-check">
-                    <input
-                      type="checkbox"
-                      data-field="cycleSecond"
-                      ${row.cycle === "second" ? "checked" : ""}
-                      ${row.cycle === "both" || row.reserveMode === "weekly" ? "disabled" : ""}
-                    />
-                    2nd
-                  </label>
-                  <label class="compact-check">
-                    <input
-                      type="checkbox"
-                      data-field="cycleBoth"
-                      ${row.cycle === "both" ? "checked" : ""}
-                      ${row.reserveMode === "weekly" ? "disabled" : ""}
-                    />
-                    Every
-                  </label>
-                  <label class="compact-check">
-                    <input
-                      type="checkbox"
-                      data-field="reserveWeekly"
-                      ${row.reserveMode === "weekly" ? "checked" : ""}
-                    />
-                    Weekly
-                  </label>
-                  <label class="compact-check">
-                    <input
-                      type="checkbox"
-                      data-field="paymentManual"
-                      ${row.paymentType === "manual" ? "checked" : ""}
-                    />
-                    Manual
-                  </label>
-                  <button
-                    class="icon-button"
-                    type="button"
-                    data-action="remove-due-item"
-                    aria-label="Remove reserved item"
-                    ${state.currentDueRows.length === 1 ? "disabled" : ""}
-                  >
-                    ×
-                  </button>
+                  <div class="current-due-flags-summary" ${flagsExpanded ? "hidden" : ""}>
+                    <span class="current-due-flags-summary-text">${escapeHtml(
+                      formatCurrentDueFlagSummary(row),
+                    )}</span>
+                    <div class="current-due-flags-actions">
+                      <button
+                        class="current-due-flags-toggle"
+                        type="button"
+                        data-action="toggle-due-flags"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        class="icon-button"
+                        type="button"
+                        data-action="remove-due-item"
+                        aria-label="Remove reserved item"
+                        ${state.currentDueRows.length === 1 ? "disabled" : ""}
+                      >
+                        ×
+                      </button>
+                    </div>
+                  </div>
+                  <div class="current-due-flags-editor" ${flagsExpanded ? "" : "hidden"}>
+                    <label class="compact-check">
+                      <input
+                        type="checkbox"
+                        data-field="cycleFirst"
+                        ${row.cycle === "first" ? "checked" : ""}
+                        ${row.cycle === "both" || row.reserveMode === "weekly" ? "disabled" : ""}
+                      />
+                      1st
+                    </label>
+                    <label class="compact-check">
+                      <input
+                        type="checkbox"
+                        data-field="cycleSecond"
+                        ${row.cycle === "second" ? "checked" : ""}
+                        ${row.cycle === "both" || row.reserveMode === "weekly" ? "disabled" : ""}
+                      />
+                      2nd
+                    </label>
+                    <label class="compact-check">
+                      <input
+                        type="checkbox"
+                        data-field="cycleBoth"
+                        ${row.cycle === "both" ? "checked" : ""}
+                        ${row.reserveMode === "weekly" ? "disabled" : ""}
+                      />
+                      Every
+                    </label>
+                    <label class="compact-check">
+                      <input
+                        type="checkbox"
+                        data-field="reserveWeekly"
+                        ${row.reserveMode === "weekly" ? "checked" : ""}
+                      />
+                      Weekly
+                    </label>
+                    <label class="compact-check">
+                      <input
+                        type="checkbox"
+                        data-field="paymentManual"
+                        ${row.paymentType === "manual" ? "checked" : ""}
+                      />
+                      Manual
+                    </label>
+                    <div class="current-due-flags-actions">
+                      <button
+                        class="current-due-flags-toggle"
+                        type="button"
+                        data-action="toggle-due-flags"
+                      >
+                        Done
+                      </button>
+                      <button
+                        class="icon-button"
+                        type="button"
+                        data-action="remove-due-item"
+                        aria-label="Remove reserved item"
+                        ${state.currentDueRows.length === 1 ? "disabled" : ""}
+                      >
+                        ×
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
-            `,
+            `;
+            },
           )
           .join("");
 
@@ -12450,6 +12598,7 @@
             paymentType: "auto",
             reserveMode: "standard",
           });
+          state.currentDueFlagEditors = new Set([state.currentDueRows.length - 1]);
           renderCurrentDueRows();
           calculateLiquid();
         });
@@ -12587,6 +12736,21 @@
           updateInvestTable();
         });
         $("currentDueList").addEventListener("click", (event) => {
+          const flagToggle = event.target.closest('[data-action="toggle-due-flags"]');
+          if (flagToggle) {
+            const row = flagToggle.closest(".plan-expense-row");
+            const index = Number(row?.dataset.index);
+            if (!Number.isInteger(index)) return;
+            const next = new Set(state.currentDueFlagEditors);
+            if (next.has(index)) {
+              next.delete(index);
+            } else {
+              next.add(index);
+            }
+            state.currentDueFlagEditors = next;
+            renderCurrentDueRows();
+            return;
+          }
           const button = event.target.closest('[data-action="remove-due-item"]');
           if (!button) return;
           const row = button.closest(".plan-expense-row");
@@ -12594,6 +12758,7 @@
           if (!Number.isInteger(index)) return;
 
           state.currentDueRows.splice(index, 1);
+          state.currentDueFlagEditors = new Set();
           renderCurrentDueRows();
           calculateLiquid();
         });
