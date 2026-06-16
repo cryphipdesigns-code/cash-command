@@ -3510,7 +3510,7 @@
       }
 
       .current-due-row {
-        grid-template-columns: minmax(136px, 1fr) minmax(104px, 126px) minmax(84px, 108px);
+        grid-template-columns: minmax(132px, 1fr) minmax(106px, 128px) minmax(98px, 124px);
         grid-template-areas:
           "label target held"
           "flags flags flags";
@@ -3520,15 +3520,18 @@
 
       .current-due-label-field {
         grid-area: label;
+        min-width: 0;
       }
 
       .current-due-target-field {
         grid-area: target;
+        min-width: 0;
       }
 
       .current-due-held-field {
         grid-area: held;
         text-align: center;
+        min-width: 0;
       }
 
       .current-due-row.is-inactive-cycle {
@@ -3542,14 +3545,18 @@
 
       .current-due-held-field .field-readout {
         justify-content: center;
+        width: 100%;
+        max-width: 100%;
         min-height: 42px;
-        padding: 8px 10px;
+        padding: 8px 8px;
         white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .current-due-held-field .field-readout-compact {
         justify-content: center;
-        font-size: 1rem;
+        font-size: 0.95rem;
         letter-spacing: -0.02em;
       }
 
@@ -4370,6 +4377,10 @@
         grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(160px, auto);
         gap: 12px;
         margin-bottom: 18px;
+      }
+
+      .deployment-log-form {
+        grid-template-columns: minmax(150px, 0.9fr) minmax(140px, 0.9fr) minmax(0, 1.3fr) minmax(160px, auto);
       }
 
       .table-form.six-up {
@@ -5232,7 +5243,7 @@
         }
 
         .current-due-row {
-          grid-template-columns: minmax(0, 1fr) minmax(84px, 96px);
+          grid-template-columns: minmax(0, 1fr) minmax(92px, 108px);
           grid-template-areas:
             "label label"
             "target held"
@@ -6130,7 +6141,7 @@
         }
 
         .current-due-row {
-          grid-template-columns: minmax(0, 1fr) minmax(80px, 92px);
+          grid-template-columns: minmax(0, 1fr) minmax(88px, 104px);
           grid-template-areas:
             "label label"
             "target held"
@@ -7461,18 +7472,10 @@
                 <span class="money-map-log-pill">Live</span>
               </summary>
               <div class="money-map-log-content">
-                <div class="table-form four-up">
+                <div class="table-form deployment-log-form">
                   <div class="field">
-                    <label for="logDate">Date</label>
+                    <label for="logDate">Deployment Date</label>
                     <input type="date" id="logDate" />
-                  </div>
-                  <div class="field">
-                    <label for="logBufferTransfer">Buffer Moved Out</label>
-                    <input
-                      type="number"
-                      id="logBufferTransfer"
-                      placeholder="0"
-                    />
                   </div>
                   <div class="field">
                     <label for="logDeployPreview">Deploying Now</label>
@@ -7498,7 +7501,7 @@
             </details>
 
             <input type="hidden" id="cycleCloseRowsData" />
-            <article class="panel tooltip-panel plan-panel plan-panel-wide execution-close-panel">
+            <article class="panel tooltip-panel plan-panel plan-panel-wide execution-close-panel" hidden>
               <div class="panel-heading">
                 <div class="info-cluster">
                   <div>
@@ -7547,7 +7550,7 @@
               </div>
             </article>
 
-            <details class="panel plan-panel plan-panel-table execution-archive-panel">
+            <details class="panel plan-panel plan-panel-table execution-archive-panel" hidden>
               <summary class="money-map-log-summary">
                 <div>
                   <p class="eyebrow">Archive</p>
@@ -7608,11 +7611,13 @@
       );
       const SUPABASE_ANON_KEY =
         "sb_publishable_fuGq-IZiDMEyhWBM9q4P4g_e5j_yAEl";
-      const apiUrl2 =
-        "https://script.google.com/macros/s/AKfycbyyE6qNHhNF9zwdm_lAsxf47JYWE9etsYuEUbV_KxIXo4VjKLshBBEYHMegt9u2uJHJ/exec?sheetid=615354426";
-      const apiUrl3 =
+      const BUDGET_CHECK_ROWS_FIELD_KEY = "budgetCheckRowsData";
+      const WEEKLY_BUDGET_ROWS_FIELD_KEY = "weeklyBudgetRowsData";
+      const PENDING_FIELD_VALUES_KEY = "cashCommandPendingFieldValues";
+      const PENDING_RECORD_WRITES_KEY = "cashCommandPendingRecordWrites";
+      const LEGACY_BUDGET_CHECK_IMPORT_URL =
         "https://script.google.com/macros/s/AKfycbyyE6qNHhNF9zwdm_lAsxf47JYWE9etsYuEUbV_KxIXo4VjKLshBBEYHMegt9u2uJHJ/exec?sheetid=912270719";
-      const apiUrl4 =
+      const LEGACY_WEEKLY_BUDGET_IMPORT_URL =
         "https://script.google.com/macros/s/AKfycbyyE6qNHhNF9zwdm_lAsxf47JYWE9etsYuEUbV_KxIXo4VjKLshBBEYHMegt9u2uJHJ/exec?sheetid=417331213";
       const LIVE_VIEW_PASSWORD = "ubuntu";
       const LIVE_VIEW_ACCESS_KEY = "cashCommandLiveViewUnlocked";
@@ -7695,10 +7700,72 @@
         return input.type === "checkbox" ? input.checked : input.value;
       }
 
+      function readLocalJson(key, fallback) {
+        try {
+          const rawValue = localStorage.getItem(key);
+          if (!rawValue) return fallback;
+          const parsed = JSON.parse(rawValue);
+          return parsed && typeof parsed === "object" ? parsed : fallback;
+        } catch (error) {
+          console.error(`Error reading ${key}:`, error);
+          return fallback;
+        }
+      }
+
+      function writeLocalJson(key, value) {
+        try {
+          if (!value || !Object.keys(value).length) {
+            localStorage.removeItem(key);
+            return;
+          }
+          localStorage.setItem(key, JSON.stringify(value));
+        } catch (error) {
+          console.error(`Error writing ${key}:`, error);
+        }
+      }
+
+      function readPendingFieldValues() {
+        return readLocalJson(PENDING_FIELD_VALUES_KEY, {});
+      }
+
+      function writePendingFieldValues(values) {
+        writeLocalJson(PENDING_FIELD_VALUES_KEY, values);
+      }
+
+      function storePendingFieldValues(keys = []) {
+        if (state.demoMode || state.isHydrating) return;
+        const pendingValues = readPendingFieldValues();
+        keys.forEach((key) => {
+          const input = $(key);
+          if (!isPersistableInput(input)) return;
+          pendingValues[key] = getPersistableFieldValue(input);
+        });
+        writePendingFieldValues(pendingValues);
+      }
+
+      function applyPendingFieldValues() {
+        const pendingValues = readPendingFieldValues();
+        const keys = Object.keys(pendingValues);
+        keys.forEach((key) => {
+          const input = $(key);
+          if (!isPersistableInput(input)) return;
+          setInputValue(key, pendingValues[key]);
+        });
+        return keys;
+      }
+
+      function clearPendingFieldValues(keys = []) {
+        const pendingValues = readPendingFieldValues();
+        keys.forEach((key) => delete pendingValues[key]);
+        writePendingFieldValues(pendingValues);
+      }
+
       function markFieldsPending(keys = []) {
-        keys
+        const validKeys = keys
           .filter(Boolean)
-          .forEach((key) => state.pendingFieldKeys.add(key));
+          .filter((key) => isPersistableInput($(key)));
+        validKeys.forEach((key) => state.pendingFieldKeys.add(key));
+        storePendingFieldValues(validKeys);
       }
 
       function toNumber(value) {
@@ -8032,13 +8099,22 @@
         [
           "weeklybudgetNewtransactionDate",
           "budgetCheckDate",
-          "logDate",
         ].forEach((id) => {
           const element = $(id);
           if (element && !element.value) {
             element.value = seedValue;
           }
         });
+        syncDeploymentActionDate(true);
+      }
+
+      function syncDeploymentActionDate(force = false) {
+        const element = $("logDate");
+        if (!element) return;
+        const today = todayInputValue();
+        if (force || !element.value || element.value !== today) {
+          element.value = today;
+        }
       }
 
       function setSaveStatus(text) {
@@ -8172,7 +8248,6 @@
             weeklybudgetNewtransactionAmount: "",
             weeklybudgetNewtransactionDescription: "",
             logDate: anchorDate,
-            logBufferTransfer: "140",
             logLiquidationTransfer: "Demo routing sweep",
             moneyMapDeploymentLogData: "",
             cycleCloseRowsData: "",
@@ -8406,9 +8481,29 @@
         scheduleAutosave();
       }
 
+      function flushPendingSaves(options = {}) {
+        const { silent = true } = options;
+        if (state.demoMode) return Promise.resolve([]);
+        window.clearTimeout(state.autosaveTimer);
+
+        const saves = [];
+        if (state.pendingFieldKeys.size) {
+          saves.push(saveHTML(true));
+        }
+        if (Object.keys(readQueuedRecordWrites()).length) {
+          saves.push(flushQueuedRecordWrites({ silent }));
+        }
+
+        return Promise.allSettled(saves);
+      }
+
+      function flushPendingSavesForPageExit() {
+        flushPendingSaves({ silent: true });
+      }
+
       function canWriteToBackend() {
         if (!state.demoMode) return true;
-        alert("Demo mode is on. Switch back to Live View before sending anything to your sheet.");
+        alert("Demo mode is on. Switch back to Live View before saving live data.");
         return false;
       }
 
@@ -8420,6 +8515,9 @@
           $(navId).classList.toggle("active", targetSection === targetId);
           $(targetSection).hidden = targetSection !== targetId;
         });
+        if (targetId === "executionSection") {
+          syncDeploymentActionDate(true);
+        }
         localStorage.setItem("moneySiteActiveSection", targetId);
         $("sidebar").classList.remove("open");
       }
@@ -9360,6 +9458,22 @@
               "deployment-reserve",
               index,
             );
+            const locked =
+              typeof row?.locked === "boolean" ? row.locked : false;
+            const bufferTransfer = toNumber(
+              row?.bufferTransfer ?? row?.["Buffer Transfer"] ?? 0,
+            );
+            const hasExplicitBufferState =
+              Object.prototype.hasOwnProperty.call(row || {}, "bufferCompleted") ||
+              Object.prototype.hasOwnProperty.call(row || {}, "bufferCompletedDate") ||
+              Object.prototype.hasOwnProperty.call(row || {}, "bufferDate");
+            const bufferCompletedDate = normalizeDateValue(
+              row?.bufferCompletedDate ||
+                row?.bufferDate ||
+                (!hasExplicitBufferState && locked
+                  ? row?.date || row?.Date || ""
+                  : ""),
+            );
 
             return {
               id:
@@ -9369,20 +9483,15 @@
                 String(row?.label ?? row?.deploymentLabel ?? "").trim() ||
                 `Deployment ${index + 1}`,
               date: normalizeDateValue(row?.date || row?.Date || ""),
-              locked:
-                typeof row?.locked === "boolean" ? row.locked : false,
-              bufferTransfer: toNumber(
-                row?.bufferTransfer ?? row?.["Buffer Transfer"] ?? 0,
-              ),
+              locked,
+              bufferTransfer,
               bufferCompleted:
                 typeof row?.bufferCompleted === "boolean"
                   ? row.bufferCompleted
-                  : toNumber(
-                        row?.bufferTransfer ?? row?.["Buffer Transfer"] ?? 0,
-                      ) > 0,
-              bufferCompletedDate: normalizeDateValue(
-                row?.bufferCompletedDate || row?.bufferDate || row?.date || row?.Date || "",
-              ),
+                  : hasExplicitBufferState
+                    ? Boolean(bufferCompletedDate)
+                    : locked && bufferTransfer > 0,
+              bufferCompletedDate,
               totalDeployed: toNumber(
                 row?.totalDeployed ??
                   row?.["Total Deployed"] ??
@@ -9403,7 +9512,7 @@
           .filter(
             (row) =>
               row.date ||
-              row.bufferTransfer > 0 ||
+              getDeploymentBufferTransfer(row) > 0 ||
               row.debts.length ||
               row.manualReserves.length ||
               row.totalDeployed > 0 ||
@@ -9436,6 +9545,30 @@
           .filter((row) => row.date || row.planTarget || row.routedTarget || row.loggedDeploy || row.loggedSupport || row.reserveLeft || row.note);
       }
 
+      function getDeploymentBufferTransfer(row) {
+        return Math.max(
+          toNumber(
+            row?.bufferTransfer ??
+              row?.["Buffer Transfer"] ??
+              row?.bufferAmount ??
+              0,
+          ),
+          0,
+        );
+      }
+
+      function getDeploymentSupportTotal(row) {
+        const debts = Array.isArray(row?.debts) ? row.debts : [];
+        const manualReserves = Array.isArray(row?.manualReserves)
+          ? row.manualReserves
+          : [];
+        return (
+          getDeploymentBufferTransfer(row) +
+          debts.reduce((sum, item) => sum + toNumber(item.amount), 0) +
+          manualReserves.reduce((sum, item) => sum + toNumber(item.amount), 0)
+        );
+      }
+
       function getDeploymentProgress(row) {
         const debts = Array.isArray(row?.debts) ? row.debts : [];
         const manualReserves = Array.isArray(row?.manualReserves)
@@ -9443,11 +9576,11 @@
           : [];
         const channels = Array.isArray(row?.channels) ? row.channels : [];
         const tasks = [
-          ...(row?.bufferTransfer > 0
+          ...(getDeploymentBufferTransfer(row) > 0
             ? [
                 {
                   completed: Boolean(row?.bufferCompleted),
-                  amount: toNumber(row?.bufferTransfer),
+                  amount: getDeploymentBufferTransfer(row),
                 },
               ]
             : []),
@@ -9464,27 +9597,19 @@
           total: tasks.length,
           completed,
           completedAmount,
-          paymentTotal:
-            debts.reduce((sum, item) => sum + toNumber(item.amount), 0) +
-            manualReserves.reduce((sum, item) => sum + toNumber(item.amount), 0),
+          paymentTotal: getDeploymentSupportTotal(row),
         };
       }
 
       function describeDeploymentSummary(row) {
         const progress = getDeploymentProgress(row);
-        const bufferSummary =
-          row.bufferTransfer > 0
-            ? row.bufferCompleted
-              ? `Buffer transferred${row.bufferCompletedDate ? ` on ${formatMonthDay(
-                  row.bufferCompletedDate,
-                )}` : ""}.`
-              : "Buffer still pending."
-            : "No buffer transfer planned.";
-        const moveSummary =
-          progress.total > 0
-            ? `${progress.completed} of ${progress.total} transfer steps are complete.`
-            : "No transfer steps planned.";
-        return `${bufferSummary} ${moveSummary}`.trim();
+        if (!progress.total) {
+          return "No transfer steps planned.";
+        }
+        if (progress.completed >= progress.total) {
+          return `All ${progress.total} transfer steps are complete.`;
+        }
+        return `${progress.completed} of ${progress.total} transfer steps are complete.`;
       }
 
       function nextDeploymentLabel() {
@@ -9531,8 +9656,8 @@
             .filter((item) => item.completed)
             .reduce((inner, item) => inner + toNumber(item.amount), 0);
           const rowBuffer =
-            row.bufferTransfer > 0 && row.bufferCompleted
-              ? toNumber(row.bufferTransfer)
+            getDeploymentBufferTransfer(row) > 0 && row.bufferCompleted
+              ? getDeploymentBufferTransfer(row)
               : 0;
           return sum + rowDebt + rowReserve + rowBuffer;
         }, 0);
@@ -9740,6 +9865,20 @@
 
       function buildCurrentDeploymentSnapshot() {
         const deployTotal = Math.max(toNumber($("investLiquidAmount")?.value), 0);
+        const checking = toNumber($("checking")?.value);
+        const savings = toNumber($("savings")?.value);
+        const debt = toNumber($("card1")?.value) + toNumber($("card2")?.value);
+        const reserveTarget = Math.max(toNumber($("minBalance")?.value), 0);
+        const dueTotal = getCurrentDueTotal();
+        const plan = getPlanSummary();
+        const currentState = resolveCurrentCashState({
+          cash: checking + savings,
+          debt,
+          dueTotal,
+          reserveTarget,
+          bufferTarget: calculateBudget(),
+          deployTarget: Math.max(plan.liquid, 0),
+        });
         const debts = getCurrentDebtRows().map((row, index) => ({
           id: `deployment-debt-${Date.now()}-${index}`,
           label: row.label,
@@ -9755,6 +9894,7 @@
           completedDate: "",
         }));
         return {
+          bufferTransfer: Math.max(currentState.bufferHeld, 0),
           deployTotal,
           debts,
           manualReserves,
@@ -11430,14 +11570,8 @@
         container.innerHTML = sorted
           .map((row) => {
             const progress = getDeploymentProgress(row);
-            const debtTotal = (row.debts || []).reduce(
-              (sum, item) => sum + toNumber(item.amount),
-              0,
-            );
-            const manualReserveTotal = (row.manualReserves || []).reduce(
-              (sum, item) => sum + toNumber(item.amount),
-              0,
-            );
+            const bufferTransfer = getDeploymentBufferTransfer(row);
+            const supportTotal = getDeploymentSupportTotal(row);
             if (row.locked) {
               return `
                 <article class="deployment-log-card" data-log-id="${escapeHtml(
@@ -11472,16 +11606,16 @@
                   </div>
                   <div class="deployment-log-meta">
                     <div class="deployment-log-stat">
-                      <span>Buffer Out</span>
-                      <strong>${formatCurrency(row.bufferTransfer, 2)}</strong>
-                    </div>
-                    <div class="deployment-log-stat">
-                      <span>Pay Now</span>
-                      <strong>${formatCurrency(progress.paymentTotal, 2)}</strong>
+                      <span>Support Total</span>
+                      <strong>${formatCurrency(supportTotal, 2)}</strong>
                     </div>
                     <div class="deployment-log-stat">
                       <span>Planned Deploy</span>
                       <strong>${formatCurrency(row.totalDeployed, 2)}</strong>
+                    </div>
+                    <div class="deployment-log-stat">
+                      <span>Done Amount</span>
+                      <strong>${formatCurrency(progress.completedAmount, 2)}</strong>
                     </div>
                     <div class="deployment-log-stat">
                       <span>Moves Done</span>
@@ -11509,7 +11643,7 @@
                       data-action="toggle-deployment-log-lock"
                       data-log-id="${escapeHtml(row.id)}"
                     >
-                      Lock
+                      Close
                     </button>
                     <button
                       type="button"
@@ -11523,16 +11657,16 @@
                 </div>
                 <div class="deployment-log-meta">
                   <div class="deployment-log-stat">
-                    <span>Buffer Out</span>
-                    <strong>${formatCurrency(row.bufferTransfer, 2)}</strong>
-                  </div>
-                  <div class="deployment-log-stat">
-                    <span>Pay Now</span>
-                    <strong>${formatCurrency(debtTotal + manualReserveTotal, 2)}</strong>
+                    <span>Support Total</span>
+                    <strong>${formatCurrency(supportTotal, 2)}</strong>
                   </div>
                   <div class="deployment-log-stat">
                     <span>Planned Deploy</span>
                     <strong>${formatCurrency(row.totalDeployed, 2)}</strong>
+                  </div>
+                  <div class="deployment-log-stat">
+                    <span>Done Amount</span>
+                    <strong>${formatCurrency(progress.completedAmount, 2)}</strong>
                   </div>
                   <div class="deployment-log-stat">
                     <span>Moves Done</span>
@@ -11631,7 +11765,7 @@
                       : ""
                   }
                   ${
-                    row.bufferTransfer > 0
+                    bufferTransfer > 0
                       ? `
                         <div class="deployment-log-channel">
                           <input
@@ -11644,7 +11778,7 @@
                           <div class="deployment-log-channel-main">
                             <div class="deployment-log-channel-head">
                               <strong>Buffer Transfer</strong>
-                              <span>${formatCurrency(row.bufferTransfer, 0)}</span>
+                              <span>${formatCurrency(bufferTransfer, 0)}</span>
                             </div>
                             <span class="deployment-log-channel-status">
                               ${
@@ -11699,7 +11833,7 @@
                                   </span>
                                 </div>
                                 <div class="deployment-log-channel-date">
-                                  <label>Completion Date</label>
+                                  <label>Deployment Date</label>
                                   <input
                                     type="date"
                                     data-action="deployment-channel-date"
@@ -11719,29 +11853,45 @@
             `;
           })
           .join("");
-        if (sorted.length > 1) {
-          const cards = Array.from(container.children);
-          const [currentCard, ...historyCards] = cards;
-          if (currentCard && historyCards.length) {
-            container.innerHTML = "";
-            container.appendChild(currentCard);
-            const history = document.createElement("details");
-            history.className = "deployment-log-history";
-            const summary = document.createElement("summary");
-            summary.innerHTML = `
-              <div>
-                <p class="eyebrow">History</p>
-                <h3>Older Deployments</h3>
-              </div>
-              <span class="money-map-log-pill">${historyCards.length} saved</span>
-            `;
-            const list = document.createElement("div");
-            list.className = "deployment-log-history-list";
-            historyCards.forEach((card) => list.appendChild(card));
-            history.appendChild(summary);
-            history.appendChild(list);
-            container.appendChild(history);
+        const renderedCards = Array.from(container.children);
+        const activeCards = [];
+        const historyCards = [];
+        renderedCards.forEach((card) => {
+          const row = sorted.find((entry) => entry.id === card.dataset.logId);
+          if (row?.locked) {
+            historyCards.push(card);
+          } else {
+            activeCards.push(card);
           }
+        });
+        container.innerHTML = "";
+        if (activeCards.length) {
+          activeCards.forEach((card) => container.appendChild(card));
+        } else if (historyCards.length) {
+          const empty = document.createElement("div");
+          empty.className = "deployment-log-empty";
+          empty.textContent =
+            "No active deployment is open. Start one when money is ready to move.";
+          container.appendChild(empty);
+        }
+        if (historyCards.length) {
+          const history = document.createElement("details");
+          history.className = "deployment-log-history";
+          history.open = !activeCards.length;
+          const summary = document.createElement("summary");
+          summary.innerHTML = `
+            <div>
+              <p class="eyebrow">History</p>
+              <h3>Older Deployments</h3>
+            </div>
+            <span class="money-map-log-pill">${historyCards.length} saved</span>
+          `;
+          const list = document.createElement("div");
+          list.className = "deployment-log-history-list";
+          historyCards.forEach((card) => list.appendChild(card));
+          history.appendChild(summary);
+          history.appendChild(list);
+          container.appendChild(history);
         }
         syncDeploymentLogRows(false);
         updateDashboard();
@@ -11756,7 +11906,230 @@
         return response.json();
       }
 
+      function normalizeBudgetCheckRows(rows) {
+        return [...(Array.isArray(rows) ? rows : [])]
+          .map((row, index) => ({
+            id:
+              row?.id ||
+              `budget-check-${normalizeDateValue(row?.Date || row?.date)}-${index}`,
+            Date: normalizeDateValue(row?.Date || row?.date || ""),
+            Budget: toNumber(row?.Budget ?? row?.budget ?? 0),
+            Spent: toNumber(row?.Spent ?? row?.spent ?? 0),
+            Notes: String(row?.Notes ?? row?.notes ?? ""),
+            createdAt: row?.createdAt || row?.created_at || "",
+          }))
+          .filter((row) => row.Date || row.Budget || row.Spent || row.Notes)
+          .sort(
+            (a, b) =>
+              (parseDate(b.Date)?.getTime() || 0) -
+              (parseDate(a.Date)?.getTime() || 0),
+          );
+      }
+
+      function normalizeWeeklyBudgetRows(rows) {
+        return [...(Array.isArray(rows) ? rows : [])]
+          .map((row, index) => {
+            const date = normalizeDateValue(
+              row?.weeklybudgetNewtransactionDate ||
+                row?.Date ||
+                row?.date ||
+                "",
+            );
+            const amount = toNumber(
+              row?.weeklybudgetNewtransactionAmount ??
+                row?.Amount ??
+                row?.amount ??
+                0,
+            );
+            const description = String(
+              row?.weeklybudgetNewtransactionDescription ??
+                row?.Description ??
+                row?.description ??
+                "",
+            );
+            const split = isTruthy(
+              row?.weeklybudgetNewtransactionSplit ??
+                row?.Split ??
+                row?.split ??
+                false,
+            );
+
+            return {
+              id:
+                row?.id ||
+                `weekly-transaction-${date}-${index}-${Math.abs(
+                  Math.round(amount * 100),
+                )}`,
+              weeklybudgetNewtransactionDate: date,
+              weeklybudgetNewtransactionAmount: amount,
+              weeklybudgetNewtransactionDescription: description,
+              weeklybudgetNewtransactionSplit: split,
+              weeklybudgetSplitOwedPaid: isTruthy(
+                row?.weeklybudgetSplitOwedPaid ??
+                  row?.Paid ??
+                  row?.paid ??
+                  false,
+              ),
+              createdAt: row?.createdAt || row?.created_at || "",
+            };
+          })
+          .filter(
+            (row) =>
+              row.weeklybudgetNewtransactionDate ||
+              row.weeklybudgetNewtransactionAmount ||
+              row.weeklybudgetNewtransactionDescription,
+          );
+      }
+
+      function parseStoredRows(value, normalizer) {
+        if (value === null || value === undefined || value === "") return [];
+        let parsed = value;
+        if (typeof value === "string") {
+          try {
+            parsed = JSON.parse(value);
+          } catch {
+            parsed = [];
+          }
+        }
+        if (Array.isArray(parsed)) return normalizer(parsed);
+        if (Array.isArray(parsed?.rows)) return normalizer(parsed.rows);
+        return [];
+      }
+
+      function serializeRecordRows(rows) {
+        return JSON.stringify(Array.isArray(rows) ? rows : []);
+      }
+
+      async function readStoredRows(fieldKey, normalizer) {
+        if (!supabaseClient) return undefined;
+        const { data, error } = await supabaseClient
+          .from("app_fields")
+          .select("value")
+          .eq("key", fieldKey)
+          .maybeSingle();
+        if (error) throw error;
+        if (!data) return undefined;
+        return parseStoredRows(data.value, normalizer);
+      }
+
+      async function upsertAppField(key, value) {
+        if (!supabaseClient) {
+          throw new Error("Supabase client unavailable.");
+        }
+        const { error } = await supabaseClient
+          .from("app_fields")
+          .upsert(
+            [
+              {
+                key,
+                value,
+                updated_at: new Date().toISOString(),
+              },
+            ],
+            { onConflict: "key" },
+          );
+        if (error) throw error;
+      }
+
+      function readQueuedRecordWrites() {
+        return readLocalJson(PENDING_RECORD_WRITES_KEY, {});
+      }
+
+      function writeQueuedRecordWrites(queue) {
+        writeLocalJson(PENDING_RECORD_WRITES_KEY, queue);
+      }
+
+      function queueRecordRows(fieldKey, rows) {
+        const queue = readQueuedRecordWrites();
+        queue[fieldKey] = rows;
+        writeQueuedRecordWrites(queue);
+      }
+
+      function clearQueuedRecordRows(fieldKey) {
+        const queue = readQueuedRecordWrites();
+        delete queue[fieldKey];
+        writeQueuedRecordWrites(queue);
+      }
+
+      function getQueuedRecordRows(fieldKey, normalizer) {
+        const queue = readQueuedRecordWrites();
+        if (!Object.prototype.hasOwnProperty.call(queue, fieldKey)) {
+          return undefined;
+        }
+        return parseStoredRows(queue[fieldKey], normalizer);
+      }
+
+      async function saveRecordRows(fieldKey, rows, options = {}) {
+        const { label = "Records", silent = false } = options;
+        if (state.demoMode) {
+          setSaveStatus("Demo mode is on. Live sync is paused.");
+          return false;
+        }
+
+        queueRecordRows(fieldKey, rows);
+        if (!supabaseClient) {
+          if (!silent) {
+            setSaveStatus(`${label} saved locally. Live sync unavailable.`);
+          }
+          return false;
+        }
+
+        if (!silent) setSaveStatus(`${label} saving...`);
+
+        try {
+          await upsertAppField(fieldKey, serializeRecordRows(rows));
+          clearQueuedRecordRows(fieldKey);
+          if (!silent) {
+            setSaveStatus(
+              `${label} synced at ${new Date().toLocaleTimeString([], {
+                hour: "numeric",
+                minute: "2-digit",
+              })}.`,
+            );
+          }
+          return true;
+        } catch (error) {
+          console.error(`Error saving ${fieldKey}:`, error);
+          if (!silent) {
+            setSaveStatus(`${label} saved locally. Live sync failed.`);
+          }
+          return false;
+        }
+      }
+
+      async function flushQueuedRecordWrites(options = {}) {
+        const { silent = true } = options;
+        if (state.demoMode || !supabaseClient) return false;
+        const queue = readQueuedRecordWrites();
+        const entries = Object.entries(queue);
+        if (!entries.length) return true;
+
+        let allSynced = true;
+        for (const [fieldKey, rows] of entries) {
+          try {
+            await upsertAppField(
+              fieldKey,
+              typeof rows === "string" ? rows : serializeRecordRows(rows),
+            );
+            clearQueuedRecordRows(fieldKey);
+          } catch (error) {
+            allSynced = false;
+            console.error(`Error flushing queued ${fieldKey}:`, error);
+          }
+        }
+
+        if (!silent) {
+          setSaveStatus(
+            allSynced
+              ? "Queued changes synced."
+              : "Live sync failed. Changes remain local.",
+          );
+        }
+        return allSynced;
+      }
+
       async function loadSavedInputs() {
+        let restoredPendingFieldKeys = [];
         try {
           if (!supabaseClient) {
             throw new Error("Supabase client unavailable.");
@@ -11775,6 +12148,7 @@
         } finally {
           if (state.demoMode) return;
           state.isHydrating = true;
+          restoredPendingFieldKeys = applyPendingFieldValues();
           initializeCurrentDueRows();
           initializePlanExpenses();
           initializeInvestChannels();
@@ -11792,19 +12166,55 @@
           }
           state.isHydrating = false;
           state.inputsLoaded = true;
-          state.pendingFieldKeys.clear();
-          state.autosaveReady = Boolean(supabaseClient);
-          setSaveStatus(
-            supabaseClient ? "Live sync is on." : "Live sync unavailable.",
+          state.pendingFieldKeys = new Set(
+            restoredPendingFieldKeys.filter((key) => isPersistableInput($(key))),
           );
+          state.autosaveReady = Boolean(supabaseClient);
+          if (state.pendingFieldKeys.size) {
+            setSaveStatus("Restoring unsynced local changes...");
+            flushPendingSaves({ silent: false });
+          } else {
+            setSaveStatus(
+              supabaseClient ? "Live sync is on." : "Live sync unavailable.",
+            );
+          }
         }
       }
 
       async function loadBudgetCheck() {
         try {
-          const rows = await safeFetchJson(apiUrl3);
+          const queuedRows = getQueuedRecordRows(
+            BUDGET_CHECK_ROWS_FIELD_KEY,
+            normalizeBudgetCheckRows,
+          );
+          if (queuedRows !== undefined) {
+            if (state.demoMode) return;
+            renderBudgetCheckTable(queuedRows);
+            flushQueuedRecordWrites({ silent: false });
+            return;
+          }
+
+          const storedRows = await readStoredRows(
+            BUDGET_CHECK_ROWS_FIELD_KEY,
+            normalizeBudgetCheckRows,
+          );
+          if (storedRows !== undefined) {
+            if (state.demoMode) return;
+            renderBudgetCheckTable(storedRows);
+            return;
+          }
+
+          const rows = normalizeBudgetCheckRows(
+            await safeFetchJson(LEGACY_BUDGET_CHECK_IMPORT_URL),
+          );
           if (state.demoMode) return;
           renderBudgetCheckTable(rows);
+          if (rows.length) {
+            saveRecordRows(BUDGET_CHECK_ROWS_FIELD_KEY, rows, {
+              label: "Budget check history",
+              silent: true,
+            });
+          }
         } catch (error) {
           console.error("Error loading budget check data:", error);
           if (state.demoMode) return;
@@ -11825,10 +12235,41 @@
       async function loadWeeklyBudgetTransactions() {
         const txnBody = $("wb-txn-table").querySelector("tbody");
         try {
-          const rows = await safeFetchJson(apiUrl4);
+          const queuedRows = getQueuedRecordRows(
+            WEEKLY_BUDGET_ROWS_FIELD_KEY,
+            normalizeWeeklyBudgetRows,
+          );
+          if (queuedRows !== undefined) {
+            if (state.demoMode) return;
+            state.weeklyBudgetRows = queuedRows;
+            renderWeeklyBudgetTables(state.weeklyBudgetRows);
+            flushQueuedRecordWrites({ silent: false });
+            return;
+          }
+
+          const storedRows = await readStoredRows(
+            WEEKLY_BUDGET_ROWS_FIELD_KEY,
+            normalizeWeeklyBudgetRows,
+          );
+          if (storedRows !== undefined) {
+            if (state.demoMode) return;
+            state.weeklyBudgetRows = storedRows;
+            renderWeeklyBudgetTables(state.weeklyBudgetRows);
+            return;
+          }
+
+          const rows = normalizeWeeklyBudgetRows(
+            await safeFetchJson(LEGACY_WEEKLY_BUDGET_IMPORT_URL),
+          );
           if (state.demoMode) return;
-          state.weeklyBudgetRows = Array.isArray(rows) ? rows : [];
+          state.weeklyBudgetRows = rows;
           renderWeeklyBudgetTables(state.weeklyBudgetRows);
+          if (rows.length) {
+            saveRecordRows(WEEKLY_BUDGET_ROWS_FIELD_KEY, rows, {
+              label: "Weekly budget history",
+              silent: true,
+            });
+          }
         } catch (error) {
           console.error("Error loading weekly budget transactions:", error);
           if (state.demoMode) return;
@@ -12173,6 +12614,7 @@
           return Promise.resolve();
         }
 
+        storePendingFieldValues(fieldIds);
         setSaveStatus(isAuto ? "Live syncing..." : "Syncing live data...");
 
         return supabaseClient
@@ -12185,6 +12627,7 @@
               return;
             }
             fieldIds.forEach((key) => state.pendingFieldKeys.delete(key));
+            clearPendingFieldValues(fieldIds);
             setSaveStatus(
               `Synced at ${new Date().toLocaleTimeString([], {
                 hour: "numeric",
@@ -12201,11 +12644,11 @@
               setSaveStatus("Demo mode is on. Live sync is paused.");
               return;
             }
-            setSaveStatus("Live sync failed. Changes are still local.");
+            setSaveStatus("Live sync failed. Changes are saved locally.");
           });
       }
 
-      function addBudgetCheckEntry() {
+      async function addBudgetCheckEntry() {
         if (!canWriteToBackend()) return;
         const date = $("budgetCheckDate").value;
         const budget = $("budgetCheckBudget").value;
@@ -12217,33 +12660,34 @@
           return;
         }
 
-        fetch(apiUrl3, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
+        const nextRows = normalizeBudgetCheckRows([
+          {
+            id: `budget-check-${Date.now()}`,
             Date: date,
             Budget: budget,
             Spent: spent,
-            Notes: notes,
-            sheet: "Sheet3",
-          }),
-          mode: "no-cors",
-        })
-          .then(() => {
-            [
-              "budgetCheckBudget",
-              "budgetCheckSpent",
-              "budgetCheckNotes",
-            ].forEach((id) => setInputValue(id, ""));
-            seedActionDates();
-            setTimeout(loadBudgetCheck, 1200);
-          })
-          .catch((error) =>
-            console.error("Error sending budget check data:", error),
-          );
+            Notes: notes.trim(),
+            createdAt: new Date().toISOString(),
+          },
+          ...state.budgetCheckRows,
+        ]);
+
+        renderBudgetCheckTable(nextRows);
+        [
+          "budgetCheckBudget",
+          "budgetCheckSpent",
+          "budgetCheckNotes",
+        ].forEach((id) => setInputValue(id, ""));
+        seedActionDates();
+
+        await saveRecordRows(
+          BUDGET_CHECK_ROWS_FIELD_KEY,
+          state.budgetCheckRows,
+          { label: "Budget check" },
+        );
       }
 
-      function addweeklybudgetNewtransaction() {
+      async function addweeklybudgetNewtransaction() {
         if (!canWriteToBackend()) return;
         const date = $("weeklybudgetNewtransactionDate").value;
         const amount = $("weeklybudgetNewtransactionAmount").value;
@@ -12255,34 +12699,36 @@
           return;
         }
 
-        fetch(apiUrl4, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
+        state.weeklyBudgetRows = normalizeWeeklyBudgetRows([
+          {
+            id: `weekly-transaction-${Date.now()}`,
             weeklybudgetNewtransactionDate: date,
             weeklybudgetNewtransactionAmount: amount,
             weeklybudgetNewtransactionDescription: description,
             weeklybudgetNewtransactionSplit: split,
-            weeklybudgetSplitOwedPaid: split ? false : "",
-            sheet: "Sheet4",
-          }),
-          mode: "no-cors",
-        })
-          .then(() => {
-            $("wb-entry-form").reset();
-            seedActionDates();
-            setTimeout(loadWeeklyBudgetTransactions, 1200);
-          })
-          .catch((error) =>
-            console.error("Error sending weekly budget transaction:", error),
-          );
+            weeklybudgetSplitOwedPaid: false,
+            createdAt: new Date().toISOString(),
+          },
+          ...state.weeklyBudgetRows,
+        ]);
+
+        renderWeeklyBudgetTables(state.weeklyBudgetRows);
+        $("wb-entry-form").reset();
+        seedActionDates();
+
+        await saveRecordRows(
+          WEEKLY_BUDGET_ROWS_FIELD_KEY,
+          state.weeklyBudgetRows,
+          { label: "Weekly transaction" },
+        );
       }
 
       function addLiquidationLog() {
-        const date = $("logDate").value;
-        const bufferTransfer = toNumber($("logBufferTransfer")?.value);
+        syncDeploymentActionDate(true);
+        const date = $("logDate").value || todayInputValue();
         const note = $("logLiquidationTransfer")?.value || "";
         const snapshot = buildCurrentDeploymentSnapshot();
+        const bufferTransfer = Math.max(snapshot.bufferTransfer, 0);
 
         if (!date) {
           alert("Please add a date before logging the transfer.");
@@ -12295,7 +12741,7 @@
           snapshot.paymentTotal <= 0
         ) {
           alert(
-            "Add a buffer transfer amount or have debt, manual payments, or capital available before logging this deployment.",
+            "Have a buffer transfer, due payment, or capital deployment ready before logging this deployment.",
           );
           return;
         }
@@ -12305,6 +12751,8 @@
           label: nextDeploymentLabel(),
           date,
           bufferTransfer,
+          bufferCompleted: false,
+          bufferCompletedDate: "",
           totalDeployed: snapshot.deployTotal,
           note: note.trim(),
           debts: snapshot.debts,
@@ -12313,31 +12761,21 @@
         });
         syncDeploymentLogRows();
         renderLiquidationLogTable(state.liquidationLogRows);
-        setInputValue("logBufferTransfer", "");
         setInputValue("logLiquidationTransfer", "");
         seedActionDates();
       }
 
-      function markSplitAsPaid(rowIndex) {
+      async function markSplitAsPaid(rowIndex) {
         if (!canWriteToBackend()) return;
-        fetch(apiUrl4, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            action: "updateField",
-            rowIndex,
-            field: "weeklybudgetSplitOwedPaid",
-            value: true,
-            sheet: "Sheet4",
-          }),
-          mode: "no-cors",
-        })
-          .then(() => {
-            setTimeout(loadWeeklyBudgetTransactions, 1200);
-          })
-          .catch((error) =>
-            console.error("Error marking split transaction as paid:", error),
-          );
+        if (!state.weeklyBudgetRows[rowIndex]) return;
+        state.weeklyBudgetRows[rowIndex].weeklybudgetSplitOwedPaid = true;
+        renderWeeklyBudgetTables(state.weeklyBudgetRows);
+
+        await saveRecordRows(
+          WEEKLY_BUDGET_ROWS_FIELD_KEY,
+          state.weeklyBudgetRows,
+          { label: "Split transaction" },
+        );
       }
 
       function bindNavigation() {
@@ -12455,7 +12893,16 @@
           if (!button) return;
           const logId = button.dataset.logId;
           updateDeploymentLogEntry(logId, (row) => {
-            row.locked = !row.locked;
+            if (row.locked) {
+              row.locked = false;
+              return;
+            }
+            const progress = getDeploymentProgress(row);
+            if (progress.total > 0 && progress.completed < progress.total) {
+              alert("Check off every transfer before closing this deployment.");
+              return;
+            }
+            row.locked = true;
           });
         };
 
@@ -12467,9 +12914,7 @@
           const { logId } = toggle.dataset;
           updateDeploymentLogEntry(logId, (row) => {
             row.bufferCompleted = toggle.checked;
-            row.bufferCompletedDate = toggle.checked
-              ? row.bufferCompletedDate || $("logDate")?.value || todayInputValue()
-              : "";
+            row.bufferCompletedDate = toggle.checked ? todayInputValue() : "";
           });
         };
 
@@ -12495,9 +12940,7 @@
             const debt = row.debts.find((item) => item.id === debtId);
             if (!debt) return;
             debt.completed = toggle.checked;
-            debt.completedDate = toggle.checked
-              ? debt.completedDate || $("logDate")?.value || todayInputValue()
-              : "";
+            debt.completedDate = toggle.checked ? todayInputValue() : "";
           });
         };
 
@@ -12525,9 +12968,7 @@
             const reserve = row.manualReserves.find((item) => item.id === reserveId);
             if (!reserve) return;
             reserve.completed = toggle.checked;
-            reserve.completedDate = toggle.checked
-              ? reserve.completedDate || $("logDate")?.value || todayInputValue()
-              : "";
+            reserve.completedDate = toggle.checked ? todayInputValue() : "";
           });
         };
 
@@ -12555,9 +12996,7 @@
             const channel = row.channels.find((item) => item.id === channelId);
             if (!channel) return;
             channel.completed = toggle.checked;
-            channel.completedDate = toggle.checked
-              ? channel.completedDate || $("logDate")?.value || todayInputValue()
-              : "";
+            channel.completedDate = toggle.checked ? todayInputValue() : "";
           });
         };
 
@@ -12856,6 +13295,13 @@
         window.addEventListener("resize", calculateLiquid);
         window.addEventListener("resize", updateInvestTable);
         window.addEventListener("resize", syncMobileVisualPanels);
+        document.addEventListener("visibilitychange", () => {
+          if (document.visibilityState === "hidden") {
+            flushPendingSavesForPageExit();
+          }
+        });
+        window.addEventListener("pagehide", flushPendingSavesForPageExit);
+        window.addEventListener("beforeunload", flushPendingSavesForPageExit);
         document.addEventListener("keydown", (event) => {
           if (event.key === "Escape" && !$("liveUnlockGate")?.hidden) {
             closeLiveUnlockGate();
