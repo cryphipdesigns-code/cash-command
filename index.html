@@ -3510,7 +3510,7 @@
       }
 
       .current-due-row {
-        grid-template-columns: minmax(132px, 1fr) minmax(106px, 128px) minmax(98px, 124px);
+        grid-template-columns: minmax(136px, 1fr) minmax(104px, 126px) minmax(84px, 108px);
         grid-template-areas:
           "label target held"
           "flags flags flags";
@@ -3520,18 +3520,15 @@
 
       .current-due-label-field {
         grid-area: label;
-        min-width: 0;
       }
 
       .current-due-target-field {
         grid-area: target;
-        min-width: 0;
       }
 
       .current-due-held-field {
         grid-area: held;
         text-align: center;
-        min-width: 0;
       }
 
       .current-due-row.is-inactive-cycle {
@@ -3545,18 +3542,14 @@
 
       .current-due-held-field .field-readout {
         justify-content: center;
-        width: 100%;
-        max-width: 100%;
         min-height: 42px;
-        padding: 8px 8px;
+        padding: 8px 10px;
         white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
       }
 
       .current-due-held-field .field-readout-compact {
         justify-content: center;
-        font-size: 0.95rem;
+        font-size: 1rem;
         letter-spacing: -0.02em;
       }
 
@@ -5243,7 +5236,7 @@
         }
 
         .current-due-row {
-          grid-template-columns: minmax(0, 1fr) minmax(92px, 108px);
+          grid-template-columns: minmax(0, 1fr) minmax(84px, 96px);
           grid-template-areas:
             "label label"
             "target held"
@@ -6141,7 +6134,7 @@
         }
 
         .current-due-row {
-          grid-template-columns: minmax(0, 1fr) minmax(88px, 104px);
+          grid-template-columns: minmax(0, 1fr) minmax(80px, 92px);
           grid-template-areas:
             "label label"
             "target held"
@@ -7615,6 +7608,13 @@
       const WEEKLY_BUDGET_ROWS_FIELD_KEY = "weeklyBudgetRowsData";
       const PENDING_FIELD_VALUES_KEY = "cashCommandPendingFieldValues";
       const PENDING_RECORD_WRITES_KEY = "cashCommandPendingRecordWrites";
+      const STRUCTURED_FIELD_KEYS = new Set([
+        "currentDueRowsData",
+        "planExpenseRowsData",
+        "investChannelsData",
+        "moneyMapDeploymentLogData",
+        "cycleCloseRowsData",
+      ]);
       const LEGACY_BUDGET_CHECK_IMPORT_URL =
         "https://script.google.com/macros/s/AKfycbyyE6qNHhNF9zwdm_lAsxf47JYWE9etsYuEUbV_KxIXo4VjKLshBBEYHMegt9u2uJHJ/exec?sheetid=912270719";
       const LEGACY_WEEKLY_BUDGET_IMPORT_URL =
@@ -7749,9 +7749,18 @@
         keys.forEach((key) => {
           const input = $(key);
           if (!isPersistableInput(input)) return;
+          if (
+            STRUCTURED_FIELD_KEYS.has(key) &&
+            input.value &&
+            isEmptyStructuredFieldValue(key, pendingValues[key])
+          ) {
+            delete pendingValues[key];
+            return;
+          }
           setInputValue(key, pendingValues[key]);
         });
-        return keys;
+        writePendingFieldValues(pendingValues);
+        return Object.keys(pendingValues);
       }
 
       function clearPendingFieldValues(keys = []) {
@@ -7760,7 +7769,38 @@
         writePendingFieldValues(pendingValues);
       }
 
+      function isEmptyStructuredFieldValue(key, value) {
+        if (!STRUCTURED_FIELD_KEYS.has(key) || !value) return false;
+        let parsed = value;
+        if (typeof value === "string") {
+          try {
+            parsed = JSON.parse(value);
+          } catch {
+            return false;
+          }
+        }
+        if (!Array.isArray(parsed)) return false;
+        if (!parsed.length) return true;
+        return parsed.every((row) => {
+          if (!row || typeof row !== "object") return true;
+          const amountFields = [
+            row.amount,
+            row.planTarget,
+            row.routedTarget,
+            row.loggedDeploy,
+            row.loggedSupport,
+            row.reserveLeft,
+            row.bufferTransfer,
+            row.totalDeployed,
+          ];
+          const hasAmount = amountFields.some((amount) => toNumber(amount) !== 0);
+          const hasNote = Boolean(String(row.note || row.Notes || "").trim());
+          return !hasAmount && !hasNote;
+        });
+      }
+
       function markFieldsPending(keys = []) {
+        if (state.demoMode || state.isHydrating) return;
         const validKeys = keys
           .filter(Boolean)
           .filter((key) => isPersistableInput($(key)));
