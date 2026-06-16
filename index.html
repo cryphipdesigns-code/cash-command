@@ -914,6 +914,7 @@
       }
 
       input[type="text"],
+      input[type="email"],
       input[type="number"],
       input[type="date"],
       input[type="password"],
@@ -1112,6 +1113,12 @@
         color: var(--danger);
         font-size: 0.88rem;
         line-height: 1.55;
+      }
+
+      .live-unlock-session {
+        color: var(--text-soft);
+        font-size: 0.86rem;
+        line-height: 1.5;
       }
 
       .budget-pill {
@@ -7565,22 +7572,26 @@
           <h2>Unlock Live View</h2>
         </div>
         <p id="liveUnlockCopy">
-          Demo View is safe to share. Enter the password on this device to reveal
-          your live balances.
+          Demo View is safe to share. Sign in on this device to reveal your live
+          balances.
         </p>
-        <div id="liveUnlockPasswordField" class="field">
-          <label for="liveUnlockPassword">Password</label>
+        <div id="liveUnlockEmailField" class="field">
+          <label for="liveUnlockEmail">Email</label>
           <input
-            type="password"
-            id="liveUnlockPassword"
-            placeholder="Enter password"
-            autocomplete="current-password"
+            type="email"
+            id="liveUnlockEmail"
+            placeholder="you@example.com"
+            autocomplete="email"
           />
         </div>
+        <p id="liveUnlockSession" class="live-unlock-session" hidden></p>
         <p id="liveUnlockError" class="live-unlock-error" hidden>
-          Incorrect password.
+          Could not send a sign-in link.
         </p>
         <div class="live-unlock-actions">
+          <button id="signOutLiveBtn" class="subtle-button" type="button" hidden>
+            Sign Out
+          </button>
           <button id="cancelLiveUnlockBtn" class="subtle-button" type="button">
             Stay In Demo
           </button>
@@ -7589,7 +7600,7 @@
             class="accent-button"
             type="submit"
           >
-            <span id="submitLiveUnlockLabel">Unlock Live View</span>
+            <span id="submitLiveUnlockLabel">Send Magic Link</span>
           </button>
         </div>
       </form>
@@ -7608,6 +7619,7 @@
       const WEEKLY_BUDGET_ROWS_FIELD_KEY = "weeklyBudgetRowsData";
       const PENDING_FIELD_VALUES_KEY = "cashCommandPendingFieldValues";
       const PENDING_RECORD_WRITES_KEY = "cashCommandPendingRecordWrites";
+      const APP_FIELDS_TABLE = "app_fields";
       const STRUCTURED_FIELD_KEYS = new Set([
         "currentDueRowsData",
         "planExpenseRowsData",
@@ -7619,17 +7631,15 @@
         "https://script.google.com/macros/s/AKfycbyyE6qNHhNF9zwdm_lAsxf47JYWE9etsYuEUbV_KxIXo4VjKLshBBEYHMegt9u2uJHJ/exec?sheetid=912270719";
       const LEGACY_WEEKLY_BUDGET_IMPORT_URL =
         "https://script.google.com/macros/s/AKfycbyyE6qNHhNF9zwdm_lAsxf47JYWE9etsYuEUbV_KxIXo4VjKLshBBEYHMegt9u2uJHJ/exec?sheetid=417331213";
-      const LIVE_VIEW_PASSWORD = "ubuntu";
-      const LIVE_VIEW_ACCESS_KEY = "cashCommandLiveViewUnlocked";
       const supabaseClient = window.supabase?.createClient
         ? window.supabase.createClient(
             SUPABASE_PROJECT_URL,
             SUPABASE_ANON_KEY,
             {
               auth: {
-                persistSession: false,
-                autoRefreshToken: false,
-                detectSessionInUrl: false,
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true,
               },
               db: { schema: "public" },
             },
@@ -7658,6 +7668,9 @@
         demoMode: false,
         demoSnapshot: null,
         initialLiveSnapshot: null,
+        currentUser: null,
+        authReady: false,
+        authSubscription: null,
       };
 
       const navToSection = {
@@ -7676,7 +7689,7 @@
         return (
           input instanceof HTMLInputElement &&
           Boolean(input.id) &&
-          input.id !== "liveUnlockPassword" &&
+          input.id !== "liveUnlockEmail" &&
           !input.readOnly &&
           !input.closest("#liveUnlockGate")
         );
@@ -8173,30 +8186,44 @@
       }
 
       function hasLiveViewAccess() {
-        return localStorage.getItem(LIVE_VIEW_ACCESS_KEY) === "true";
+        return Boolean(state.currentUser);
       }
 
-      function grantLiveViewAccess() {
-        localStorage.setItem(LIVE_VIEW_ACCESS_KEY, "true");
+      function getLiveUserLabel() {
+        return state.currentUser?.email || state.currentUser?.id || "";
       }
 
       function syncLiveUnlockGate() {
         const trusted = hasLiveViewAccess();
-        const passwordField = $("liveUnlockPasswordField");
+        const emailField = $("liveUnlockEmailField");
         const copy = $("liveUnlockCopy");
         const submitLabel = $("submitLiveUnlockLabel");
-        if (passwordField) {
-          passwordField.hidden = trusted;
+        const session = $("liveUnlockSession");
+        const signOutButton = $("signOutLiveBtn");
+        if (emailField) {
+          emailField.hidden = trusted;
+        }
+        if (signOutButton) {
+          signOutButton.hidden = !trusted;
         }
         if (copy) {
-          copy.textContent = trusted
-            ? "This device is already trusted. Continue into Live View or stay in demo."
-            : "Demo View is safe to share. Enter the password on this device to reveal your live balances.";
+          if (!supabaseClient) {
+            copy.textContent = "Live sync is unavailable because Supabase did not load.";
+          } else {
+            copy.textContent = trusted
+              ? "This device has a valid private session. Continue into Live View or stay in demo."
+              : "Demo View is safe to share. Enter your email and open the magic link to reveal your live balances.";
+          }
+        }
+        if (session) {
+          const label = getLiveUserLabel();
+          session.hidden = !trusted || !label;
+          session.textContent = label ? `Signed in as ${label}.` : "";
         }
         if (submitLabel) {
           submitLabel.textContent = trusted
             ? "Show Live View"
-            : "Unlock Live View";
+            : "Send Magic Link";
         }
       }
 
@@ -8204,13 +8231,13 @@
         syncLiveUnlockGate();
         $("liveUnlockGate").hidden = false;
         $("liveUnlockError").hidden = true;
-        $("liveUnlockPassword").value = "";
+        if ($("liveUnlockEmail")) $("liveUnlockEmail").value = state.currentUser?.email || "";
         document.body.classList.add("unlock-gate-open");
         window.setTimeout(() => {
           if (hasLiveViewAccess()) {
             $("submitLiveUnlockBtn")?.focus();
           } else {
-            $("liveUnlockPassword")?.focus();
+            $("liveUnlockEmail")?.focus();
           }
         }, 30);
       }
@@ -8218,24 +8245,101 @@
       function closeLiveUnlockGate() {
         $("liveUnlockGate").hidden = true;
         $("liveUnlockError").hidden = true;
-        $("liveUnlockPassword").value = "";
+        if ($("liveUnlockEmail")) $("liveUnlockEmail").value = "";
         document.body.classList.remove("unlock-gate-open");
       }
 
-      function handleLiveUnlock(event) {
+      async function handleLiveUnlock(event) {
         event?.preventDefault();
-        const password = $("liveUnlockPassword")?.value || "";
-        if (!hasLiveViewAccess() && password !== LIVE_VIEW_PASSWORD) {
+        if (!supabaseClient) {
+          $("liveUnlockError").textContent = "Live sync is unavailable.";
           $("liveUnlockError").hidden = false;
-          $("liveUnlockPassword")?.focus();
-          $("liveUnlockPassword")?.select();
           return;
         }
         if (!hasLiveViewAccess()) {
-          grantLiveViewAccess();
+          const email = $("liveUnlockEmail")?.value.trim() || "";
+          if (!email) {
+            $("liveUnlockError").textContent = "Enter your email to get a sign-in link.";
+            $("liveUnlockError").hidden = false;
+            $("liveUnlockEmail")?.focus();
+            return;
+          }
+          $("submitLiveUnlockBtn").disabled = true;
+          $("submitLiveUnlockLabel").textContent = "Sending...";
+          const { error } = await supabaseClient.auth.signInWithOtp({
+            email,
+            options: {
+              emailRedirectTo: window.location.href.split("#")[0],
+            },
+          });
+          $("submitLiveUnlockBtn").disabled = false;
+          syncLiveUnlockGate();
+          if (error) {
+            console.error("Error sending magic link:", error);
+            $("liveUnlockError").textContent = "Could not send a sign-in link.";
+            $("liveUnlockError").hidden = false;
+            return;
+          }
+          $("liveUnlockError").hidden = true;
+          setSaveStatus("Magic link sent. Open it, then return here for Live View.");
+          return;
         }
         closeLiveUnlockGate();
         exitDemoMode();
+      }
+
+      async function signOutLiveView() {
+        if (!supabaseClient) return;
+        await supabaseClient.auth.signOut();
+        closeLiveUnlockGate();
+        setSaveStatus("Signed out. Demo mode is on.");
+      }
+
+      function handleAuthSession(session) {
+        const previousUserId = state.currentUser?.id || "";
+        state.currentUser = session?.user || null;
+        syncLiveUnlockGate();
+
+        if (!state.currentUser) {
+          state.autosaveReady = false;
+          window.clearTimeout(state.autosaveTimer);
+          if (!state.demoMode) {
+            enterDemoMode();
+          } else {
+            setSaveStatus("Demo mode is on. Sign in for private live sync.");
+          }
+          return;
+        }
+
+        if (state.demoMode) {
+          setSaveStatus("Private session ready. Use Live View to load your data.");
+        } else if (state.currentUser.id !== previousUserId) {
+          setSaveStatus("Loading private data...");
+          loadSavedInputs();
+          loadBudgetCheck();
+          initializeDeploymentLogRows();
+          loadWeeklyBudgetTransactions();
+        }
+      }
+
+      async function initAuth() {
+        if (!supabaseClient) {
+          state.authReady = true;
+          setSaveStatus("Demo mode is on. Live sync unavailable.");
+          return;
+        }
+
+        const { data, error } = await supabaseClient.auth.getSession();
+        if (error) {
+          console.error("Error loading auth session:", error);
+        }
+        state.authReady = true;
+        handleAuthSession(data?.session || null);
+
+        const subscription = supabaseClient.auth.onAuthStateChange((_event, session) => {
+          handleAuthSession(session);
+        });
+        state.authSubscription = subscription.data?.subscription || null;
       }
 
       function serializeInputValues() {
@@ -8508,7 +8612,7 @@
       }
 
       function scheduleAutosave() {
-        if (!state.autosaveReady || state.isHydrating || state.demoMode) return;
+        if (!state.autosaveReady || state.isHydrating || state.demoMode || !hasLiveViewAccess()) return;
         window.clearTimeout(state.autosaveTimer);
         setSaveStatus("Live sync pending...");
         state.autosaveTimer = window.setTimeout(() => {
@@ -8523,7 +8627,7 @@
 
       function flushPendingSaves(options = {}) {
         const { silent = true } = options;
-        if (state.demoMode) return Promise.resolve([]);
+        if (state.demoMode || !hasLiveViewAccess()) return Promise.resolve([]);
         window.clearTimeout(state.autosaveTimer);
 
         const saves = [];
@@ -8542,7 +8646,11 @@
       }
 
       function canWriteToBackend() {
-        if (!state.demoMode) return true;
+        if (!state.demoMode && hasLiveViewAccess()) return true;
+        if (!hasLiveViewAccess()) {
+          openLiveUnlockGate();
+          return false;
+        }
         alert("Demo mode is on. Switch back to Live View before saving live data.");
         return false;
       }
@@ -12041,9 +12149,9 @@
       }
 
       async function readStoredRows(fieldKey, normalizer) {
-        if (!supabaseClient) return undefined;
+        if (!supabaseClient || !hasLiveViewAccess()) return undefined;
         const { data, error } = await supabaseClient
-          .from("app_fields")
+          .from(APP_FIELDS_TABLE)
           .select("value")
           .eq("key", fieldKey)
           .maybeSingle();
@@ -12053,20 +12161,21 @@
       }
 
       async function upsertAppField(key, value) {
-        if (!supabaseClient) {
-          throw new Error("Supabase client unavailable.");
+        if (!supabaseClient || !hasLiveViewAccess()) {
+          throw new Error("Private Supabase session unavailable.");
         }
         const { error } = await supabaseClient
-          .from("app_fields")
+          .from(APP_FIELDS_TABLE)
           .upsert(
             [
               {
+                user_id: state.currentUser.id,
                 key,
                 value,
                 updated_at: new Date().toISOString(),
               },
             ],
-            { onConflict: "key" },
+            { onConflict: "user_id,key" },
           );
         if (error) throw error;
       }
@@ -12107,9 +12216,9 @@
         }
 
         queueRecordRows(fieldKey, rows);
-        if (!supabaseClient) {
+        if (!supabaseClient || !hasLiveViewAccess()) {
           if (!silent) {
-            setSaveStatus(`${label} saved locally. Live sync unavailable.`);
+            setSaveStatus(`${label} saved locally. Sign in to sync privately.`);
           }
           return false;
         }
@@ -12139,7 +12248,7 @@
 
       async function flushQueuedRecordWrites(options = {}) {
         const { silent = true } = options;
-        if (state.demoMode || !supabaseClient) return false;
+        if (state.demoMode || !supabaseClient || !hasLiveViewAccess()) return false;
         const queue = readQueuedRecordWrites();
         const entries = Object.entries(queue);
         if (!entries.length) return true;
@@ -12171,11 +12280,11 @@
       async function loadSavedInputs() {
         let restoredPendingFieldKeys = [];
         try {
-          if (!supabaseClient) {
-            throw new Error("Supabase client unavailable.");
+          if (!supabaseClient || !hasLiveViewAccess()) {
+            throw new Error("Private Supabase session unavailable.");
           }
           const { data, error } = await supabaseClient
-            .from("app_fields")
+            .from(APP_FIELDS_TABLE)
             .select("key,value");
           if (error) throw error;
           if (state.demoMode) return;
@@ -12209,13 +12318,13 @@
           state.pendingFieldKeys = new Set(
             restoredPendingFieldKeys.filter((key) => isPersistableInput($(key))),
           );
-          state.autosaveReady = Boolean(supabaseClient);
+          state.autosaveReady = Boolean(supabaseClient && hasLiveViewAccess());
           if (state.pendingFieldKeys.size) {
             setSaveStatus("Restoring unsynced local changes...");
             flushPendingSaves({ silent: false });
           } else {
             setSaveStatus(
-              supabaseClient ? "Live sync is on." : "Live sync unavailable.",
+              state.autosaveReady ? "Private live sync is on." : "Sign in for private live sync.",
             );
           }
         }
@@ -12624,8 +12733,8 @@
           setSaveStatus("Demo mode is on. Live sync is paused.");
           return Promise.resolve();
         }
-        if (!supabaseClient) {
-          setSaveStatus("Live sync unavailable.");
+        if (!supabaseClient || !hasLiveViewAccess()) {
+          setSaveStatus("Sign in for private live sync.");
           return Promise.resolve();
         }
 
@@ -12642,6 +12751,7 @@
             const input = $(key);
             if (!isPersistableInput(input)) return null;
             return {
+              user_id: state.currentUser.id,
               key,
               value: getPersistableFieldValue(input),
               updated_at: timestamp,
@@ -12658,8 +12768,8 @@
         setSaveStatus(isAuto ? "Live syncing..." : "Syncing live data...");
 
         return supabaseClient
-          .from("app_fields")
-          .upsert(payload, { onConflict: "key" })
+          .from(APP_FIELDS_TABLE)
+          .upsert(payload, { onConflict: "user_id,key" })
           .then(({ error }) => {
             if (error) throw error;
             if (state.demoMode) {
@@ -13055,6 +13165,7 @@
         };
 
         $("demoModeToggleBtn")?.addEventListener("click", toggleDemoMode);
+        $("signOutLiveBtn")?.addEventListener("click", signOutLiveView);
         $("cancelLiveUnlockBtn")?.addEventListener("click", closeLiveUnlockGate);
         $("liveUnlockForm")?.addEventListener("submit", handleLiveUnlock);
         $("addBudgetCheckEntryBtn")?.addEventListener(
@@ -13368,6 +13479,7 @@
         ensureMobileVisualToggles();
         syncMobileVisualPanels(true);
         setSaveStatus("Demo mode is on. Live sync is paused.");
+        initAuth();
       }
 
       window.saveHTML = saveHTML;
