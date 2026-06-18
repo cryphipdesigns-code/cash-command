@@ -943,6 +943,15 @@
         background: rgba(255, 255, 255, 1);
       }
 
+      input.input-bad {
+        border-color: var(--danger) !important;
+        box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+      }
+
+      .is-over-alloc {
+        color: var(--danger) !important;
+      }
+
       .input-shell {
         position: relative;
         display: flex;
@@ -1028,6 +1037,43 @@
         font-size: 0.9rem;
         line-height: 1.7;
       }
+
+      #errorToast {
+        position: fixed;
+        bottom: 1.25rem;
+        left: 50%;
+        transform: translateX(-50%) translateY(calc(100% + 1.25rem));
+        background: #fff1f1;
+        border: 1.5px solid var(--danger);
+        border-radius: var(--radius-sm);
+        color: var(--danger);
+        font-size: 0.875rem;
+        padding: 0.6rem 1rem 0.6rem 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        box-shadow: var(--shadow-md);
+        z-index: 9999;
+        max-width: min(420px, calc(100vw - 2rem));
+        transition: transform 0.22s ease;
+        pointer-events: none;
+      }
+      #errorToast.is-visible {
+        transform: translateX(-50%) translateY(0);
+        pointer-events: auto;
+      }
+      #errorToast button {
+        background: none;
+        border: none;
+        color: var(--danger);
+        cursor: pointer;
+        font-size: 1rem;
+        line-height: 1;
+        padding: 0 0 0 0.25rem;
+        flex-shrink: 0;
+        opacity: 0.7;
+      }
+      #errorToast button:hover { opacity: 1; }
 
       .sidebar-utility-row {
         display: flex;
@@ -6374,6 +6420,10 @@
           <p id="saveStatus" class="status-text">Live sync is on.</p>
         </div>
       </nav>
+      <div id="errorToast" role="alert" aria-live="assertive">
+        <span id="errorToastMsg"></span>
+        <button type="button" onclick="dismissErrorToast()" aria-label="Dismiss">✕</button>
+      </div>
 
       <main id="mainContent">
         <section id="dashboardSection" class="dashboard-section">
@@ -7662,6 +7712,7 @@
         investChannelsLocked: true,
         autosaveTimer: null,
         autosaveReady: false,
+        saveInFlight: false,
         pendingFieldKeys: new Set(),
         inputsLoaded: false,
         isHydrating: false,
@@ -8177,6 +8228,22 @@
         }
       }
 
+      let errorToastTimer = null;
+      function showErrorToast(msg) {
+        const toast = $("errorToast");
+        const msgEl = $("errorToastMsg");
+        if (!toast || !msgEl) return;
+        msgEl.textContent = msg;
+        toast.classList.add("is-visible");
+        clearTimeout(errorToastTimer);
+        errorToastTimer = setTimeout(dismissErrorToast, 8000);
+      }
+      function dismissErrorToast() {
+        const toast = $("errorToast");
+        if (toast) toast.classList.remove("is-visible");
+        clearTimeout(errorToastTimer);
+      }
+
       function setDemoToggleState() {
         const button = $("demoModeToggleBtn");
         if (!button) return;
@@ -8566,6 +8633,9 @@
       function enterDemoMode() {
         if (state.demoMode) return;
         window.clearTimeout(state.autosaveTimer);
+        if (state.pendingFieldKeys.size || Object.keys(readQueuedRecordWrites()).length) {
+          flushPendingSaves({ silent: true });
+        }
         state.demoSnapshot = captureDemoSnapshot();
         state.demoMode = true;
         setDemoToggleState();
@@ -8613,6 +8683,7 @@
 
       function scheduleAutosave() {
         if (!state.autosaveReady || state.isHydrating || state.demoMode || !hasLiveViewAccess()) return;
+        if (state.saveInFlight) return;
         window.clearTimeout(state.autosaveTimer);
         setSaveStatus("Live sync pending...");
         state.autosaveTimer = window.setTimeout(() => {
@@ -8683,6 +8754,9 @@
           state.charts[key].update();
           return;
         }
+
+        const stale = window.Chart.getChart(canvas);
+        if (stale) stale.destroy();
 
         state.charts[key] = new Chart(context, {
           type,
@@ -11258,8 +11332,6 @@
       }
 
       function updateWeeklyCheckCharts(data) {
-        destroyChart("weeklyCheckBar");
-        destroyChart("weeklyCheckPie");
         renderCurrentFlowMap(data);
         renderCurrentLadder(data);
       }
@@ -12241,6 +12313,7 @@
           console.error(`Error saving ${fieldKey}:`, error);
           if (!silent) {
             setSaveStatus(`${label} saved locally. Live sync failed.`);
+            showErrorToast(`${label} sync failed — saved locally. Check your connection.`);
           }
           return false;
         }
@@ -12273,6 +12346,9 @@
               ? "Queued changes synced."
               : "Live sync failed. Changes remain local.",
           );
+          if (!allSynced) {
+            showErrorToast("Some queued changes failed to sync — they are saved locally and will retry.");
+          }
         }
         return allSynced;
       }
@@ -12685,6 +12761,7 @@
             });
         });
 
+        const isOverAlloc = totalPercent > 100 + 0.001;
         setText("investTotalsPercent", formatPercent(totalPercent, 2));
         setText("investTotalsAmount", formatCurrency(totalAmount, 2));
         setText(
@@ -12697,6 +12774,9 @@
           "investMobileTotalsPaycheckPercent",
           formatPercent(totalPaycheckPercent, 2),
         );
+        [$("investTotalsPercent"), $("investMobileTotalsPercent")].forEach((el) => {
+          if (el) el.classList.toggle("is-over-alloc", isOverAlloc);
+        });
         setText("liquidationLiquidMetric", formatCurrency(liquid, 0));
         setText("liquidationAssignedAmountMetric", formatCurrency(totalAmount, 0));
         setText(
@@ -12766,11 +12846,13 @@
 
         storePendingFieldValues(fieldIds);
         setSaveStatus(isAuto ? "Live syncing..." : "Syncing live data...");
+        state.saveInFlight = true;
 
         return supabaseClient
           .from(APP_FIELDS_TABLE)
           .upsert(payload, { onConflict: "user_id,key" })
           .then(({ error }) => {
+            state.saveInFlight = false;
             if (error) throw error;
             if (state.demoMode) {
               setSaveStatus("Demo mode is on. Live sync is paused.");
@@ -12789,12 +12871,14 @@
             }
           })
           .catch((error) => {
+            state.saveInFlight = false;
             console.error("Error saving inputs:", error);
             if (state.demoMode) {
               setSaveStatus("Demo mode is on. Live sync is paused.");
               return;
             }
             setSaveStatus("Live sync failed. Changes are saved locally.");
+            showErrorToast("Live sync failed — your changes are saved locally and will retry on next edit.");
           });
       }
 
@@ -13418,9 +13502,18 @@
         document.addEventListener("input", (event) => {
           const target = event.target;
           if (!(target instanceof HTMLInputElement)) return;
+          if (target.type === "number") target.classList.remove("input-bad");
           if (!isPersistableInput(target)) return;
           scheduleFieldSave([target.id]);
         });
+
+        document.addEventListener("blur", (event) => {
+          const target = event.target;
+          if (!(target instanceof HTMLInputElement) || target.type !== "number") return;
+          if (target.validity.badInput) {
+            target.classList.add("input-bad");
+          }
+        }, true);
 
         document.addEventListener("change", (event) => {
           const target = event.target;
