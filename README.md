@@ -2,6 +2,12 @@
 
 Single-page personal finance dashboard.
 
+## Cash Command 2.0 Prototype
+
+`cash-command-2.html` is a separate local-only household cashflow prototype. It
+uses browser `localStorage`, has no Supabase dependency, and does not replace the
+live `index.html` app while the new household monthly architecture is refined.
+
 ## Backend
 
 Live data writes use Supabase only. Live View requires a Supabase Auth session;

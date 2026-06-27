@@ -1,0 +1,2487 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cash Command 2.0</title>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f6f7f4;
+        --panel: #ffffff;
+        --panel-soft: #f9faf7;
+        --ink: #18231f;
+        --muted: #66736c;
+        --line: #dde4dc;
+        --line-strong: #c7d2ca;
+        --green: #2d6f4f;
+        --green-soft: #e5f1eb;
+        --blue: #235e88;
+        --blue-soft: #e7f0f7;
+        --amber: #a9681e;
+        --amber-soft: #f8eddf;
+        --red: #b23b3b;
+        --red-soft: #f8e8e6;
+        --text-on-dark: #ffffff;
+        --shadow: 0 14px 36px rgba(24, 35, 31, 0.08);
+        --radius: 8px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        min-height: 100%;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          linear-gradient(180deg, rgba(229, 241, 235, 0.65), rgba(246, 247, 244, 0) 320px),
+          var(--bg);
+        color: var(--ink);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        letter-spacing: 0;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      button {
+        border: 0;
+        cursor: pointer;
+      }
+
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+      }
+
+      .app-shell {
+        display: grid;
+        grid-template-columns: 292px minmax(0, 1fr);
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        padding: 18px;
+        border-right: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.84);
+        backdrop-filter: blur(18px);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        overflow-y: auto;
+      }
+
+      .brand {
+        display: grid;
+        gap: 8px;
+      }
+
+      .brand-kicker,
+      .eyebrow {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.74rem;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .brand-title {
+        margin: 0;
+        font-size: 1.55rem;
+        line-height: 1.05;
+        font-weight: 850;
+      }
+
+      .brand-pill {
+        justify-self: start;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        color: var(--green);
+        background: var(--green-soft);
+        font-size: 0.82rem;
+        font-weight: 800;
+      }
+
+      .context-panel,
+      .topbar,
+      .panel,
+      .metric-tile {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--panel);
+        box-shadow: var(--shadow);
+      }
+
+      .context-panel {
+        padding: 12px;
+        display: grid;
+        gap: 10px;
+        box-shadow: none;
+      }
+
+      .field {
+        display: grid;
+        gap: 6px;
+        min-width: 0;
+      }
+
+      .field label {
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 800;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        min-height: 40px;
+        border: 1px solid var(--line-strong);
+        border-radius: 7px;
+        background: #fff;
+        color: var(--ink);
+        padding: 9px 10px;
+        outline: none;
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 76px;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: var(--green);
+        box-shadow: 0 0 0 3px rgba(45, 111, 79, 0.14);
+      }
+
+      .input-prefix {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: center;
+        border: 1px solid var(--line-strong);
+        border-radius: 7px;
+        background: #fff;
+        overflow: hidden;
+      }
+
+      .input-prefix span {
+        padding-left: 10px;
+        color: var(--muted);
+        font-weight: 850;
+      }
+
+      .input-prefix input {
+        border: 0;
+        box-shadow: none;
+      }
+
+      .nav-list {
+        display: grid;
+        gap: 6px;
+      }
+
+      .nav-button {
+        width: 100%;
+        min-height: 42px;
+        padding: 0 10px;
+        border-radius: 7px;
+        background: transparent;
+        color: var(--muted);
+        display: grid;
+        grid-template-columns: 20px minmax(0, 1fr);
+        align-items: center;
+        gap: 10px;
+        text-align: left;
+        font-weight: 800;
+      }
+
+      .nav-button:hover,
+      .nav-button.is-active {
+        background: var(--ink);
+        color: var(--text-on-dark);
+      }
+
+      .nav-button svg,
+      .icon-button svg,
+      .text-button svg,
+      .primary-button svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .sidebar-metrics {
+        margin-top: auto;
+        display: grid;
+        gap: 8px;
+      }
+
+      .sidebar-stat {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 9px 10px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: var(--panel-soft);
+        font-size: 0.82rem;
+      }
+
+      .sidebar-stat span {
+        color: var(--muted);
+        font-weight: 750;
+      }
+
+      .sidebar-stat strong {
+        font-weight: 900;
+      }
+
+      main {
+        min-width: 0;
+        padding: 18px;
+      }
+
+      .topbar {
+        min-height: 74px;
+        padding: 14px 16px;
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: center;
+        box-shadow: none;
+      }
+
+      .topbar h1 {
+        margin: 3px 0 0;
+        font-size: 1.42rem;
+        line-height: 1.15;
+      }
+
+      .topbar-actions {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin: 14px 0;
+      }
+
+      .metric-tile {
+        min-height: 92px;
+        padding: 13px;
+        display: grid;
+        align-content: space-between;
+        gap: 8px;
+        box-shadow: none;
+      }
+
+      .metric-tile span {
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 850;
+      }
+
+      .metric-tile strong {
+        font-size: 1.45rem;
+        line-height: 1;
+      }
+
+      .metric-tile small {
+        color: var(--muted);
+        font-weight: 750;
+      }
+
+      .metric-tile[data-tone="good"] {
+        border-color: rgba(45, 111, 79, 0.26);
+        background: var(--green-soft);
+      }
+
+      .metric-tile[data-tone="warn"] {
+        border-color: rgba(169, 104, 30, 0.3);
+        background: var(--amber-soft);
+      }
+
+      .metric-tile[data-tone="bad"] {
+        border-color: rgba(178, 59, 59, 0.3);
+        background: var(--red-soft);
+      }
+
+      .tab-panel {
+        display: grid;
+        gap: 14px;
+      }
+
+      .panel {
+        padding: 14px;
+      }
+
+      .panel-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .panel-heading h2 {
+        margin: 3px 0 0;
+        font-size: 1.02rem;
+        line-height: 1.2;
+      }
+
+      .panel-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      .grid-two {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .grid-three {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(120px, 1fr));
+        gap: 10px;
+        align-items: end;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 760px;
+      }
+
+      th,
+      td {
+        padding: 9px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: middle;
+      }
+
+      th {
+        color: var(--muted);
+        background: var(--panel-soft);
+        font-size: 0.78rem;
+        font-weight: 900;
+      }
+
+      td {
+        font-size: 0.9rem;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      td input,
+      td select {
+        min-height: 36px;
+      }
+
+      .number-cell {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        font-weight: 850;
+      }
+
+      .text-button,
+      .primary-button,
+      .danger-button {
+        min-height: 38px;
+        padding: 0 11px;
+        border-radius: 7px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        font-weight: 850;
+        white-space: nowrap;
+      }
+
+      .text-button {
+        border: 1px solid var(--line-strong);
+        background: #fff;
+        color: var(--ink);
+      }
+
+      .text-button:hover {
+        background: var(--panel-soft);
+      }
+
+      .primary-button {
+        background: var(--green);
+        color: #fff;
+      }
+
+      .danger-button {
+        background: var(--red-soft);
+        color: var(--red);
+      }
+
+      .icon-button {
+        width: 36px;
+        height: 36px;
+        border-radius: 7px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--line-strong);
+        background: #fff;
+        color: var(--muted);
+      }
+
+      .icon-button:hover {
+        color: var(--red);
+        border-color: rgba(178, 59, 59, 0.32);
+        background: var(--red-soft);
+      }
+
+      .status-pill,
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 26px;
+        padding: 0 8px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: var(--panel-soft);
+        color: var(--muted);
+        font-size: 0.76rem;
+        font-weight: 850;
+        white-space: nowrap;
+      }
+
+      .status-pill[data-tone="good"],
+      .chip[data-tone="good"] {
+        border-color: rgba(45, 111, 79, 0.28);
+        color: var(--green);
+        background: var(--green-soft);
+      }
+
+      .status-pill[data-tone="warn"],
+      .chip[data-tone="warn"] {
+        border-color: rgba(169, 104, 30, 0.32);
+        color: var(--amber);
+        background: var(--amber-soft);
+      }
+
+      .status-pill[data-tone="bad"],
+      .chip[data-tone="bad"] {
+        border-color: rgba(178, 59, 59, 0.32);
+        color: var(--red);
+        background: var(--red-soft);
+      }
+
+      .timeline {
+        display: grid;
+        gap: 10px;
+      }
+
+      .timeline-track {
+        position: relative;
+        min-height: 124px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background:
+          linear-gradient(90deg, rgba(35, 94, 136, 0.08), transparent 42%),
+          #fff;
+        overflow: hidden;
+      }
+
+      .timeline-day {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background: rgba(102, 115, 108, 0.12);
+      }
+
+      .timeline-marker {
+        position: absolute;
+        top: 15px;
+        transform: translateX(-50%);
+        width: min(168px, 26vw);
+        display: grid;
+        justify-items: center;
+        gap: 5px;
+      }
+
+      .timeline-dot {
+        width: 14px;
+        height: 14px;
+        border: 3px solid #fff;
+        border-radius: 999px;
+        background: var(--blue);
+        box-shadow: 0 0 0 1px rgba(35, 94, 136, 0.36);
+      }
+
+      .timeline-label {
+        width: 100%;
+        padding: 7px 8px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: rgba(255, 255, 255, 0.94);
+        text-align: center;
+        box-shadow: 0 8px 18px rgba(24, 35, 31, 0.07);
+      }
+
+      .timeline-label strong,
+      .timeline-label span {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .timeline-label span {
+        color: var(--muted);
+        font-size: 0.76rem;
+        font-weight: 800;
+      }
+
+      .bar-list,
+      .wizard-list,
+      .card-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .bar-row {
+        display: grid;
+        grid-template-columns: minmax(120px, 1fr) minmax(160px, 2fr) 92px;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .bar-row strong {
+        overflow-wrap: anywhere;
+      }
+
+      .bar-track {
+        height: 12px;
+        border-radius: 999px;
+        background: var(--line);
+        overflow: hidden;
+      }
+
+      .bar-fill {
+        height: 100%;
+        border-radius: inherit;
+        background: var(--green);
+        min-width: 2px;
+      }
+
+      .bar-fill[data-tone="blue"] {
+        background: var(--blue);
+      }
+
+      .bar-fill[data-tone="amber"] {
+        background: var(--amber);
+      }
+
+      .bar-fill[data-tone="red"] {
+        background: var(--red);
+      }
+
+      .split-row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .mini-stat {
+        min-height: 72px;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: var(--panel-soft);
+        display: grid;
+        gap: 6px;
+      }
+
+      .mini-stat span {
+        color: var(--muted);
+        font-size: 0.76rem;
+        font-weight: 850;
+      }
+
+      .mini-stat strong {
+        font-size: 1.12rem;
+        line-height: 1;
+      }
+
+      .wizard-card {
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: var(--panel-soft);
+        padding: 11px;
+        display: grid;
+        grid-template-columns: 26px minmax(0, 1fr) auto;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .wizard-card input[type="checkbox"] {
+        width: 20px;
+        min-height: 20px;
+      }
+
+      .wizard-card strong,
+      .wizard-card span {
+        display: block;
+      }
+
+      .wizard-card span {
+        color: var(--muted);
+        font-size: 0.8rem;
+        font-weight: 750;
+      }
+
+      .empty-state {
+        min-height: 120px;
+        border: 1px dashed var(--line-strong);
+        border-radius: 7px;
+        display: grid;
+        place-items: center;
+        color: var(--muted);
+        text-align: center;
+        padding: 18px;
+        font-weight: 800;
+      }
+
+      .checkbox-cell {
+        text-align: center;
+      }
+
+      .checkbox-cell input,
+      .checkbox-field input {
+        width: 18px;
+        min-height: 18px;
+      }
+
+      .checkbox-field {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 0.84rem;
+        font-weight: 850;
+      }
+
+      .note {
+        color: var(--muted);
+        font-size: 0.84rem;
+        font-weight: 750;
+      }
+
+      .mobile-cards {
+        display: none;
+      }
+
+      @media (max-width: 1120px) {
+        .app-shell {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          position: static;
+          height: auto;
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .nav-list {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .sidebar-metrics {
+          margin-top: 0;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .summary-grid,
+        .grid-three {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 760px) {
+        main,
+        .sidebar {
+          padding: 12px;
+        }
+
+        .topbar,
+        .panel-heading {
+          display: grid;
+        }
+
+        .summary-grid,
+        .grid-two,
+        .grid-three,
+        .form-grid,
+        .split-row,
+        .sidebar-metrics,
+        .nav-list {
+          grid-template-columns: 1fr;
+        }
+
+        .metric-tile {
+          min-height: 78px;
+        }
+
+        .bar-row {
+          grid-template-columns: 1fr;
+        }
+
+        .panel {
+          padding: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <p class="brand-kicker">Household Finance</p>
+          <h1 class="brand-title">Cash Command 2.0</h1>
+          <span class="brand-pill">
+            <i data-lucide="hard-drive" aria-hidden="true"></i>
+            Local prototype
+          </span>
+        </div>
+
+        <div class="context-panel">
+          <div class="field">
+            <label for="selectedMonth">Plan Month</label>
+            <input id="selectedMonth" type="month" data-state-field="selectedMonth" />
+          </div>
+          <div class="field">
+            <label for="anchorDate">As-Of Date</label>
+            <input id="anchorDate" type="date" data-state-field="anchorDate" />
+          </div>
+        </div>
+
+        <nav class="nav-list" id="tabNav" aria-label="Cash Command 2.0 sections"></nav>
+
+        <div class="sidebar-metrics" id="sidebarMetrics"></div>
+      </aside>
+
+      <main>
+        <header class="topbar">
+          <div>
+            <p class="eyebrow" id="activeTabKicker">Model</p>
+            <h1 id="activeTabTitle">Income Timing</h1>
+          </div>
+          <div class="topbar-actions">
+            <button class="text-button" type="button" data-action="set-today" title="Use today as the as-of date">
+              <i data-lucide="calendar-check" aria-hidden="true"></i>
+              Today
+            </button>
+            <button class="danger-button" type="button" data-action="reset-local" title="Reset Cash Command 2.0 local data">
+              <i data-lucide="rotate-ccw" aria-hidden="true"></i>
+              Reset Local 2.0
+            </button>
+          </div>
+        </header>
+
+        <section class="summary-grid" id="summaryGrid" aria-label="Monthly summary"></section>
+        <section class="tab-panel" id="tabContent"></section>
+      </main>
+    </div>
+
+    <script>
+      const STORAGE_KEY = "cashCommand2LocalState";
+      const MONEY_DIGITS = 0;
+
+      const tabs = [
+        { id: "income", label: "Income Timing", icon: "calendar-days", kicker: "Income Model" },
+        { id: "plan", label: "Monthly Plan", icon: "layout-dashboard", kicker: "Forward Plan" },
+        { id: "reserves", label: "Scheduled Reserves", icon: "landmark", kicker: "Timing Reserve" },
+        { id: "current", label: "Current Cash", icon: "wallet-cards", kicker: "Real Snapshot" },
+        { id: "weekly", label: "Weekly Budget", icon: "shopping-basket", kicker: "Household Spend" },
+        { id: "map", label: "Money Map", icon: "route", kicker: "Deployable Plan" },
+        { id: "deploy", label: "Deployment", icon: "list-checks", kicker: "Paycheck Wizard" },
+      ];
+
+      const defaultState = () => ({
+        activeTab: "income",
+        selectedMonth: toMonthKey(new Date()),
+        anchorDate: toDateKey(new Date()),
+        reserveFloor: 4000,
+        weeklyBudgetPercent: 30,
+        weekStartsOn: 1,
+        partnerAName: "Husband",
+        partnerBName: "Wife",
+        partnerAPercent: 4,
+        partnerBPercent: 4,
+        activeDeploymentEventId: "",
+        incomeSources: [
+          {
+            id: "income-primary",
+            label: "Primary Paycheck",
+            amount: 2574,
+            cadence: "semimonthly",
+            monthlyDay: 15,
+            active: true,
+          },
+          {
+            id: "income-monthly",
+            label: "Monthly Income",
+            amount: 0,
+            cadence: "monthly",
+            monthlyDay: 1,
+            active: true,
+          },
+        ],
+        expenses: [
+          { id: "expense-rent", label: "Rent", amount: 2500, dueDay: 1, category: "Home", active: true, paid: false },
+          { id: "expense-utilities", label: "Utilities", amount: 260, dueDay: 18, category: "Home", active: true, paid: false },
+          { id: "expense-insurance", label: "Insurance", amount: 180, dueDay: 25, category: "Insurance", active: true, paid: false },
+          { id: "expense-subscriptions", label: "Subscriptions", amount: 95, dueDay: 10, category: "Services", active: true, paid: false },
+        ],
+        bankAccounts: [
+          { id: "bank-checking", label: "Checking", balance: 0 },
+          { id: "bank-savings", label: "Savings", balance: 0 },
+        ],
+        cards: [
+          { id: "card-main", label: "Primary Card", balance: 0, dueDay: 20 },
+        ],
+        weeklyTransactions: [],
+        moneyMapChannels: [
+          { id: "channel-reserve", label: "Reserve Top-Off", percent: 30, role: "Cash" },
+          { id: "channel-invest", label: "Investments", percent: 40, role: "Growth" },
+          { id: "channel-goals", label: "Household Goals", percent: 20, role: "Goal" },
+          { id: "channel-giving", label: "Giving", percent: 10, role: "Optional" },
+        ],
+        deploymentLog: {},
+      });
+
+      let state = normalizeState(loadState());
+
+      function loadState() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+          return saved && typeof saved === "object"
+            ? mergeState(defaultState(), saved)
+            : defaultState();
+        } catch (error) {
+          console.error("Could not load Cash Command 2.0 state", error);
+          return defaultState();
+        }
+      }
+
+      function mergeState(base, saved) {
+        const merged = { ...base, ...saved };
+        [
+          "incomeSources",
+          "expenses",
+          "bankAccounts",
+          "cards",
+          "weeklyTransactions",
+          "moneyMapChannels",
+        ].forEach((key) => {
+          if (!Array.isArray(saved[key])) merged[key] = base[key];
+        });
+        merged.deploymentLog =
+          saved.deploymentLog && typeof saved.deploymentLog === "object"
+            ? saved.deploymentLog
+            : base.deploymentLog;
+        return merged;
+      }
+
+      function normalizeState(nextState) {
+        const normalized = { ...defaultState(), ...nextState };
+        normalized.selectedMonth = normalized.selectedMonth || toMonthKey(new Date());
+        normalized.anchorDate = normalized.anchorDate || toDateKey(new Date());
+        normalized.reserveFloor = toNumber(normalized.reserveFloor);
+        normalized.weeklyBudgetPercent = toNumber(normalized.weeklyBudgetPercent);
+        normalized.partnerAPercent = toNumber(normalized.partnerAPercent);
+        normalized.partnerBPercent = toNumber(normalized.partnerBPercent);
+        normalized.weekStartsOn = Number.isFinite(Number(normalized.weekStartsOn))
+          ? Number(normalized.weekStartsOn)
+          : 1;
+        normalized.incomeSources = normalized.incomeSources.map((source) => ({
+          id: source.id || uid("income"),
+          label: source.label || "Income",
+          amount: toNumber(source.amount),
+          cadence: source.cadence === "monthly" ? "monthly" : "semimonthly",
+          monthlyDay: clampDay(source.monthlyDay || 1),
+          active: source.active !== false,
+        }));
+        normalized.expenses = normalized.expenses.map((expense) => ({
+          id: expense.id || uid("expense"),
+          label: expense.label || "Expense",
+          amount: toNumber(expense.amount),
+          dueDay: clampDay(expense.dueDay || 1),
+          category: expense.category || "General",
+          active: expense.active !== false,
+          paid: Boolean(expense.paid),
+        }));
+        normalized.bankAccounts = normalized.bankAccounts.map((account) => ({
+          id: account.id || uid("bank"),
+          label: account.label || "Account",
+          balance: toNumber(account.balance),
+        }));
+        normalized.cards = normalized.cards.map((card) => ({
+          id: card.id || uid("card"),
+          label: card.label || "Card",
+          balance: toNumber(card.balance),
+          dueDay: clampDay(card.dueDay || 1),
+        }));
+        normalized.moneyMapChannels = normalized.moneyMapChannels.map((channel) => ({
+          id: channel.id || uid("channel"),
+          label: channel.label || "Channel",
+          percent: toNumber(channel.percent),
+          role: channel.role || "",
+        }));
+        normalized.weeklyTransactions = normalized.weeklyTransactions.map((transaction) => ({
+          id: transaction.id || uid("txn"),
+          date: transaction.date || normalized.anchorDate,
+          amount: toNumber(transaction.amount),
+          category: transaction.category || "Household",
+          note: transaction.note || "",
+        }));
+        if (!tabs.some((tab) => tab.id === normalized.activeTab)) {
+          normalized.activeTab = "income";
+        }
+        return normalized;
+      }
+
+      function saveState() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      }
+
+      function uid(prefix) {
+        return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+      }
+
+      function $(id) {
+        return document.getElementById(id);
+      }
+
+      function toNumber(value) {
+        const parsed = parseFloat(String(value ?? "").replace(/,/g, ""));
+        return Number.isFinite(parsed) ? parsed : 0;
+      }
+
+      function clampDay(value) {
+        const day = Math.round(toNumber(value));
+        return Math.min(Math.max(day || 1, 1), 31);
+      }
+
+      function toDateKey(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      }
+
+      function toMonthKey(date) {
+        return toDateKey(date).slice(0, 7);
+      }
+
+      function parseDateKey(dateKey) {
+        return new Date(`${dateKey}T12:00:00`);
+      }
+
+      function monthParts(monthKey) {
+        const [year, month] = String(monthKey).split("-").map(Number);
+        return { year, month: month - 1 };
+      }
+
+      function daysInMonth(monthKey) {
+        const { year, month } = monthParts(monthKey);
+        return new Date(year, month + 1, 0).getDate();
+      }
+
+      function dateForMonthDay(monthKey, day) {
+        const { year, month } = monthParts(monthKey);
+        return new Date(year, month, Math.min(clampDay(day), daysInMonth(monthKey)), 12);
+      }
+
+      function lastDayOfMonth(monthKey) {
+        const { year, month } = monthParts(monthKey);
+        return new Date(year, month + 1, 0, 12);
+      }
+
+      function fridayBeforeWeekend(date) {
+        const adjusted = new Date(date);
+        const day = adjusted.getDay();
+        if (day === 6) adjusted.setDate(adjusted.getDate() - 1);
+        if (day === 0) adjusted.setDate(adjusted.getDate() - 2);
+        return adjusted;
+      }
+
+      function formatMoney(value, digits = MONEY_DIGITS) {
+        return new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+          minimumFractionDigits: digits,
+          maximumFractionDigits: digits,
+        }).format(Number.isFinite(value) ? value : 0);
+      }
+
+      function formatPercent(value, digits = 1) {
+        return `${(Number.isFinite(value) ? value : 0).toFixed(digits)}%`;
+      }
+
+      function formatShortDate(dateKey) {
+        return parseDateKey(dateKey).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+        });
+      }
+
+      function formatLongDate(dateKey) {
+        return parseDateKey(dateKey).toLocaleDateString("en-US", {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+        });
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function sum(items, getter = (item) => item) {
+        return items.reduce((total, item) => total + toNumber(getter(item)), 0);
+      }
+
+      function renderIcon(name) {
+        return `<i data-lucide="${name}" aria-hidden="true"></i>`;
+      }
+
+      function getIncomeEvents(monthKey = state.selectedMonth) {
+        const events = [];
+        state.incomeSources
+          .filter((source) => source.active)
+          .forEach((source) => {
+            const dates =
+              source.cadence === "monthly"
+                ? [dateForMonthDay(monthKey, source.monthlyDay)]
+                : [dateForMonthDay(monthKey, 15), lastDayOfMonth(monthKey)];
+            dates.forEach((rawDate, index) => {
+              const date = fridayBeforeWeekend(rawDate);
+              events.push({
+                id: `${source.id}:${toDateKey(date)}:${index}`,
+                sourceId: source.id,
+                label:
+                  source.cadence === "monthly"
+                    ? source.label
+                    : `${source.label} ${index + 1}`,
+                sourceLabel: source.label,
+                cadence: source.cadence,
+                date: toDateKey(date),
+                amount: toNumber(source.amount),
+                sequence: index + 1,
+              });
+            });
+          });
+        return events.sort((a, b) => a.date.localeCompare(b.date));
+      }
+
+      function getWeekRange(anchorDate = state.anchorDate) {
+        const date = parseDateKey(anchorDate);
+        const start = new Date(date);
+        const startsOn = Number(state.weekStartsOn);
+        const diff = (start.getDay() - startsOn + 7) % 7;
+        start.setDate(start.getDate() - diff);
+        const end = new Date(start);
+        end.setDate(start.getDate() + 6);
+        return { start: toDateKey(start), end: toDateKey(end) };
+      }
+
+      function isWithinRange(dateKey, start, end) {
+        return dateKey >= start && dateKey <= end;
+      }
+
+      function getReserveModel(events, monthKey, asOfDate) {
+        const eventReserveTotals = {};
+        const eventExpenseLines = {};
+        let openingReserve = 0;
+        const schedules = state.expenses
+          .filter((expense) => expense.active)
+          .map((expense) => {
+            const dueDate = toDateKey(dateForMonthDay(monthKey, expense.dueDay));
+            const eligibleEvents = events.filter((event) => event.date <= dueDate);
+            const totalEligibleIncome = sum(eligibleEvents, (event) => event.amount);
+            let allocations = [];
+            let currentReserve = 0;
+
+            if (!eligibleEvents.length || totalEligibleIncome <= 0) {
+              openingReserve += expense.amount;
+              currentReserve = expense.paid ? 0 : expense.amount;
+              allocations = [
+                {
+                  id: "opening",
+                  label: "Opening cash",
+                  date: toDateKey(dateForMonthDay(monthKey, 1)),
+                  amount: expense.amount,
+                },
+              ];
+            } else {
+              let allocated = 0;
+              allocations = eligibleEvents.map((event, index) => {
+                const amount =
+                  index === eligibleEvents.length - 1
+                    ? expense.amount - allocated
+                    : expense.amount * (event.amount / totalEligibleIncome);
+                allocated += amount;
+                eventReserveTotals[event.id] = (eventReserveTotals[event.id] || 0) + amount;
+                eventExpenseLines[event.id] = eventExpenseLines[event.id] || [];
+                eventExpenseLines[event.id].push({
+                  label: expense.label,
+                  dueDate,
+                  amount,
+                });
+                return {
+                  id: event.id,
+                  label: event.label,
+                  date: event.date,
+                  amount,
+                };
+              });
+
+              if (expense.paid) {
+                currentReserve = 0;
+              } else if (dueDate <= asOfDate) {
+                currentReserve = expense.amount;
+              } else {
+                currentReserve = sum(
+                  allocations.filter((allocation) => allocation.date <= asOfDate),
+                  (allocation) => allocation.amount,
+                );
+              }
+            }
+
+            return {
+              expense,
+              dueDate,
+              allocations,
+              currentReserve,
+            };
+          });
+
+        return {
+          schedules,
+          eventReserveTotals,
+          eventExpenseLines,
+          openingReserve,
+          currentReserveTotal: sum(schedules, (schedule) => schedule.currentReserve),
+          monthlyExpenseTotal: sum(
+            state.expenses.filter((expense) => expense.active),
+            (expense) => expense.amount,
+          ),
+        };
+      }
+
+      function buildModel() {
+        const monthKey = state.selectedMonth;
+        const anchorDate = state.anchorDate;
+        const events = getIncomeEvents(monthKey);
+        const totalIncome = sum(events, (event) => event.amount);
+        const reserveModel = getReserveModel(events, monthKey, anchorDate);
+        const weeksInMonth = daysInMonth(monthKey) / 7;
+        const weeklyMonthlyPool = totalIncome * (state.weeklyBudgetPercent / 100);
+        const weeklyTarget = weeksInMonth > 0 ? weeklyMonthlyPool / weeksInMonth : 0;
+        const totalFunPercent = state.partnerAPercent + state.partnerBPercent;
+        const eventsPlan = events.map((event) => {
+          const incomeShare = totalIncome > 0 ? event.amount / totalIncome : 0;
+          const reserveContribution = reserveModel.eventReserveTotals[event.id] || 0;
+          const weeklyShare = weeklyMonthlyPool * incomeShare;
+          const partnerA = event.amount * (state.partnerAPercent / 100);
+          const partnerB = event.amount * (state.partnerBPercent / 100);
+          const funTotal = partnerA + partnerB;
+          const deployable = event.amount - reserveContribution - weeklyShare - funTotal;
+          return {
+            ...event,
+            incomeShare,
+            reserveContribution,
+            weeklyShare,
+            partnerA,
+            partnerB,
+            funTotal,
+            deployable,
+          };
+        });
+
+        const monthlyFun = sum(eventsPlan, (event) => event.funTotal);
+        const monthlyDeployable = sum(eventsPlan, (event) => event.deployable);
+        const positiveDeployable = Math.max(monthlyDeployable, 0);
+        const receivedEvents = eventsPlan.filter((event) => event.date <= anchorDate);
+        const plannedFunToDate = sum(receivedEvents, (event) => event.funTotal);
+        const cashTotal = sum(state.bankAccounts, (account) => account.balance);
+        const cardDebt = sum(state.cards, (card) => card.balance);
+        const protectedNeed = state.reserveFloor + reserveModel.currentReserveTotal;
+        const cashAfterCards = cashTotal - cardDebt;
+        const cashAboveProtection = cashAfterCards - protectedNeed;
+        const funAvailableNow = Math.min(plannedFunToDate, Math.max(cashAboveProtection, 0));
+        const funCompressed = Math.max(plannedFunToDate - funAvailableNow, 0);
+        const reservePressure = Math.max(protectedNeed - cashAfterCards, 0);
+        const freeCash = Math.max(cashAboveProtection - plannedFunToDate, 0);
+        const weekRange = getWeekRange(anchorDate);
+        const weeklyRows = state.weeklyTransactions.filter((transaction) =>
+          isWithinRange(transaction.date, weekRange.start, weekRange.end),
+        );
+        const weeklySpent = sum(weeklyRows, (transaction) => transaction.amount);
+        const channelPercentTotal = sum(state.moneyMapChannels, (channel) => channel.percent);
+
+        return {
+          monthKey,
+          anchorDate,
+          events,
+          eventsPlan,
+          totalIncome,
+          reserveModel,
+          weeksInMonth,
+          weeklyMonthlyPool,
+          weeklyTarget,
+          monthlyFun,
+          totalFunPercent,
+          monthlyDeployable,
+          positiveDeployable,
+          cashTotal,
+          cardDebt,
+          protectedNeed,
+          cashAfterCards,
+          cashAboveProtection,
+          plannedFunToDate,
+          funAvailableNow,
+          funCompressed,
+          reservePressure,
+          freeCash,
+          weekRange,
+          weeklyRows,
+          weeklySpent,
+          weeklyRemaining: weeklyTarget - weeklySpent,
+          channelPercentTotal,
+        };
+      }
+
+      function render() {
+        state = normalizeState(state);
+        const model = buildModel();
+        renderShell(model);
+        renderActiveTab(model);
+        $("selectedMonth").value = state.selectedMonth;
+        $("anchorDate").value = state.anchorDate;
+        if (window.lucide) window.lucide.createIcons();
+      }
+
+      function renderShell(model) {
+        const activeTab = tabs.find((tab) => tab.id === state.activeTab) || tabs[0];
+        $("activeTabKicker").textContent = activeTab.kicker;
+        $("activeTabTitle").textContent = activeTab.label;
+        $("tabNav").innerHTML = tabs
+          .map(
+            (tab) => `
+              <button
+                class="nav-button ${tab.id === state.activeTab ? "is-active" : ""}"
+                type="button"
+                data-tab="${tab.id}"
+              >
+                ${renderIcon(tab.icon)}
+                <span>${escapeHtml(tab.label)}</span>
+              </button>
+            `,
+          )
+          .join("");
+        $("sidebarMetrics").innerHTML = `
+          <div class="sidebar-stat"><span>Income</span><strong>${formatMoney(model.totalIncome)}</strong></div>
+          <div class="sidebar-stat"><span>Plan Deploy</span><strong>${formatMoney(model.positiveDeployable)}</strong></div>
+          <div class="sidebar-stat"><span>Reserve Now</span><strong>${formatMoney(model.reserveModel.currentReserveTotal)}</strong></div>
+          <div class="sidebar-stat"><span>Free Cash</span><strong>${formatMoney(model.freeCash)}</strong></div>
+        `;
+        $("summaryGrid").innerHTML = `
+          ${metricTile("Monthly Income", model.totalIncome, `${model.events.length} paycheck events`, "good")}
+          ${metricTile("Scheduled Reserves", model.reserveModel.currentReserveTotal, "As-of target", model.reserveModel.currentReserveTotal ? "warn" : "")}
+          ${metricTile("Planned Deployable", model.positiveDeployable, `${formatPercent(model.channelPercentTotal, 0)} mapped`, model.monthlyDeployable >= 0 ? "good" : "bad")}
+          ${metricTile("Current Free Cash", model.freeCash, model.reservePressure ? `${formatMoney(model.reservePressure)} pressure` : "After cards, reserves, fun", model.reservePressure ? "bad" : "good")}
+        `;
+      }
+
+      function metricTile(label, value, detail, tone = "") {
+        return `
+          <article class="metric-tile" ${tone ? `data-tone="${tone}"` : ""}>
+            <span>${escapeHtml(label)}</span>
+            <strong>${formatMoney(value)}</strong>
+            <small>${escapeHtml(detail)}</small>
+          </article>
+        `;
+      }
+
+      function renderActiveTab(model) {
+        const content = $("tabContent");
+        if (state.activeTab === "income") content.innerHTML = renderIncomeTab(model);
+        if (state.activeTab === "plan") content.innerHTML = renderPlanTab(model);
+        if (state.activeTab === "reserves") content.innerHTML = renderReservesTab(model);
+        if (state.activeTab === "current") content.innerHTML = renderCurrentTab(model);
+        if (state.activeTab === "weekly") content.innerHTML = renderWeeklyTab(model);
+        if (state.activeTab === "map") content.innerHTML = renderMoneyMapTab(model);
+        if (state.activeTab === "deploy") content.innerHTML = renderDeploymentTab(model);
+      }
+
+      function renderIncomeTab(model) {
+        return `
+          <section class="grid-two">
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Sources</p>
+                  <h2>Household Income</h2>
+                </div>
+                <button class="text-button" type="button" data-action="add-income">
+                  ${renderIcon("plus")}
+                  Add Income
+                </button>
+              </div>
+              <div class="table-wrap desktop-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Income</th>
+                      <th>Amount</th>
+                      <th>Cadence</th>
+                      <th>Monthly Day</th>
+                      <th>Active</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${state.incomeSources.map(renderIncomeRow).join("")}
+                  </tbody>
+                </table>
+              </div>
+              <div class="mobile-cards">${state.incomeSources.map(renderIncomeCard).join("")}</div>
+            </article>
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Friday Rule</p>
+                  <h2>Paycheck Calendar</h2>
+                </div>
+                <span class="status-pill" data-tone="good">Weekend pays move to Friday</span>
+              </div>
+              ${renderTimeline(model)}
+            </article>
+          </section>
+
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Month Events</p>
+                <h2>Income Event List</h2>
+              </div>
+              <span class="status-pill">${formatMoney(model.totalIncome)} total</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Income</th>
+                    <th>Amount</th>
+                    <th>Income Share</th>
+                    <th>Plan Role</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${model.eventsPlan
+                    .map(
+                      (event) => `
+                        <tr>
+                          <td>${formatLongDate(event.date)}</td>
+                          <td>${escapeHtml(event.label)}</td>
+                          <td class="number-cell">${formatMoney(event.amount)}</td>
+                          <td class="number-cell">${formatPercent(event.incomeShare * 100)}</td>
+                          <td><span class="chip">${event.cadence === "monthly" ? "Monthly" : "15th + last"}</span></td>
+                        </tr>
+                      `,
+                    )
+                    .join("")}
+                </tbody>
+              </table>
+            </div>
+          </article>
+        `;
+      }
+
+      function renderIncomeRow(source) {
+        return `
+          <tr>
+            <td><input value="${escapeHtml(source.label)}" data-collection="incomeSources" data-id="${source.id}" data-key="label" /></td>
+            <td><div class="input-prefix"><span>$</span><input type="number" min="0" step="0.01" value="${source.amount}" data-collection="incomeSources" data-id="${source.id}" data-key="amount" /></div></td>
+            <td>
+              <select data-collection="incomeSources" data-id="${source.id}" data-key="cadence">
+                <option value="semimonthly" ${source.cadence === "semimonthly" ? "selected" : ""}>15th and last</option>
+                <option value="monthly" ${source.cadence === "monthly" ? "selected" : ""}>Monthly</option>
+              </select>
+            </td>
+            <td><input type="number" min="1" max="31" value="${source.monthlyDay}" ${source.cadence === "semimonthly" ? "disabled" : ""} data-collection="incomeSources" data-id="${source.id}" data-key="monthlyDay" /></td>
+            <td class="checkbox-cell"><input type="checkbox" ${source.active ? "checked" : ""} data-collection="incomeSources" data-id="${source.id}" data-key="active" /></td>
+            <td class="number-cell">
+              <button class="icon-button" type="button" data-action="remove-income" data-id="${source.id}" title="Remove income">
+                ${renderIcon("trash-2")}
+              </button>
+            </td>
+          </tr>
+        `;
+      }
+
+      function renderIncomeCard(source) {
+        return `
+          <article class="mini-stat">
+            <strong>${escapeHtml(source.label)}</strong>
+            <span>${formatMoney(source.amount)} · ${source.cadence === "monthly" ? `Day ${source.monthlyDay}` : "15th + last"}</span>
+          </article>
+        `;
+      }
+
+      function renderTimeline(model) {
+        const days = daysInMonth(model.monthKey);
+        const dayLines = Array.from({ length: days }, (_, index) => {
+          const left = ((index + 0.5) / days) * 100;
+          return `<span class="timeline-day" style="left: ${left}%"></span>`;
+        }).join("");
+        const markers = model.events
+          .map((event) => {
+            const day = parseDateKey(event.date).getDate();
+            const left = ((day - 0.5) / days) * 100;
+            return `
+              <div class="timeline-marker" style="left: ${left}%">
+                <span class="timeline-dot"></span>
+                <div class="timeline-label">
+                  <strong>${formatMoney(event.amount)}</strong>
+                  <span>${escapeHtml(event.label)}</span>
+                  <span>${formatShortDate(event.date)}</span>
+                </div>
+              </div>
+            `;
+          })
+          .join("");
+        return `<div class="timeline"><div class="timeline-track">${dayLines}${markers}</div></div>`;
+      }
+
+      function renderPlanTab(model) {
+        return `
+          <section class="grid-three">
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Protection</p>
+                  <h2>Reserve Floor</h2>
+                </div>
+              </div>
+              <div class="field">
+                <label for="reserveFloor">Household Reserve Floor</label>
+                <div class="input-prefix">
+                  <span>$</span>
+                  <input id="reserveFloor" type="number" min="0" step="1" value="${state.reserveFloor}" data-state-field="reserveFloor" />
+                </div>
+              </div>
+            </article>
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Weekly</p>
+                  <h2>Household Budget</h2>
+                </div>
+                <button class="text-button" type="button" data-action="sync-weekly-400" title="Set percentage from a $400 weekly target">
+                  ${renderIcon("equal")}
+                  $400/wk
+                </button>
+              </div>
+              <div class="field">
+                <label for="weeklyBudgetPercent">Percent Of Monthly Income</label>
+                <input id="weeklyBudgetPercent" type="number" min="0" step="0.1" value="${state.weeklyBudgetPercent}" data-state-field="weeklyBudgetPercent" />
+              </div>
+              <p class="note">${formatMoney(model.weeklyTarget)} per average week</p>
+            </article>
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Fun Money</p>
+                  <h2>Split By Paycheck</h2>
+                </div>
+              </div>
+              <div class="split-row">
+                <div class="field">
+                  <label for="partnerAName">Partner A</label>
+                  <input id="partnerAName" value="${escapeHtml(state.partnerAName)}" data-state-field="partnerAName" />
+                </div>
+                <div class="field">
+                  <label for="partnerAPercent">Percent</label>
+                  <input id="partnerAPercent" type="number" min="0" step="0.1" value="${state.partnerAPercent}" data-state-field="partnerAPercent" />
+                </div>
+                <div class="field">
+                  <label for="partnerBName">Partner B</label>
+                  <input id="partnerBName" value="${escapeHtml(state.partnerBName)}" data-state-field="partnerBName" />
+                </div>
+                <div class="field">
+                  <label for="partnerBPercent">Percent</label>
+                  <input id="partnerBPercent" type="number" min="0" step="0.1" value="${state.partnerBPercent}" data-state-field="partnerBPercent" />
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Expenses</p>
+                <h2>Monthly Expense Timing</h2>
+              </div>
+              <button class="text-button" type="button" data-action="add-expense">
+                ${renderIcon("plus")}
+                Add Expense
+              </button>
+            </div>
+            <div class="table-wrap desktop-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Expense</th>
+                    <th>Amount</th>
+                    <th>Due Day</th>
+                    <th>Category</th>
+                    <th>Active</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>${state.expenses.map(renderExpenseRow).join("")}</tbody>
+              </table>
+            </div>
+            <div class="mobile-cards">${state.expenses.map(renderExpenseCard).join("")}</div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Paycheck Slices</p>
+                <h2>Monthly Plan By Income Event</h2>
+              </div>
+              <span class="status-pill" data-tone="${model.monthlyDeployable >= 0 ? "good" : "bad"}">${formatMoney(model.monthlyDeployable)} deployable</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Income</th>
+                    <th>Reserves</th>
+                    <th>Weekly Budget</th>
+                    <th>Fun Money</th>
+                    <th>Deployable</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${model.eventsPlan.map(renderPlanEventRow).join("")}
+                </tbody>
+              </table>
+            </div>
+          </article>
+        `;
+      }
+
+      function renderExpenseRow(expense) {
+        return `
+          <tr>
+            <td><input value="${escapeHtml(expense.label)}" data-collection="expenses" data-id="${expense.id}" data-key="label" /></td>
+            <td><div class="input-prefix"><span>$</span><input type="number" min="0" step="0.01" value="${expense.amount}" data-collection="expenses" data-id="${expense.id}" data-key="amount" /></div></td>
+            <td><input type="number" min="1" max="31" value="${expense.dueDay}" data-collection="expenses" data-id="${expense.id}" data-key="dueDay" /></td>
+            <td><input value="${escapeHtml(expense.category)}" data-collection="expenses" data-id="${expense.id}" data-key="category" /></td>
+            <td class="checkbox-cell"><input type="checkbox" ${expense.active ? "checked" : ""} data-collection="expenses" data-id="${expense.id}" data-key="active" /></td>
+            <td class="number-cell">
+              <button class="icon-button" type="button" data-action="remove-expense" data-id="${expense.id}" title="Remove expense">
+                ${renderIcon("trash-2")}
+              </button>
+            </td>
+          </tr>
+        `;
+      }
+
+      function renderExpenseCard(expense) {
+        return `
+          <article class="mini-stat">
+            <strong>${escapeHtml(expense.label)}</strong>
+            <span>${formatMoney(expense.amount)} · due day ${expense.dueDay} · ${escapeHtml(expense.category)}</span>
+          </article>
+        `;
+      }
+
+      function renderPlanEventRow(event) {
+        return `
+          <tr>
+            <td>${formatLongDate(event.date)}</td>
+            <td>
+              <strong>${escapeHtml(event.label)}</strong>
+              <div class="note">${formatMoney(event.amount)}</div>
+            </td>
+            <td class="number-cell">${formatMoney(event.reserveContribution)}</td>
+            <td class="number-cell">${formatMoney(event.weeklyShare)}</td>
+            <td class="number-cell">${formatMoney(event.funTotal)}</td>
+            <td class="number-cell">${formatMoney(event.deployable)}</td>
+          </tr>
+        `;
+      }
+
+      function renderReservesTab(model) {
+        const maxReserve = Math.max(...model.eventsPlan.map((event) => event.reserveContribution), 1);
+        return `
+          <section class="grid-two">
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">As-Of Target</p>
+                  <h2>Reserve Status</h2>
+                </div>
+                <span class="status-pill">${formatLongDate(model.anchorDate)}</span>
+              </div>
+              <div class="grid-three">
+                <div class="mini-stat">
+                  <span>Monthly Expenses</span>
+                  <strong>${formatMoney(model.reserveModel.monthlyExpenseTotal)}</strong>
+                </div>
+                <div class="mini-stat">
+                  <span>Reserved Now</span>
+                  <strong>${formatMoney(model.reserveModel.currentReserveTotal)}</strong>
+                </div>
+                <div class="mini-stat">
+                  <span>Opening Cash Need</span>
+                  <strong>${formatMoney(model.reserveModel.openingReserve)}</strong>
+                </div>
+              </div>
+            </article>
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Paycheck Load</p>
+                  <h2>Reserve Contributions</h2>
+                </div>
+              </div>
+              <div class="bar-list">
+                ${model.eventsPlan
+                  .map(
+                    (event) => `
+                      <div class="bar-row">
+                        <strong>${formatShortDate(event.date)}</strong>
+                        <div class="bar-track">
+                          <div class="bar-fill" data-tone="blue" style="width: ${(event.reserveContribution / maxReserve) * 100}%"></div>
+                        </div>
+                        <span class="number-cell">${formatMoney(event.reserveContribution)}</span>
+                      </div>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+          </section>
+
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Expense Funding</p>
+                <h2>Due Date Reserve Map</h2>
+              </div>
+              <span class="status-pill" data-tone="good">Timing calculated from paychecks</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Expense</th>
+                    <th>Due Date</th>
+                    <th>Current Target</th>
+                    <th>Funding Events</th>
+                    <th>Paid</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${model.reserveModel.schedules.map(renderReserveScheduleRow).join("")}
+                </tbody>
+              </table>
+            </div>
+          </article>
+        `;
+      }
+
+      function renderReserveScheduleRow(schedule) {
+        const chips = schedule.allocations
+          .map(
+            (allocation) => `
+              <span class="chip">
+                ${escapeHtml(allocation.label)} · ${formatMoney(allocation.amount)}
+              </span>
+            `,
+          )
+          .join(" ");
+        return `
+          <tr>
+            <td>
+              <strong>${escapeHtml(schedule.expense.label)}</strong>
+              <div class="note">${escapeHtml(schedule.expense.category)}</div>
+            </td>
+            <td>${formatLongDate(schedule.dueDate)}</td>
+            <td class="number-cell">${formatMoney(schedule.currentReserve)}</td>
+            <td>${chips}</td>
+            <td class="checkbox-cell"><input type="checkbox" ${schedule.expense.paid ? "checked" : ""} data-collection="expenses" data-id="${schedule.expense.id}" data-key="paid" /></td>
+          </tr>
+        `;
+      }
+
+      function renderCurrentTab(model) {
+        return `
+          <section class="grid-two">
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Bank</p>
+                  <h2>Cash Accounts</h2>
+                </div>
+                <button class="text-button" type="button" data-action="add-bank">
+                  ${renderIcon("plus")}
+                  Add Account
+                </button>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>Account</th><th>Balance</th><th></th></tr>
+                  </thead>
+                  <tbody>${state.bankAccounts.map(renderBankRow).join("")}</tbody>
+                </table>
+              </div>
+            </article>
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Cards As Debit</p>
+                  <h2>Current Balances</h2>
+                </div>
+                <button class="text-button" type="button" data-action="add-card">
+                  ${renderIcon("plus")}
+                  Add Card
+                </button>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>Card</th><th>Balance</th><th>Due Day</th><th></th></tr>
+                  </thead>
+                  <tbody>${state.cards.map(renderCardRow).join("")}</tbody>
+                </table>
+              </div>
+            </article>
+          </section>
+
+          <section class="grid-three">
+            <article class="panel">
+              <div class="panel-heading"><div><p class="eyebrow">Cash</p><h2>Net After Cards</h2></div></div>
+              <div class="mini-stat"><span>Cash - card balances</span><strong>${formatMoney(model.cashAfterCards)}</strong></div>
+            </article>
+            <article class="panel">
+              <div class="panel-heading"><div><p class="eyebrow">Protected</p><h2>Reserve Need</h2></div></div>
+              <div class="mini-stat"><span>Floor + scheduled reserves</span><strong>${formatMoney(model.protectedNeed)}</strong></div>
+            </article>
+            <article class="panel">
+              <div class="panel-heading"><div><p class="eyebrow">Buffer</p><h2>Fun Money Compression</h2></div></div>
+              <div class="mini-stat"><span>${escapeHtml(state.partnerAName)} + ${escapeHtml(state.partnerBName)} as buffer</span><strong>${formatMoney(model.funCompressed)}</strong></div>
+            </article>
+          </section>
+
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Waterfall</p>
+                <h2>Current Cash Priority</h2>
+              </div>
+              <span class="status-pill" data-tone="${model.reservePressure ? "bad" : "good"}">${model.reservePressure ? "Reserve pressure" : "Protected"}</span>
+            </div>
+            ${renderCurrentWaterfall(model)}
+          </article>
+        `;
+      }
+
+      function renderBankRow(account) {
+        return `
+          <tr>
+            <td><input value="${escapeHtml(account.label)}" data-collection="bankAccounts" data-id="${account.id}" data-key="label" /></td>
+            <td><div class="input-prefix"><span>$</span><input type="number" step="0.01" value="${account.balance}" data-collection="bankAccounts" data-id="${account.id}" data-key="balance" /></div></td>
+            <td class="number-cell">
+              <button class="icon-button" type="button" data-action="remove-bank" data-id="${account.id}" title="Remove account">${renderIcon("trash-2")}</button>
+            </td>
+          </tr>
+        `;
+      }
+
+      function renderCardRow(card) {
+        return `
+          <tr>
+            <td><input value="${escapeHtml(card.label)}" data-collection="cards" data-id="${card.id}" data-key="label" /></td>
+            <td><div class="input-prefix"><span>$</span><input type="number" min="0" step="0.01" value="${card.balance}" data-collection="cards" data-id="${card.id}" data-key="balance" /></div></td>
+            <td><input type="number" min="1" max="31" value="${card.dueDay}" data-collection="cards" data-id="${card.id}" data-key="dueDay" /></td>
+            <td class="number-cell">
+              <button class="icon-button" type="button" data-action="remove-card" data-id="${card.id}" title="Remove card">${renderIcon("trash-2")}</button>
+            </td>
+          </tr>
+        `;
+      }
+
+      function renderCurrentWaterfall(model) {
+        const rows = [
+          { label: "Cash in bank", value: model.cashTotal, tone: "green" },
+          { label: "Card balances", value: model.cardDebt, tone: "red" },
+          { label: "Scheduled reserves", value: model.reserveModel.currentReserveTotal, tone: "blue" },
+          { label: "Protected floor", value: state.reserveFloor, tone: "blue" },
+          { label: "Fun money available", value: model.funAvailableNow, tone: "amber" },
+          { label: "Free cash after buffer", value: model.freeCash, tone: model.freeCash ? "green" : "red" },
+        ];
+        const maxValue = Math.max(...rows.map((row) => Math.abs(row.value)), 1);
+        return `
+          <div class="bar-list">
+            ${rows
+              .map(
+                (row) => `
+                  <div class="bar-row">
+                    <strong>${escapeHtml(row.label)}</strong>
+                    <div class="bar-track">
+                      <div class="bar-fill" data-tone="${row.tone}" style="width: ${(Math.abs(row.value) / maxValue) * 100}%"></div>
+                    </div>
+                    <span class="number-cell">${formatMoney(row.value)}</span>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        `;
+      }
+
+      function renderWeeklyTab(model) {
+        return `
+          <section class="grid-three">
+            <article class="panel">
+              <div class="panel-heading"><div><p class="eyebrow">Target</p><h2>Weekly Budget</h2></div></div>
+              <div class="mini-stat"><span>${formatPercent(state.weeklyBudgetPercent)} of monthly income</span><strong>${formatMoney(model.weeklyTarget)}</strong></div>
+            </article>
+            <article class="panel">
+              <div class="panel-heading"><div><p class="eyebrow">Spent</p><h2>${formatShortDate(model.weekRange.start)} - ${formatShortDate(model.weekRange.end)}</h2></div></div>
+              <div class="mini-stat"><span>Current week</span><strong>${formatMoney(model.weeklySpent)}</strong></div>
+            </article>
+            <article class="panel">
+              <div class="panel-heading"><div><p class="eyebrow">Remaining</p><h2>Household Spend</h2></div></div>
+              <div class="mini-stat"><span>Target minus tracked spend</span><strong>${formatMoney(model.weeklyRemaining)}</strong></div>
+            </article>
+          </section>
+
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Transactions</p>
+                <h2>Weekly Ledger</h2>
+              </div>
+              <div class="field" style="max-width: 180px">
+                <label for="weekStartsOn">Week Starts</label>
+                <select id="weekStartsOn" data-state-field="weekStartsOn">
+                  <option value="0" ${state.weekStartsOn === 0 ? "selected" : ""}>Sunday</option>
+                  <option value="1" ${state.weekStartsOn === 1 ? "selected" : ""}>Monday</option>
+                </select>
+              </div>
+            </div>
+            <form class="form-grid" data-form="weekly-transaction">
+              <div class="field">
+                <label for="weeklyDate">Date</label>
+                <input id="weeklyDate" name="date" type="date" value="${state.anchorDate}" required />
+              </div>
+              <div class="field">
+                <label for="weeklyAmount">Amount</label>
+                <div class="input-prefix"><span>$</span><input id="weeklyAmount" name="amount" type="number" min="0.01" step="0.01" required /></div>
+              </div>
+              <div class="field">
+                <label for="weeklyCategory">Category</label>
+                <input id="weeklyCategory" name="category" value="Household" />
+              </div>
+              <button class="primary-button" type="submit">${renderIcon("plus")} Add Spend</button>
+            </form>
+          </article>
+
+          <section class="grid-two">
+            <article class="panel">
+              <div class="panel-heading"><div><p class="eyebrow">This Week</p><h2>Tracked Spending</h2></div></div>
+              ${renderWeeklyRows(model)}
+            </article>
+            <article class="panel">
+              <div class="panel-heading"><div><p class="eyebrow">Fun Money</p><h2>Paycheck Release Schedule</h2></div></div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>Date</th><th>Paycheck</th><th>${escapeHtml(state.partnerAName)}</th><th>${escapeHtml(state.partnerBName)}</th></tr>
+                  </thead>
+                  <tbody>
+                    ${model.eventsPlan
+                      .map(
+                        (event) => `
+                          <tr>
+                            <td>${formatShortDate(event.date)}</td>
+                            <td>${escapeHtml(event.label)}</td>
+                            <td class="number-cell">${formatMoney(event.partnerA)}</td>
+                            <td class="number-cell">${formatMoney(event.partnerB)}</td>
+                          </tr>
+                        `,
+                      )
+                      .join("")}
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </section>
+        `;
+      }
+
+      function renderWeeklyRows(model) {
+        if (!model.weeklyRows.length) {
+          return `<div class="empty-state">No spending tracked in this week.</div>`;
+        }
+        return `
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Date</th><th>Amount</th><th>Category</th><th>Note</th><th></th></tr>
+              </thead>
+              <tbody>
+                ${model.weeklyRows
+                  .map(
+                    (row) => `
+                      <tr>
+                        <td>${formatShortDate(row.date)}</td>
+                        <td class="number-cell">${formatMoney(row.amount)}</td>
+                        <td>${escapeHtml(row.category)}</td>
+                        <td>${escapeHtml(row.note)}</td>
+                        <td class="number-cell">
+                          <button class="icon-button" type="button" data-action="remove-weekly-row" data-id="${row.id}" title="Remove spend">${renderIcon("trash-2")}</button>
+                        </td>
+                      </tr>
+                    `,
+                  )
+                  .join("")}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+
+      function renderMoneyMapTab(model) {
+        const maxChannelAmount = Math.max(
+          ...state.moneyMapChannels.map((channel) => model.positiveDeployable * (channel.percent / 100)),
+          1,
+        );
+        return `
+          <section class="grid-two">
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Channels</p>
+                  <h2>Deployable Allocation</h2>
+                </div>
+                <button class="text-button" type="button" data-action="add-channel">
+                  ${renderIcon("plus")}
+                  Add Channel
+                </button>
+              </div>
+              <div class="table-wrap desktop-table">
+                <table>
+                  <thead>
+                    <tr><th>Channel</th><th>Percent</th><th>Role</th><th>Monthly Amount</th><th></th></tr>
+                  </thead>
+                  <tbody>${state.moneyMapChannels.map((channel) => renderChannelRow(channel, model)).join("")}</tbody>
+                </table>
+              </div>
+              <div class="mobile-cards">${state.moneyMapChannels.map((channel) => renderChannelCard(channel, model)).join("")}</div>
+            </article>
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Cascade</p>
+                  <h2>Monthly Money Map</h2>
+                </div>
+                <span class="status-pill" data-tone="${Math.round(model.channelPercentTotal) === 100 ? "good" : "warn"}">${formatPercent(model.channelPercentTotal, 0)} allocated</span>
+              </div>
+              <div class="bar-list">
+                ${state.moneyMapChannels
+                  .map((channel) => {
+                    const amount = model.positiveDeployable * (channel.percent / 100);
+                    return `
+                      <div class="bar-row">
+                        <strong>${escapeHtml(channel.label)}</strong>
+                        <div class="bar-track">
+                          <div class="bar-fill" style="width: ${(amount / maxChannelAmount) * 100}%"></div>
+                        </div>
+                        <span class="number-cell">${formatMoney(amount)}</span>
+                      </div>
+                    `;
+                  })
+                  .join("")}
+              </div>
+            </article>
+          </section>
+
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Per Paycheck</p>
+                <h2>Deployment Amounts</h2>
+              </div>
+              <span class="status-pill">${formatMoney(model.positiveDeployable)} input</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Deployable</th>
+                    ${state.moneyMapChannels.map((channel) => `<th>${escapeHtml(channel.label)}</th>`).join("")}
+                  </tr>
+                </thead>
+                <tbody>
+                  ${model.eventsPlan
+                    .map(
+                      (event) => `
+                        <tr>
+                          <td>${formatShortDate(event.date)} · ${escapeHtml(event.label)}</td>
+                          <td class="number-cell">${formatMoney(Math.max(event.deployable, 0))}</td>
+                          ${state.moneyMapChannels
+                            .map(
+                              (channel) => `
+                                <td class="number-cell">${formatMoney(Math.max(event.deployable, 0) * (channel.percent / 100))}</td>
+                              `,
+                            )
+                            .join("")}
+                        </tr>
+                      `,
+                    )
+                    .join("")}
+                </tbody>
+              </table>
+            </div>
+          </article>
+        `;
+      }
+
+      function renderChannelRow(channel, model) {
+        const amount = model.positiveDeployable * (channel.percent / 100);
+        return `
+          <tr>
+            <td><input value="${escapeHtml(channel.label)}" data-collection="moneyMapChannels" data-id="${channel.id}" data-key="label" /></td>
+            <td><input type="number" min="0" step="0.1" value="${channel.percent}" data-collection="moneyMapChannels" data-id="${channel.id}" data-key="percent" /></td>
+            <td><input value="${escapeHtml(channel.role)}" data-collection="moneyMapChannels" data-id="${channel.id}" data-key="role" /></td>
+            <td class="number-cell">${formatMoney(amount)}</td>
+            <td class="number-cell"><button class="icon-button" type="button" data-action="remove-channel" data-id="${channel.id}" title="Remove channel">${renderIcon("trash-2")}</button></td>
+          </tr>
+        `;
+      }
+
+      function renderChannelCard(channel, model) {
+        return `
+          <article class="mini-stat">
+            <strong>${escapeHtml(channel.label)}</strong>
+            <span>${formatPercent(channel.percent)} · ${formatMoney(model.positiveDeployable * (channel.percent / 100))}</span>
+          </article>
+        `;
+      }
+
+      function renderDeploymentTab(model) {
+        const selectedEvent =
+          model.eventsPlan.find((event) => event.id === state.activeDeploymentEventId) ||
+          model.eventsPlan.find((event) => event.date >= state.anchorDate) ||
+          model.eventsPlan[model.eventsPlan.length - 1];
+        if (selectedEvent && state.activeDeploymentEventId !== selectedEvent.id) {
+          state.activeDeploymentEventId = selectedEvent.id;
+          saveState();
+        }
+        const actions = selectedEvent ? getDeploymentActions(selectedEvent, model) : [];
+        const record = selectedEvent ? getDeploymentRecord(selectedEvent.id) : { items: {}, note: "" };
+        const doneCount = actions.filter((action) => record.items[action.id]).length;
+        return `
+          <section class="grid-two">
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Wizard</p>
+                  <h2>Selected Paycheck</h2>
+                </div>
+                <span class="status-pill" data-tone="${doneCount === actions.length && actions.length ? "good" : "warn"}">${doneCount}/${actions.length} done</span>
+              </div>
+              <div class="field">
+                <label for="activeDeploymentEventId">Paycheck Event</label>
+                <select id="activeDeploymentEventId" data-state-field="activeDeploymentEventId">
+                  ${model.eventsPlan
+                    .map(
+                      (event) => `
+                        <option value="${event.id}" ${selectedEvent && event.id === selectedEvent.id ? "selected" : ""}>
+                          ${formatShortDate(event.date)} · ${escapeHtml(event.label)} · ${formatMoney(event.amount)}
+                        </option>
+                      `,
+                    )
+                    .join("")}
+                </select>
+              </div>
+              ${
+                selectedEvent
+                  ? `
+                    <div class="grid-three" style="margin-top: 12px">
+                      <div class="mini-stat"><span>Income</span><strong>${formatMoney(selectedEvent.amount)}</strong></div>
+                      <div class="mini-stat"><span>Plan Deploy</span><strong>${formatMoney(Math.max(selectedEvent.deployable, 0))}</strong></div>
+                      <div class="mini-stat"><span>Reserve Slice</span><strong>${formatMoney(selectedEvent.reserveContribution)}</strong></div>
+                    </div>
+                  `
+                  : `<div class="empty-state">Add an income source to start.</div>`
+              }
+            </article>
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Record</p>
+                  <h2>Execution Note</h2>
+                </div>
+                <button class="text-button" type="button" data-action="mark-all-deployment" ${!selectedEvent ? "disabled" : ""}>
+                  ${renderIcon("check-check")}
+                  Mark Done
+                </button>
+              </div>
+              <div class="field">
+                <label for="deploymentNote">Note</label>
+                <textarea id="deploymentNote" data-deployment-note="${selectedEvent ? selectedEvent.id : ""}">${escapeHtml(record.note || "")}</textarea>
+              </div>
+            </article>
+          </section>
+
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Slice And Dice</p>
+                <h2>Paycheck Actions</h2>
+              </div>
+              <span class="status-pill">${selectedEvent ? formatLongDate(selectedEvent.date) : "No paycheck"}</span>
+            </div>
+            ${
+              actions.length
+                ? `<div class="wizard-list">${actions.map((action) => renderWizardAction(action, record, selectedEvent.id)).join("")}</div>`
+                : `<div class="empty-state">No actions available.</div>`
+            }
+          </article>
+
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Log</p>
+                <h2>Paycheck Deployment Status</h2>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Date</th><th>Paycheck</th><th>Done</th><th>Pending</th></tr></thead>
+                <tbody>
+                  ${model.eventsPlan
+                    .map((event) => {
+                      const eventActions = getDeploymentActions(event, model);
+                      const eventRecord = getDeploymentRecord(event.id);
+                      const eventDone = eventActions.filter((action) => eventRecord.items[action.id]).length;
+                      return `
+                        <tr>
+                          <td>${formatShortDate(event.date)}</td>
+                          <td>${escapeHtml(event.label)}</td>
+                          <td class="number-cell">${eventDone}/${eventActions.length}</td>
+                          <td>${eventActions.filter((action) => !eventRecord.items[action.id]).slice(0, 3).map((action) => `<span class="chip">${escapeHtml(action.label)}</span>`).join(" ") || `<span class="chip" data-tone="good">Complete</span>`}</td>
+                        </tr>
+                      `;
+                    })
+                    .join("")}
+                </tbody>
+              </table>
+            </div>
+          </article>
+        `;
+      }
+
+      function getDeploymentRecord(eventId) {
+        state.deploymentLog[eventId] = state.deploymentLog[eventId] || { items: {}, note: "" };
+        return state.deploymentLog[eventId];
+      }
+
+      function getDeploymentActions(event, model) {
+        const reserveLines = model.reserveModel.eventExpenseLines[event.id] || [];
+        const actions = [
+          {
+            id: "income-landed",
+            label: "Income landed",
+            detail: `${event.label} received`,
+            amount: event.amount,
+          },
+          {
+            id: "current-cash-updated",
+            label: "Current cash updated",
+            detail: "Bank accounts and card balances",
+            amount: model.cashAfterCards,
+          },
+        ];
+        if (model.cardDebt > 0) {
+          actions.push({
+            id: "card-balances-covered",
+            label: "Card balances covered",
+            detail: "Uses fun buffer before reserve pressure",
+            amount: model.cardDebt,
+          });
+        }
+        reserveLines.forEach((line, index) => {
+          actions.push({
+            id: `reserve-${index}-${line.label}`,
+            label: `Hold ${line.label}`,
+            detail: `Due ${formatShortDate(line.dueDate)}`,
+            amount: line.amount,
+          });
+        });
+        actions.push({
+          id: "weekly-budget-funded",
+          label: "Household weekly budget funded",
+          detail: `${formatPercent(state.weeklyBudgetPercent)} monthly income rule`,
+          amount: event.weeklyShare,
+        });
+        actions.push({
+          id: "partner-a-fun",
+          label: `${state.partnerAName} fun money`,
+          detail: `${formatPercent(state.partnerAPercent)} of paycheck`,
+          amount: event.partnerA,
+        });
+        actions.push({
+          id: "partner-b-fun",
+          label: `${state.partnerBName} fun money`,
+          detail: `${formatPercent(state.partnerBPercent)} of paycheck`,
+          amount: event.partnerB,
+        });
+        state.moneyMapChannels.forEach((channel) => {
+          const channelAmount = Math.max(event.deployable, 0) * (channel.percent / 100);
+          actions.push({
+            id: `channel-${channel.id}`,
+            label: channel.label,
+            detail: channel.role || `${formatPercent(channel.percent)} of deployable`,
+            amount: channelAmount,
+          });
+        });
+        return actions;
+      }
+
+      function renderWizardAction(action, record, eventId) {
+        const checked = Boolean(record.items[action.id]);
+        return `
+          <label class="wizard-card">
+            <input type="checkbox" ${checked ? "checked" : ""} data-deployment-event="${eventId}" data-deployment-action="${escapeHtml(action.id)}" />
+            <span>
+              <strong>${escapeHtml(action.label)}</strong>
+              <span>${escapeHtml(action.detail)}</span>
+            </span>
+            <strong>${formatMoney(action.amount)}</strong>
+          </label>
+        `;
+      }
+
+      function updateStateField(field, value, type) {
+        if (type === "number") state[field] = toNumber(value);
+        else if (field === "weekStartsOn") state[field] = Number(value);
+        else state[field] = value;
+      }
+
+      function updateCollection(collection, id, key, value, input) {
+        const row = state[collection]?.find((item) => item.id === id);
+        if (!row) return;
+        if (input.type === "checkbox") row[key] = input.checked;
+        else if (input.type === "number") row[key] = key.toLowerCase().includes("day") ? clampDay(value) : toNumber(value);
+        else row[key] = value;
+      }
+
+      document.addEventListener("click", (event) => {
+        const tabButton = event.target.closest("[data-tab]");
+        if (tabButton) {
+          state.activeTab = tabButton.dataset.tab;
+          saveState();
+          render();
+          return;
+        }
+
+        const actionButton = event.target.closest("[data-action]");
+        if (!actionButton) return;
+        const action = actionButton.dataset.action;
+        const id = actionButton.dataset.id;
+
+        if (action === "set-today") {
+          const today = new Date();
+          state.anchorDate = toDateKey(today);
+          state.selectedMonth = toMonthKey(today);
+        }
+        if (action === "reset-local" && confirm("Reset local Cash Command 2.0 data?")) {
+          state = defaultState();
+        }
+        if (action === "add-income") {
+          state.incomeSources.push({
+            id: uid("income"),
+            label: "New Income",
+            amount: 0,
+            cadence: "monthly",
+            monthlyDay: 1,
+            active: true,
+          });
+        }
+        if (action === "remove-income") {
+          state.incomeSources = state.incomeSources.filter((source) => source.id !== id);
+        }
+        if (action === "add-expense") {
+          state.expenses.push({
+            id: uid("expense"),
+            label: "New Expense",
+            amount: 0,
+            dueDay: 1,
+            category: "General",
+            active: true,
+            paid: false,
+          });
+        }
+        if (action === "remove-expense") {
+          state.expenses = state.expenses.filter((expense) => expense.id !== id);
+        }
+        if (action === "add-bank") {
+          state.bankAccounts.push({ id: uid("bank"), label: "New Account", balance: 0 });
+        }
+        if (action === "remove-bank") {
+          state.bankAccounts = state.bankAccounts.filter((account) => account.id !== id);
+        }
+        if (action === "add-card") {
+          state.cards.push({ id: uid("card"), label: "New Card", balance: 0, dueDay: 20 });
+        }
+        if (action === "remove-card") {
+          state.cards = state.cards.filter((card) => card.id !== id);
+        }
+        if (action === "add-channel") {
+          state.moneyMapChannels.push({ id: uid("channel"), label: "New Channel", percent: 0, role: "" });
+        }
+        if (action === "remove-channel") {
+          state.moneyMapChannels = state.moneyMapChannels.filter((channel) => channel.id !== id);
+        }
+        if (action === "remove-weekly-row") {
+          state.weeklyTransactions = state.weeklyTransactions.filter((row) => row.id !== id);
+        }
+        if (action === "sync-weekly-400") {
+          const model = buildModel();
+          const monthlyTarget = 400 * model.weeksInMonth;
+          state.weeklyBudgetPercent = model.totalIncome > 0 ? (monthlyTarget / model.totalIncome) * 100 : state.weeklyBudgetPercent;
+        }
+        if (action === "mark-all-deployment") {
+          const model = buildModel();
+          const eventId = state.activeDeploymentEventId;
+          const selectedEvent = model.eventsPlan.find((item) => item.id === eventId);
+          if (selectedEvent) {
+            const record = getDeploymentRecord(eventId);
+            getDeploymentActions(selectedEvent, model).forEach((item) => {
+              record.items[item.id] = true;
+            });
+          }
+        }
+
+        saveState();
+        render();
+      });
+
+      document.addEventListener("change", (event) => {
+        const input = event.target;
+        if (!(input instanceof HTMLInputElement || input instanceof HTMLSelectElement || input instanceof HTMLTextAreaElement)) return;
+
+        if (input.dataset.stateField) {
+          updateStateField(input.dataset.stateField, input.value, input.type);
+        }
+        if (input.dataset.collection) {
+          updateCollection(input.dataset.collection, input.dataset.id, input.dataset.key, input.value, input);
+        }
+        if (input.dataset.deploymentEvent && input.dataset.deploymentAction) {
+          const record = getDeploymentRecord(input.dataset.deploymentEvent);
+          record.items[input.dataset.deploymentAction] = input.checked;
+        }
+        if (input.dataset.deploymentNote) {
+          const record = getDeploymentRecord(input.dataset.deploymentNote);
+          record.note = input.value;
+        }
+
+        saveState();
+        render();
+      });
+
+      document.addEventListener("submit", (event) => {
+        const form = event.target;
+        if (!(form instanceof HTMLFormElement)) return;
+        if (form.dataset.form === "weekly-transaction") {
+          event.preventDefault();
+          const formData = new FormData(form);
+          state.weeklyTransactions.push({
+            id: uid("txn"),
+            date: formData.get("date") || state.anchorDate,
+            amount: toNumber(formData.get("amount")),
+            category: formData.get("category") || "Household",
+            note: "",
+          });
+          saveState();
+          render();
+        }
+      });
+
+      render();
+    </script>
+  </body>
+</html>
