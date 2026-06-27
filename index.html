@@ -8343,7 +8343,8 @@
           syncLiveUnlockGate();
           if (error) {
             console.error("Error sending magic link:", error);
-            $("liveUnlockError").textContent = "Could not send a sign-in link.";
+            $("liveUnlockError").textContent =
+              error.message || "Could not send a sign-in link.";
             $("liveUnlockError").hidden = false;
             return;
           }
